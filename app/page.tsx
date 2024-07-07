@@ -1,20 +1,12 @@
-import { SignIn } from "@/components/sign-in";
+import { auth } from "@/auth";
 import { db } from "@/db";
 import { users } from "@/db/schema/auth";
 
 export default async function Home() {
-  const result = await db.select().from(users).all();
+  const session =await auth()
   return (
     <main>
-      <SignIn />
-      <h1>Users</h1>
-      <ul>
-        {result.map((user) => (
-          <li key={user.id}>
-            {user.name} ({user.email})
-          </li>
-        ))}
-      </ul>
+      {session?.user?.name}
     </main>
   );
 }
