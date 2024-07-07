@@ -1,6 +1,6 @@
 import { SignIn } from "@/components/sign-in";
-import { db } from "@/drizzle/db";
-import { users } from "@/drizzle/schema";
+import { db } from "@/db";
+import { users } from "@/db/schema/auth";
 
 export default async function Home() {
   const result = await db.select().from(users).all();

@@ -15,6 +15,13 @@
       "when": 1720269988122,
       "tag": "0001_amazing_energizer",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1720291136710,
+      "tag": "0002_happy_praxagora",
+      "breakpoints": true
     }
   ]
 }
