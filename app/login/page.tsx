@@ -23,9 +23,9 @@ export default async function Login() {
     <div className="flex min-h-svh items-center justify-center">
       <Card>
         <CardHeader>
-          <CardTitle>TopStuds</CardTitle>
+          <CardTitle>TopStudz</CardTitle>
           <CardDescription>
-            Elevate your study game with TopStuds.
+            Elevate your study game with TopStudz.
           </CardDescription>
         </CardHeader>
         <CardContent>Sign in to continue.</CardContent>

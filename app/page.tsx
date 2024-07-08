@@ -16,7 +16,7 @@ export default async function Home() {
     <div className="flex flex-col mx-auto max-w-7xl">
       <Header />
       <main>
-        <h1>Welcome to TopStuds</h1>
+        <h1>Welcome to TopStudz</h1>
       </main>
     </div>
   );
