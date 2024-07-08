@@ -10,8 +10,8 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "TopStuds",
-  description: "Elevate your study game with TopStuds.",
+  title: "TopStudz",
+  description: "Elevate your study game with TopStudz.",
 };
 
 export default function RootLayout({

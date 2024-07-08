@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,11 +7,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
-export default function ErrorPage() {
-  const search = useSearchParams();
-  const error = search.get("error");
+export default function ErrorPage({
+  searchParams,
+}: {
+  searchParams: { error: string };
+}) {
+  const error = searchParams.error;
 
   return (
     <div className="flex min-h-svh items-center justify-center">
