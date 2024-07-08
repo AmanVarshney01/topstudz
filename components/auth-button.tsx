@@ -1,4 +1,4 @@
-import { auth, signIn, signOut } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { Button } from "./ui/button";
 
 export default async function AuthButton() {
@@ -7,19 +7,10 @@ export default async function AuthButton() {
     <form
       action={async () => {
         "use server";
-        await signOut();
+        await signOut({ redirectTo: "/login" });
       }}
     >
       <Button>Sign Out</Button>
     </form>
-  ) : (
-    <form
-      action={async () => {
-        "use server";
-        await signIn("github");
-      }}
-    >
-      <Button>Sign In</Button>
-    </form>
-  );
+  ) : null;
 }

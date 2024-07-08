@@ -1,12 +1,23 @@
-import { auth } from "@/auth";
-import { db } from "@/db";
-import { users } from "@/db/schema/auth";
+import DashboardButton from "@/components/dashboard-button";
+
+function Header() {
+  return (
+    <header className="flex w-full flex-row justify-between p-4">
+      <nav>
+        <h1 className="text-2xl font-bold">TopStuds</h1>
+      </nav>
+      <DashboardButton />
+    </header>
+  );
+}
 
 export default async function Home() {
-  const session =await auth()
   return (
-    <main>
-      {session?.user?.name}
-    </main>
+    <div className="flex flex-col mx-auto max-w-7xl">
+      <Header />
+      <main>
+        <h1>Welcome to TopStuds</h1>
+      </main>
+    </div>
   );
 }
