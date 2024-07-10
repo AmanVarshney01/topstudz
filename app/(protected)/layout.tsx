@@ -1,5 +1,6 @@
 import DesktopSidebar from "@/components/DesktopSidebar";
 import Header from "@/components/header";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function DashboardLayout({
   children,
@@ -7,15 +8,13 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // <main className=" flex flex-col">
-    //   <Header />
-    //   {children}
-    // </main>
     <div className="flex h-full flex-col">
       <Header />
       <div className="flex h-svh pt-16">
         <DesktopSidebar />
-        <main className="h-full flex-1">{children}</main>
+        <ScrollArea className="w-full">
+          <main className="h-full flex-1">{children}</main>
+        </ScrollArea>
       </div>
     </div>
   );

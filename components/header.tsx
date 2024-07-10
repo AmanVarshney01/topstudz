@@ -2,6 +2,7 @@ import Link from "next/link";
 import AuthButton from "./auth-button";
 import Logo from "./logo";
 import MobileSidebar from "./MobileSidebar";
+import ThemeToggle from "./theme-toggle";
 
 export default function Header() {
   return (
@@ -13,6 +14,7 @@ export default function Header() {
         </Link>
       </div>
       <nav className="flex flex-row items-center gap-2">
+        <ThemeToggle />
         <AuthButton />
       </nav>
     </header>

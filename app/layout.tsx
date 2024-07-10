@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
@@ -11,7 +12,8 @@ const fontSans = FontSans({
 
 export const metadata: Metadata = {
   title: "TopStudz",
-  description: "Compete with friends, join study groups, and track your progress to become a top student.",
+  description:
+    "Compete with friends, join study groups, and track your progress to become a top student.",
 };
 
 export default function RootLayout({
@@ -23,11 +25,18 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "dark min-h-svh bg-background font-sans antialiased",
+          "min-h-svh bg-background font-sans antialiased",
           fontSans.variable,
         )}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
