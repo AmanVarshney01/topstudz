@@ -19,7 +19,7 @@ function SignOutButton() {
         await signOut({ redirectTo: "/login" });
       }}
     >
-      <Button className="w-full" variant={"destructive"}>
+      <Button size={"sm"} className="w-full" variant={"destructive"}>
         Sign Out
       </Button>
     </form>

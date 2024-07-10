@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 
-const protectedRoutes = ["/dashboard"];
+const protectedRoutes = ["/dashboard", "/leaderboards"];
 
 export default auth((req) => {
   const isProtectedRoute = protectedRoutes.some((prefix) =>

@@ -1,12 +1,11 @@
 import { auth, signIn } from "@/auth";
+import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import githubLogo from "@/public/github-mark.svg";
 import Image from "next/image";
@@ -23,12 +22,13 @@ export default async function Login() {
     <div className="flex min-h-svh items-center justify-center">
       <Card>
         <CardHeader>
-          <CardTitle>TopStudz</CardTitle>
-          <CardDescription>
-            Elevate your study game with TopStudz.
+          <Logo />
+          <CardDescription className="max-w-80">
+            Compete with friends, join study groups, and track your progress to
+            become a top student.
           </CardDescription>
         </CardHeader>
-        <CardContent>Sign in to continue.</CardContent>
+        {/* <CardContent>Sign in to continue.</CardContent> */}
         <CardFooter>
           <form
             className="w-full"

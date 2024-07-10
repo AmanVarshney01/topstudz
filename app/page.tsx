@@ -1,19 +1,20 @@
-import DashboardButton from "@/components/dashboard-button";
+import GoToActionButton from "@/components/go-to-action-button";
+import Logo from "@/components/logo";
 
 function Header() {
   return (
-    <header className="flex w-full flex-row justify-between p-4">
+    <header className="flex w-full flex-row items-center justify-between p-4">
       <nav>
-        <h1 className="text-2xl font-bold">TopStudz</h1>
+        <Logo />
       </nav>
-      <DashboardButton />
+      <GoToActionButton />
     </header>
   );
 }
 
 export default async function Home() {
   return (
-    <div className="flex flex-col mx-auto max-w-7xl">
+    <div className="mx-auto flex max-w-7xl flex-col">
       <Header />
       <main>
         <h1>Welcome to TopStudz</h1>

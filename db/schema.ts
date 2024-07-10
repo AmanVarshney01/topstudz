@@ -14,6 +14,8 @@ export const users = sqliteTable("user", {
   email: text("email").notNull(),
   emailVerified: integer("emailVerified", { mode: "timestamp_ms" }),
   image: text("image"),
+  stateId: integer("state_id").references(() => states.id),
+  collegeId: text("college_id").references(() => colleges.id),
 });
 
 export const accounts = sqliteTable(
@@ -37,7 +39,7 @@ export const accounts = sqliteTable(
     compoundKey: primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
-  })
+  }),
 );
 
 export const sessions = sqliteTable("session", {
@@ -46,4 +48,34 @@ export const sessions = sqliteTable("session", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   expires: integer("expires", { mode: "timestamp_ms" }).notNull(),
+});
+
+export const friendships = sqliteTable("friendships", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId1: integer("user_id1")
+    .notNull()
+    .references(() => users.id),
+  userId2: integer("user_id2")
+    .notNull()
+    .references(() => users.id),
+  status: text("status", {
+    enum: ["pending", "accepted", "rejected"],
+  }).notNull(),
+});
+
+export const colleges = sqliteTable("colleges", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull().unique(),
+});
+
+export const states = sqliteTable("states", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name").notNull(),
+});
+
+export const studyGroups = sqliteTable("study_groups", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name").notNull(),
+  description: text("description"),
+  collegeId: text('college_id').notNull().references(() => colleges.id),
 });

@@ -11,7 +11,7 @@ const fontSans = FontSans({
 
 export const metadata: Metadata = {
   title: "TopStudz",
-  description: "Elevate your study game with TopStudz.",
+  description: "Compete with friends, join study groups, and track your progress to become a top student.",
 };
 
 export default function RootLayout({

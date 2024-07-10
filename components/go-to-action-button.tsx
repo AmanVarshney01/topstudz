@@ -2,15 +2,15 @@ import { auth } from "@/auth";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
-export default async function DashboardButton() {
+export default async function GoToActionButton() {
   const session = await auth();
   return session ? (
     <Link href="/dashboard">
-      <Button>Dashboard</Button>
+      <Button size={"sm"}>Dashboard</Button>
     </Link>
   ) : (
     <Link href={"/login"}>
-      <Button>Sign In</Button>
+      <Button size={"sm"}>Get Started</Button>
     </Link>
   );
 }
