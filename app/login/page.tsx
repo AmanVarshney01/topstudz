@@ -28,7 +28,6 @@ export default async function Login() {
             become a top student.
           </CardDescription>
         </CardHeader>
-        {/* <CardContent>Sign in to continue.</CardContent> */}
         <CardFooter>
           <form
             className="w-full"

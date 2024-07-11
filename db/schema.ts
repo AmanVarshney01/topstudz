@@ -87,7 +87,43 @@ export const studyGroups = sqliteTable("study_groups", {
 
 export const studyGroupMembers = sqliteTable("study_group_members", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  groupId: integer("group_id").notNull().references(() => studyGroups.id),
-  userId: text("user_id").notNull().references(() => users.id),
-  role: text("role", { enum: ["admin", "member"]}).notNull(),
-})
+  groupId: integer("group_id")
+    .notNull()
+    .references(() => studyGroups.id),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  role: text("role", { enum: ["admin", "member"] }).notNull(),
+});
+
+export const events = sqliteTable("events", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  startTime: integer("start_time", { mode: "timestamp" }).notNull(),
+  endTime: integer("end_time", { mode: "timestamp" }).notNull(),
+  createdBy: text("created_by")
+    .notNull()
+    .references(() => users.id),
+  groupId: text("group_id").references(() => studyGroups.id),
+  isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
+});
+
+export const eventParticipants = sqliteTable("event_participants", {
+  id: text("id").primaryKey(),
+  eventId: text("event_id")
+    .notNull()
+    .references(() => events.id),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+});
+
+export const studySessions = sqliteTable("study_sessions", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  eventId: text("event_id").references(() => events.id),
+  startTime: integer("start_time", { mode: "timestamp" }).notNull(),
+  endTime: integer("end_time", { mode: "timestamp" }),
+});
