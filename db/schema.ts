@@ -66,6 +66,9 @@ export const friendships = sqliteTable("friendships", {
 export const colleges = sqliteTable("colleges", {
   id: text("id").primaryKey(),
   name: text("name").notNull().unique(),
+  stateId: integer("state_id")
+    .notNull()
+    .references(() => states.id),
 });
 
 export const states = sqliteTable("states", {
@@ -77,5 +80,14 @@ export const studyGroups = sqliteTable("study_groups", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   description: text("description"),
-  collegeId: text('college_id').notNull().references(() => colleges.id),
+  collegeId: text("college_id")
+    .notNull()
+    .references(() => colleges.id),
 });
+
+export const studyGroupMembers = sqliteTable("study_group_members", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  groupId: integer("group_id").notNull().references(() => studyGroups.id),
+  userId: text("user_id").notNull().references(() => users.id),
+  role: text("role", { enum: ["admin", "member"]}).notNull(),
+})

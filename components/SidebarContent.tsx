@@ -8,8 +8,10 @@ import { Button } from "./ui/button";
 
 const menuItems = [
   { name: "Dashboard", href: "/dashboard" },
+  { name: "Study", href: "/study" },
+  { name: "Friends", href: "/friends" },
+  { name: "Groups", href: "/groups" },
   { name: "Leaderboards", href: "/leaderboards" },
-  { name: "Study Groups", href: "/study-groups" },
 ];
 
 export default function SidebarContent() {
@@ -17,7 +19,7 @@ export default function SidebarContent() {
   const currentPath = path[1];
 
   return (
-    <ScrollArea className="h-full py-6 px-2">
+    <ScrollArea className="h-full px-2 py-6">
       <nav className="flex flex-col gap-2">
         {menuItems.map((item) => (
           <Link key={item.name} href={item.href}>
@@ -25,7 +27,9 @@ export default function SidebarContent() {
               variant="ghost"
               className={cn(
                 "w-full justify-start px-4",
-                currentPath === item.href.slice(1) ? "bg-accent text-accent-foreground" : "",
+                currentPath === item.href.slice(1)
+                  ? "bg-accent text-accent-foreground"
+                  : "",
               )}
             >
               {item.name}
