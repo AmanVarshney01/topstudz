@@ -1,3 +1,9 @@
+import PageTitle from "@/components/page-title";
+
 export default function LeaderboardsPage() {
-  return <div>Leaderboards</div>;
+  return (
+    <section>
+      <PageTitle title="Leaderboards" />
+    </section>
+  )
 }

@@ -1,9 +1,9 @@
 import PageTitle from "@/components/page-title";
 
-export default function StudyPage() {
+export default function GroupPage() {
   return (
     <section>
-      <PageTitle title="Study" />
+      <PageTitle title="Group Page" />
     </section>
   )
 }

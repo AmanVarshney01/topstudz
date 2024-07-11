@@ -1,3 +1,9 @@
+import PageTitle from "@/components/page-title";
+
 export default function GroupsPage() {
-  return <div>Groups Page</div>;
+  return (
+    <section>
+      <PageTitle title="Groups Page" buttonText="Create Group" />
+    </section>
+  );
 }

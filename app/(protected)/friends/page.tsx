@@ -1,3 +1,9 @@
+import PageTitle from "@/components/page-title";
+
 export default function FriendsPage() {
-  return <div>Friends Page</div>;
+  return (
+    <section>
+      <PageTitle title="Friends"  buttonText="Add Friend"/>
+    </section>
+  )
 }

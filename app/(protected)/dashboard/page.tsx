@@ -1,5 +1,9 @@
+import PageTitle from "@/components/page-title";
+
 export default function DashboardPage() {
   return (
-    <div>DashboardPage</div>
+    <section>
+      <PageTitle title="Dashboard" />
+    </section>
   )
 }

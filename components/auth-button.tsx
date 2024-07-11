@@ -47,9 +47,11 @@ export default async function AuthButton() {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel>Account</DropdownMenuLabel>
-          <DropdownMenuItem disabled={true}>
-            <span className="truncate text-sm">{session.user?.email}</span>
-          </DropdownMenuItem>
+          <DropdownMenuLabel>
+            <span className="truncate text-sm opacity-90">
+              {session.user?.email}
+            </span>
+          </DropdownMenuLabel>
           <DropdownMenuItem>
             <SignOutButton />
           </DropdownMenuItem>

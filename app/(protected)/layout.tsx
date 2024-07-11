@@ -13,7 +13,7 @@ export default function DashboardLayout({
       <div className="flex h-svh pt-16">
         <DesktopSidebar />
         <ScrollArea className="w-full">
-          <main className="h-full flex-1">{children}</main>
+          <main className="h-full flex-1 mx-auto max-w-7xl">{children}</main>
         </ScrollArea>
       </div>
     </div>
