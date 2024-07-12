@@ -1,6 +1,5 @@
 "use client";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,24 +18,22 @@ export default function SidebarContent() {
   const currentPath = path[1];
 
   return (
-    <ScrollArea className="h-full px-2 py-6">
-      <nav className="flex flex-col gap-2">
-        {menuItems.map((item) => (
-          <Link key={item.name} href={item.href}>
-            <Button
-              variant="ghost"
-              className={cn(
-                "w-full justify-start px-4",
-                currentPath === item.href.slice(1)
-                  ? "bg-accent text-accent-foreground"
-                  : "",
-              )}
-            >
-              {item.name}
-            </Button>
-          </Link>
-        ))}
-      </nav>
-    </ScrollArea>
+    <nav className="flex flex-col gap-2 px-2 py-6">
+      {menuItems.map((item) => (
+        <Button
+          key={item.name}
+          variant="ghost"
+          className={cn(
+            "justify-start",
+            currentPath === item.href.slice(1)
+              ? "bg-accent text-accent-foreground"
+              : null,
+          )}
+          asChild
+        >
+          <Link href={item.href}>{item.name}</Link>
+        </Button>
+      ))}
+    </nav>
   );
 }

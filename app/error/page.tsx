@@ -16,7 +16,7 @@ export default function ErrorPage({
   const error = searchParams.error;
 
   return (
-    <div className="flex min-h-svh items-center justify-center">
+    <div className="flex min-h-dvh items-center justify-center">
       <Card>
         <CardHeader>
           <CardTitle>😓 Something went wrong</CardTitle>

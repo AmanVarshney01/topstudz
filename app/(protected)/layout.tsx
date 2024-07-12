@@ -8,12 +8,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex h-full flex-col">
+    <div className="grid h-dvh grid-rows-[auto_1fr]">
       <Header />
-      <div className="flex h-svh pt-16">
+      <div className="grid overflow-hidden lg:grid-cols-[auto_1fr]">
         <DesktopSidebar />
-        <ScrollArea className="w-full">
-          <main className="h-full flex-1 mx-auto max-w-7xl">{children}</main>
+        <ScrollArea className="h-full w-full">
+          <main className="mx-auto h-full max-w-7xl flex-1 p-2">
+            {children}
+          </main>
         </ScrollArea>
       </div>
     </div>
