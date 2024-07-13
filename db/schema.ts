@@ -64,7 +64,7 @@ export const friendships = sqliteTable("friendships", {
 });
 
 export const colleges = sqliteTable("colleges", {
-  id: text("id").primaryKey(),
+  id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull().unique(),
   stateId: integer("state_id")
     .notNull()
@@ -97,7 +97,7 @@ export const studyGroupMembers = sqliteTable("study_group_members", {
 });
 
 export const events = sqliteTable("events", {
-  id: text("id").primaryKey(),
+  id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   startTime: integer("start_time", { mode: "timestamp" }).notNull(),
   endTime: integer("end_time", { mode: "timestamp" }).notNull(),
@@ -109,7 +109,7 @@ export const events = sqliteTable("events", {
 });
 
 export const eventParticipants = sqliteTable("event_participants", {
-  id: text("id").primaryKey(),
+  id: integer("id").primaryKey({ autoIncrement: true }),
   eventId: text("event_id")
     .notNull()
     .references(() => events.id),
@@ -119,7 +119,7 @@ export const eventParticipants = sqliteTable("event_participants", {
 });
 
 export const studySessions = sqliteTable("study_sessions", {
-  id: text("id").primaryKey(),
+  id: integer("id").primaryKey({ autoIncrement: true }),
   userId: text("user_id")
     .notNull()
     .references(() => users.id),

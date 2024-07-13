@@ -1,18 +1,16 @@
-import { Button } from "./ui/button";
-
 export default function PageTitle({
   title,
-  buttonText,
+  button,
 }: {
   title: string;
-  buttonText?: string;
+  button?: React.ReactNode;
 }) {
   return (
-    <div className="flex w-full flex-row items-center justify-between px-4 py-6">
+    <div className="flex w-full flex-row items-center justify-between h-24 px-4">
       <h2 className="text-2xl font-semibold leading-none tracking-tight">
         {title}
       </h2>
-      {buttonText && <Button size={"sm"}>{buttonText}</Button>}
+      {button && button}
     </div>
   );
 }
