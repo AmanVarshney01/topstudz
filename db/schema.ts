@@ -1,4 +1,6 @@
+import { relations } from "drizzle-orm";
 import {
+  index,
   integer,
   primaryKey,
   sqliteTable,
@@ -6,17 +8,28 @@ import {
 } from "drizzle-orm/sqlite-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
-export const users = sqliteTable("user", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
-  name: text("name"),
-  email: text("email").notNull(),
-  emailVerified: integer("emailVerified", { mode: "timestamp_ms" }),
-  image: text("image"),
-  stateId: integer("state_id").references(() => states.id),
-  collegeId: text("college_id").references(() => colleges.id),
-});
+// TODO Add achievements table
+// TODO add indexes
+
+export const users = sqliteTable(
+  "user",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    name: text("name"),
+    email: text("email").notNull(),
+    emailVerified: integer("emailVerified", { mode: "timestamp_ms" }),
+    image: text("image"),
+    stateId: integer("state_id").references(() => states.id),
+    collegeId: text("college_id").references(() => colleges.id),
+  },
+  (table) => {
+    return {
+      emailIdx: index("email_idx").on(table.email),
+    };
+  },
+);
 
 export const accounts = sqliteTable(
   "account",
@@ -126,4 +139,107 @@ export const studySessions = sqliteTable("study_sessions", {
   eventId: text("event_id").references(() => events.id),
   startTime: integer("start_time", { mode: "timestamp" }).notNull(),
   endTime: integer("end_time", { mode: "timestamp" }),
+  duration: integer("duration"),
 });
+
+export const userRelations = relations(users, ({ many, one }) => ({
+  friendships: many(friendships),
+  studyGroupMembers: many(studyGroupMembers),
+  studySessions: many(studySessions),
+  events: many(events),
+  eventParticipants: many(eventParticipants),
+  state: one(states, {
+    fields: [users.stateId],
+    references: [states.id],
+  }),
+  college: one(colleges, {
+    fields: [users.collegeId],
+    references: [colleges.id],
+  }),
+}));
+
+export const friendshipsRelations = relations(friendships, ({ one }) => ({
+  user1: one(users, {
+    fields: [friendships.userId1],
+    references: [users.id],
+  }),
+  user2: one(users, {
+    fields: [friendships.userId2],
+    references: [users.id],
+  }),
+}));
+
+export const collegesRelations = relations(colleges, ({ one, many }) => ({
+  users: many(users),
+  studyGroups: many(studyGroups),
+  state: one(states, {
+    fields: [colleges.stateId],
+    references: [states.id],
+  }),
+}));
+
+export const statesRelations = relations(states, ({ one, many }) => ({
+  colleges: many(colleges),
+  users: many(users),
+}));
+
+export const studyGroupsRelations = relations(studyGroups, ({ one, many }) => ({
+  college: one(colleges, {
+    fields: [studyGroups.collegeId],
+    references: [colleges.id],
+  }),
+  members: many(studyGroupMembers),
+  events: many(events),
+}));
+
+export const studyGroupMembersRelations = relations(
+  studyGroupMembers,
+  ({ one }) => ({
+    group: one(studyGroups, {
+      fields: [studyGroupMembers.groupId],
+      references: [studyGroups.id],
+    }),
+    user: one(users, {
+      fields: [studyGroupMembers.userId],
+      references: [users.id],
+    }),
+  }),
+);
+
+export const eventsRelations = relations(events, ({ many, one }) => ({
+  creator: one(users, {
+    fields: [events.createdBy],
+    references: [users.id],
+  }),
+  group: one(studyGroups, {
+    fields: [events.groupId],
+    references: [studyGroups.id],
+  }),
+  participants: many(eventParticipants),
+  studySessions: many(studySessions),
+}));
+
+export const eventParticipantsRelations = relations(
+  eventParticipants,
+  ({ one }) => ({
+    event: one(events, {
+      fields: [eventParticipants.eventId],
+      references: [events.id],
+    }),
+    user: one(users, {
+      fields: [eventParticipants.userId],
+      references: [users.id],
+    }),
+  }),
+);
+
+export const studySessionsRelations = relations(studySessions, ({ one }) => ({
+  user: one(users, {
+    fields: [studySessions.userId],
+    references: [users.id],
+  }),
+  event: one(events, {
+    fields: [studySessions.eventId],
+    references: [events.id],
+  }),
+}));
