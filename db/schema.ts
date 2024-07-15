@@ -65,10 +65,10 @@ export const sessions = sqliteTable("session", {
 
 export const friendships = sqliteTable("friendships", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  userId1: integer("user_id1")
+  requesterId: integer("requester_id")
     .notNull()
     .references(() => users.id),
-  userId2: integer("user_id2")
+  addresseeId: integer("addressee_id")
     .notNull()
     .references(() => users.id),
   status: text("status", {
@@ -143,10 +143,15 @@ export const studySessions = sqliteTable("study_sessions", {
 });
 
 export const userRelations = relations(users, ({ many, one }) => ({
-  friendships: many(friendships),
+  friendshipsInitiated: many(friendships, {
+    relationName: "friendshipsInitiated",
+  }),
+  friendshipsReceived: many(friendships, {
+    relationName: "friendshipsReceived",
+  }),
   studyGroupMembers: many(studyGroupMembers),
   studySessions: many(studySessions),
-  events: many(events),
+  events: many(events, { relationName: "eventsCreated" }),
   eventParticipants: many(eventParticipants),
   state: one(states, {
     fields: [users.stateId],
@@ -159,13 +164,15 @@ export const userRelations = relations(users, ({ many, one }) => ({
 }));
 
 export const friendshipsRelations = relations(friendships, ({ one }) => ({
-  user1: one(users, {
-    fields: [friendships.userId1],
+  requester: one(users, {
+    fields: [friendships.requesterId],
     references: [users.id],
+    relationName: "friendshipsInitiated",
   }),
-  user2: one(users, {
-    fields: [friendships.userId2],
+  addressee: one(users, {
+    fields: [friendships.addresseeId],
     references: [users.id],
+    relationName: "friendshipsReceived",
   }),
 }));
 
@@ -210,6 +217,7 @@ export const eventsRelations = relations(events, ({ many, one }) => ({
   creator: one(users, {
     fields: [events.createdBy],
     references: [users.id],
+    relationName: "eventsCreated",
   }),
   group: one(studyGroups, {
     fields: [events.groupId],

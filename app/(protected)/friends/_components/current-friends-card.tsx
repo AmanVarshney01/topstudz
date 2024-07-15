@@ -1,15 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { db } from "@/db";
+import { getUserFriends } from "@/db/queries";
 
 export default async function CurrentFriendsCard() {
-  const users = await db.query.users.findFirst({});
+  const users = await getUserFriends(1);
+  console.log(users);
 
   return (
     <Card className="lg:col-span-2">
       <CardHeader>
         <CardTitle className="text-xl">My Friends</CardTitle>
       </CardHeader>
-      <CardContent>{users?.email}</CardContent>
+      <CardContent></CardContent>
     </Card>
   );
 }
