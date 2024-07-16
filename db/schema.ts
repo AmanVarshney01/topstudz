@@ -123,7 +123,7 @@ export const events = sqliteTable("events", {
 
 export const eventParticipants = sqliteTable("event_participants", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  eventId: text("event_id")
+  eventId: integer("event_id")
     .notNull()
     .references(() => events.id),
   userId: text("user_id")
@@ -136,7 +136,7 @@ export const studySessions = sqliteTable("study_sessions", {
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
-  eventId: text("event_id").references(() => events.id),
+  eventId: integer("event_id").references(() => events.id),
   startTime: integer("start_time", { mode: "timestamp" }).notNull(),
   endTime: integer("end_time", { mode: "timestamp" }),
   duration: integer("duration"),

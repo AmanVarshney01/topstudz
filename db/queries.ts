@@ -9,7 +9,7 @@ export const getUserByEmail = async (email: string) => {
 };
 
 export const getUserFriends = async (userId: number) => {
-  return db.query.friendships.findMany({
+  const friends = await db.query.friendships.findMany({
     where: and(
       or(
         eq(friendships.requesterId, userId),
@@ -17,9 +17,30 @@ export const getUserFriends = async (userId: number) => {
       ),
       eq(friendships.status, "accepted"),
     ),
+    columns: {
+      requesterId: true,
+    },
     with: {
-      requester: true,
-      addressee: true,
+      requester: {
+        columns: {
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
+      addressee: {
+        columns: {
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
     },
   });
+
+  return friends.map((friendship) =>
+    friendship.requesterId === userId
+      ? friendship.addressee
+      : friendship.requester,
+  );
 };
