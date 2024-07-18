@@ -1,7 +1,7 @@
 import Link from "next/link";
 import AuthButton from "./auth-button";
 import Logo from "./logo";
-import MobileSidebar from "./MobileSidebar";
+import MobileSidebar from "./mobile-sidebar";
 import ThemeToggle from "./theme-toggle";
 
 export default function Header() {

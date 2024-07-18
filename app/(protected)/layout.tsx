@@ -1,4 +1,4 @@
-import DesktopSidebar from "@/components/DesktopSidebar";
+import DesktopSidebar from "@/components/desktop-sidebar";
 import Header from "@/components/header";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
