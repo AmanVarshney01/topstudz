@@ -23,10 +23,12 @@ import { useAction } from "next-safe-action/hooks";
 import { createFriendRequest } from "@/db/actions";
 import { createFriendRequestSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = createFriendRequestSchema;
+
 export default function AddFriendDialog() {
   const { execute, isExecuting, result } = useAction(createFriendRequest);
 
@@ -74,6 +76,7 @@ export default function AddFriendDialog() {
               )}
             />
             <Button disabled={isExecuting} type="submit">
+              {isExecuting && <LoaderCircle className="animate-spin" />}
               Submit
             </Button>
           </form>

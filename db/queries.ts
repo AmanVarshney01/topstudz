@@ -1,6 +1,23 @@
+import { auth } from "@/auth";
 import { and, eq, or } from "drizzle-orm";
+import { cache } from "react";
 import { db } from ".";
 import { friendships, users } from "./schema";
+
+export const getCurrentUser = cache(async () => {
+  const session = await auth();
+
+  if (!session) {
+    throw new Error("No session found");
+  }
+
+  return {
+    id: session.user?.id,
+    email: session.user?.email,
+    name: session.user?.name,
+    image: session.user?.image,
+  };
+});
 
 export const getUserByEmail = async (email: string) => {
   return db.query.users.findFirst({

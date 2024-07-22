@@ -1,6 +1,7 @@
 import DesktopSidebar from "@/components/desktop-sidebar";
 import Header from "@/components/header";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function DashboardLayout({
   children,
@@ -18,6 +19,7 @@ export default function DashboardLayout({
           </main>
         </ScrollArea>
       </div>
+      <Toaster richColors />
     </div>
   );
 }

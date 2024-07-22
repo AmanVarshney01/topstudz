@@ -22,7 +22,8 @@ export default function NavButton({
       variant="ghost"
       className={cn(
         "justify-start",
-        path === href && "bg-accent text-accent-foreground",
+        path === href &&
+          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground",
       )}
       asChild
       onClick={onClick}
