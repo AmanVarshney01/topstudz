@@ -21,16 +21,28 @@ import { Input } from "@/components/ui/input";
 import { useAction } from "next-safe-action/hooks";
 
 import { createFriendRequest } from "@/db/actions";
-import { createFriendRequestSchema } from "@/lib/types";
+import { createFriendRequestSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = createFriendRequestSchema;
 
 export default function AddFriendDialog() {
-  const { execute, isExecuting, result } = useAction(createFriendRequest);
+  const [open, setOpen] = useState(false);
+
+  const { executeAsync, isExecuting } = useAction(createFriendRequest, {
+    onSuccess: ({ data }) => {
+      toast.success(data?.message);
+      setOpen(false);
+    },
+    onError: ({ error }) => {
+      toast.error(error.serverError);
+    },
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,13 +51,13 @@ export default function AddFriendDialog() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    execute(values);
-    console.log(result.data);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await executeAsync(values);
+    form.reset();
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Add Friend</Button>
       </DialogTrigger>

@@ -25,7 +25,28 @@ export const getUserByEmail = async (email: string) => {
   });
 };
 
-export const getUserFriends = async (userId: number) => {
+export const getUserFriendRequests = async (userId: string) => {
+  return db.query.friendships.findMany({
+    where: and(
+      eq(friendships.addresseeId, userId),
+      eq(friendships.status, "pending"),
+    ),
+    columns: {
+      id: true,
+    },
+    with: {
+      requester: {
+        columns: {
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
+    },
+  });
+};
+
+export const getUserFriends = async (userId: string) => {
   const friends = await db.query.friendships.findMany({
     where: and(
       or(

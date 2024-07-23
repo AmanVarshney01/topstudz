@@ -65,10 +65,10 @@ export const sessions = sqliteTable("session", {
 
 export const friendships = sqliteTable("friendships", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  requesterId: integer("requester_id")
+  requesterId: text("requester_id")
     .notNull()
     .references(() => users.id),
-  addresseeId: integer("addressee_id")
+  addresseeId: text("addressee_id")
     .notNull()
     .references(() => users.id),
   status: text("status", {
@@ -117,7 +117,7 @@ export const events = sqliteTable("events", {
   createdBy: text("created_by")
     .notNull()
     .references(() => users.id),
-  groupId: text("group_id").references(() => studyGroups.id),
+  groupId: integer("group_id").references(() => studyGroups.id),
   isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
 });
 
