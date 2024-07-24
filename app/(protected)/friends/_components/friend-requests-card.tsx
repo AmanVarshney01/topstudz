@@ -23,6 +23,30 @@ export default async function FriendRequestsCard() {
                 key={request.id}
                 className="flex items-center justify-between"
               >
+                x
+                <div className="flex items-center gap-2">
+                  <Avatar className="h-6 w-6">
+                    <AvatarImage src={request.requester.image!} />
+                    <AvatarFallback>
+                      {request.requester.name?.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span>{request.requester.name}</span>
+                </div>
+                <div>
+                  <Button size="sm" variant="destructive">
+                    Reject
+                  </Button>
+                  <Button size="sm">Accept</Button>
+                </div>
+              </li>
+            ))}
+            {friendRequests.map((request) => (
+              <li
+                key={request.id}
+                className="flex items-center justify-between"
+              >
+                x
                 <div className="flex items-center gap-2">
                   <Avatar className="h-6 w-6">
                     <AvatarImage src={request.requester.image!} />

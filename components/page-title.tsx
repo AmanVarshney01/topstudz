@@ -6,7 +6,7 @@ export default function PageTitle({
   button?: React.ReactNode;
 }) {
   return (
-    <div className="flex w-full flex-row items-center justify-between h-24 px-4">
+    <div className="sticky top-0 flex h-20 w-full flex-row items-center justify-between bg-background px-4">
       <h2 className="text-2xl font-semibold leading-none tracking-tight">
         {title}
       </h2>

@@ -34,7 +34,7 @@ export default async function AuthButton() {
     user && (
       <DropdownMenu>
         <DropdownMenuTrigger className="flex items-center justify-center rounded-lg border p-2">
-          <div className="flex min-w-0 max-w-48 flex-row items-center justify-between gap-2">
+          <div className="flex flex-row items-center justify-between gap-2">
             <Avatar className="h-6 w-6">
               <AvatarImage src={user.image!} />
               <AvatarFallback>
