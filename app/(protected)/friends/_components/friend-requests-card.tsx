@@ -23,7 +23,6 @@ export default async function FriendRequestsCard() {
                 key={request.id}
                 className="flex items-center justify-between"
               >
-                x
                 <div className="flex items-center gap-2">
                   <Avatar className="h-6 w-6">
                     <AvatarImage src={request.requester.image!} />
@@ -46,7 +45,6 @@ export default async function FriendRequestsCard() {
                 key={request.id}
                 className="flex items-center justify-between"
               >
-                x
                 <div className="flex items-center gap-2">
                   <Avatar className="h-6 w-6">
                     <AvatarImage src={request.requester.image!} />

@@ -6,7 +6,7 @@ import ThemeToggle from "./theme-toggle";
 
 export default function Header() {
   return (
-    <header className="flex w-full flex-row items-center justify-between border-b bg-background px-4 py-2">
+    <header className="flex w-full flex-row items-center justify-between bg-background px-4 py-2 lg:hidden">
       <div className="flex flex-row items-center justify-center gap-2">
         <MobileSidebar />
         <Link href={"/"}>
