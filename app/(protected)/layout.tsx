@@ -13,7 +13,7 @@ export default function DashboardLayout({
       <Header />
       <div className="grid overflow-hidden lg:grid-cols-[auto_1fr]">
         <DesktopSidebar />
-        <ScrollArea className="h-full w-full rounded-md border">
+        <ScrollArea className="min-h-[calc(100svh-20px)] w-full rounded-md border">
           <main className="mx-auto h-full max-w-7xl flex-1 p-2">
             {children}
           </main>
