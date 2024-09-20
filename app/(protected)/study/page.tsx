@@ -1,30 +1,30 @@
 "use client"
-import PageTitle from "@/components/page-title";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState } from "react";
+import PageTitle from "@/components/page-title"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useState } from "react"
 
 export default function StudyPage() {
-  const [studyTime, setStudyTime] = useState(0);
-  const [isStudying, setIsStudying] = useState(false);
+  const [studyTime, setStudyTime] = useState(0)
+  const [isStudying, setIsStudying] = useState(false)
 
   const startStopStudy = () => {
     if (isStudying) {
-      setIsStudying(false);
+      setIsStudying(false)
     } else {
-      setIsStudying(true);
+      setIsStudying(true)
       const interval = setInterval(() => {
-        setStudyTime((prevTime) => prevTime + 1);
-      }, 1000);
-      return () => clearInterval(interval);
+        setStudyTime((prevTime) => prevTime + 1)
+      }, 1000)
+      return () => clearInterval(interval)
     }
-  };
+  }
 
   const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-  };
+    const minutes = Math.floor(time / 60)
+    const seconds = time % 60
+    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+  }
   return (
     <section>
       <PageTitle title="Study" />
@@ -40,5 +40,5 @@ export default function StudyPage() {
         </CardContent>
       </Card>
     </section>
-  );
+  )
 }

@@ -1,21 +1,21 @@
-import { auth, signIn } from "@/auth";
-import Logo from "@/components/logo";
-import { Button } from "@/components/ui/button";
+import { auth, signIn } from "@/auth"
+import Logo from "@/components/logo"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardDescription,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
-import githubLogo from "@/public/github-mark.svg";
-import Image from "next/image";
-import { redirect } from "next/navigation";
+} from "@/components/ui/card"
+import githubLogo from "@/public/github-mark.svg"
+import Image from "next/image"
+import { redirect } from "next/navigation"
 
 export default async function Login() {
-  const session = await auth();
+  const session = await auth()
 
   if (session) {
-    redirect("/dashboard");
+    redirect("/dashboard")
   }
 
   return (
@@ -32,8 +32,8 @@ export default async function Login() {
           <form
             className="w-full"
             action={async () => {
-              "use server";
-              await signIn("github", { redirectTo: "/dashboard" });
+              "use server"
+              await signIn("github", { redirectTo: "/dashboard" })
             }}
           >
             <Button className="w-full" type="submit">
@@ -50,5 +50,5 @@ export default async function Login() {
         </CardFooter>
       </Card>
     </div>
-  );
+  )
 }

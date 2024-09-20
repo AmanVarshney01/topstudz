@@ -1,20 +1,20 @@
-"use client";
+"use client"
 
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Button } from "./ui/button";
+import { cn } from "@/lib/utils"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { Button } from "./ui/button"
 
 export default function NavButton({
   href,
   name,
   onClick,
 }: {
-  href: string;
-  name: string;
-  onClick?: () => void;
+  href: string
+  name: string
+  onClick?: () => void
 }) {
-  const path = usePathname();
+  const path = usePathname()
 
   return (
     <Button
@@ -30,5 +30,5 @@ export default function NavButton({
     >
       <Link href={href}>{name}</Link>
     </Button>
-  );
+  )
 }

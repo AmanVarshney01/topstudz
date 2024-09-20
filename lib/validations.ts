@@ -1,8 +1,8 @@
-import { z } from "zod";
+import { z } from "zod"
 
 export const createFriendRequestSchema = z.object({
   email: z.string().email(),
-});
+})
 
 // export const friendshipSchema = z.object({
 //   id: z.number(),

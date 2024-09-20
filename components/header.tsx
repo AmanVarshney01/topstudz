@@ -1,8 +1,8 @@
-import Link from "next/link";
-import AuthButton from "./auth-button";
-import Logo from "./logo";
-import MobileSidebar from "./mobile-sidebar";
-import ThemeToggle from "./theme-toggle";
+import Link from "next/link"
+import AuthButton from "./auth-button"
+import Logo from "./logo"
+import MobileSidebar from "./mobile-sidebar"
+import ThemeToggle from "./theme-toggle"
 
 export default function Header() {
   return (
@@ -18,5 +18,5 @@ export default function Header() {
         <AuthButton />
       </nav>
     </header>
-  );
+  )
 }

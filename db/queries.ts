@@ -1,14 +1,14 @@
-import { auth } from "@/auth";
-import { and, eq, or } from "drizzle-orm";
-import { cache } from "react";
-import { db } from ".";
-import { friendships, users } from "./schema";
+import { auth } from "@/auth"
+import { and, eq, or } from "drizzle-orm"
+import { cache } from "react"
+import { db } from "."
+import { friendships, users } from "./schema"
 
 export const getCurrentUser = cache(async () => {
-  const session = await auth();
+  const session = await auth()
 
   if (!session) {
-    throw new Error("No session found");
+    throw new Error("No session found")
   }
 
   return {
@@ -16,14 +16,14 @@ export const getCurrentUser = cache(async () => {
     email: session.user?.email,
     name: session.user?.name,
     image: session.user?.image,
-  };
-});
+  }
+})
 
 export const getUserByEmail = async (email: string) => {
   return db.query.users.findFirst({
     where: eq(users.email, email),
-  });
-};
+  })
+}
 
 export const getUserFriendRequests = async (userId: string) => {
   return db.query.friendships.findMany({
@@ -43,8 +43,8 @@ export const getUserFriendRequests = async (userId: string) => {
         },
       },
     },
-  });
-};
+  })
+}
 
 export const getUserFriends = async (userId: string) => {
   const friends = await db.query.friendships.findMany({
@@ -74,11 +74,11 @@ export const getUserFriends = async (userId: string) => {
         },
       },
     },
-  });
+  })
 
   return friends.map((friendship) =>
     friendship.requesterId === userId
       ? friendship.addressee
       : friendship.requester,
-  );
-};
+  )
+}

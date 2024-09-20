@@ -1,12 +1,12 @@
-import { relations } from "drizzle-orm";
+import { relations } from "drizzle-orm"
 import {
   index,
   integer,
   primaryKey,
   sqliteTable,
   text,
-} from "drizzle-orm/sqlite-core";
-import type { AdapterAccountType } from "next-auth/adapters";
+} from "drizzle-orm/sqlite-core"
+import type { AdapterAccountType } from "next-auth/adapters"
 
 // TODO Add achievements table
 // TODO add indexes
@@ -27,9 +27,9 @@ export const users = sqliteTable(
   (table) => {
     return {
       emailIdx: index("email_idx").on(table.email),
-    };
+    }
   },
-);
+)
 
 export const accounts = sqliteTable(
   "account",
@@ -53,7 +53,7 @@ export const accounts = sqliteTable(
       columns: [account.provider, account.providerAccountId],
     }),
   }),
-);
+)
 
 export const sessions = sqliteTable("session", {
   sessionToken: text("sessionToken").primaryKey(),
@@ -61,7 +61,7 @@ export const sessions = sqliteTable("session", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   expires: integer("expires", { mode: "timestamp_ms" }).notNull(),
-});
+})
 
 export const friendships = sqliteTable("friendships", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -74,7 +74,7 @@ export const friendships = sqliteTable("friendships", {
   status: text("status", {
     enum: ["pending", "accepted", "rejected"],
   }).notNull(),
-});
+})
 
 export const colleges = sqliteTable("colleges", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -82,12 +82,12 @@ export const colleges = sqliteTable("colleges", {
   stateId: integer("state_id")
     .notNull()
     .references(() => states.id),
-});
+})
 
 export const states = sqliteTable("states", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
-});
+})
 
 export const studyGroups = sqliteTable("study_groups", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -96,7 +96,7 @@ export const studyGroups = sqliteTable("study_groups", {
   collegeId: text("college_id")
     .notNull()
     .references(() => colleges.id),
-});
+})
 
 export const studyGroupMembers = sqliteTable("study_group_members", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -107,7 +107,7 @@ export const studyGroupMembers = sqliteTable("study_group_members", {
     .notNull()
     .references(() => users.id),
   role: text("role", { enum: ["admin", "member"] }).notNull(),
-});
+})
 
 export const events = sqliteTable("events", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -119,7 +119,7 @@ export const events = sqliteTable("events", {
     .references(() => users.id),
   groupId: integer("group_id").references(() => studyGroups.id),
   isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
-});
+})
 
 export const eventParticipants = sqliteTable("event_participants", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -129,7 +129,7 @@ export const eventParticipants = sqliteTable("event_participants", {
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
-});
+})
 
 export const studySessions = sqliteTable("study_sessions", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -140,7 +140,7 @@ export const studySessions = sqliteTable("study_sessions", {
   startTime: integer("start_time", { mode: "timestamp" }).notNull(),
   endTime: integer("end_time", { mode: "timestamp" }),
   duration: integer("duration"),
-});
+})
 
 export const userRelations = relations(users, ({ many, one }) => ({
   friendshipsInitiated: many(friendships, {
@@ -161,7 +161,7 @@ export const userRelations = relations(users, ({ many, one }) => ({
     fields: [users.collegeId],
     references: [colleges.id],
   }),
-}));
+}))
 
 export const friendshipsRelations = relations(friendships, ({ one }) => ({
   requester: one(users, {
@@ -174,7 +174,7 @@ export const friendshipsRelations = relations(friendships, ({ one }) => ({
     references: [users.id],
     relationName: "friendshipsReceived",
   }),
-}));
+}))
 
 export const collegesRelations = relations(colleges, ({ one, many }) => ({
   users: many(users),
@@ -183,12 +183,12 @@ export const collegesRelations = relations(colleges, ({ one, many }) => ({
     fields: [colleges.stateId],
     references: [states.id],
   }),
-}));
+}))
 
 export const statesRelations = relations(states, ({ one, many }) => ({
   colleges: many(colleges),
   users: many(users),
-}));
+}))
 
 export const studyGroupsRelations = relations(studyGroups, ({ one, many }) => ({
   college: one(colleges, {
@@ -197,7 +197,7 @@ export const studyGroupsRelations = relations(studyGroups, ({ one, many }) => ({
   }),
   members: many(studyGroupMembers),
   events: many(events),
-}));
+}))
 
 export const studyGroupMembersRelations = relations(
   studyGroupMembers,
@@ -211,7 +211,7 @@ export const studyGroupMembersRelations = relations(
       references: [users.id],
     }),
   }),
-);
+)
 
 export const eventsRelations = relations(events, ({ many, one }) => ({
   creator: one(users, {
@@ -225,7 +225,7 @@ export const eventsRelations = relations(events, ({ many, one }) => ({
   }),
   participants: many(eventParticipants),
   studySessions: many(studySessions),
-}));
+}))
 
 export const eventParticipantsRelations = relations(
   eventParticipants,
@@ -239,7 +239,7 @@ export const eventParticipantsRelations = relations(
       references: [users.id],
     }),
   }),
-);
+)
 
 export const studySessionsRelations = relations(studySessions, ({ one }) => ({
   user: one(users, {
@@ -250,4 +250,4 @@ export const studySessionsRelations = relations(studySessions, ({ one }) => ({
     fields: [studySessions.eventId],
     references: [events.id],
   }),
-}));
+}))

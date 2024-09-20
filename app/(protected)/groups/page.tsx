@@ -1,27 +1,27 @@
-"use client";
-import PageTitle from "@/components/page-title";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+"use client"
+import PageTitle from "@/components/page-title"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Clock, Plus, Search } from "lucide-react";
-import { useState } from "react";
+} from "@/components/ui/select"
+import { Clock, Plus, Search } from "lucide-react"
+import { useState } from "react"
 
 export default function GroupsPage() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("")
   const groups = [
     {
       name: "Math Wizards",
@@ -47,7 +47,7 @@ export default function GroupsPage() {
       course: "English Literature",
       nextSession: "Saturday, 11:00 AM",
     },
-  ];
+  ]
   const upcomingSessions = [
     { group: "Math Wizards", topic: "Calculus Review", time: "Today, 3:00 PM" },
     {
@@ -60,13 +60,13 @@ export default function GroupsPage() {
       topic: "Quantum Mechanics",
       time: "Friday, 2:00 PM",
     },
-  ];
+  ]
 
   const suggestedGroups = [
     { name: "Chemistry Lab", members: 7, course: "Chemistry" },
     { name: "History Buffs", members: 5, course: "History" },
     { name: "Language Exchange", members: 10, course: "Foreign Languages" },
-  ];
+  ]
   return (
     <section>
       <PageTitle title="Groups Page" />
@@ -189,5 +189,5 @@ export default function GroupsPage() {
         </Card>
       </div>
     </section>
-  );
+  )
 }

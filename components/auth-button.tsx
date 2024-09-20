@@ -1,34 +1,34 @@
-import { signOut } from "@/auth";
-import { getCurrentUser } from "@/db/queries";
-import { ChevronDownIcon } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
+import { signOut } from "@/auth"
+import { getCurrentUser } from "@/db/queries"
+import { ChevronDownIcon } from "lucide-react"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { Button } from "./ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "./ui/dropdown-menu"
 
 function SignOutButton() {
   return (
     <form
       className="w-full"
       action={async () => {
-        "use server";
-        await signOut({ redirectTo: "/login" });
+        "use server"
+        await signOut({ redirectTo: "/login" })
       }}
     >
       <Button size={"sm"} className="w-full" variant={"destructive"}>
         Sign Out
       </Button>
     </form>
-  );
+  )
 }
 
 export default async function AuthButton() {
-  const user = await getCurrentUser();
+  const user = await getCurrentUser()
 
   return (
     user && (
@@ -58,5 +58,5 @@ export default async function AuthButton() {
         </DropdownMenuContent>
       </DropdownMenu>
     )
-  );
+  )
 }

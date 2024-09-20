@@ -1,12 +1,12 @@
-import PageTitle from "@/components/page-title";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import PageTitle from "@/components/page-title"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 import {
   Table,
   TableBody,
@@ -14,7 +14,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"
 
 export default function LeaderboardsPage() {
   const overallLeaders = [
@@ -48,7 +48,7 @@ export default function LeaderboardsPage() {
       score: 9510,
       avatar: "/placeholder.svg?height=32&width=32",
     },
-  ];
+  ]
 
   const courseLeaders = {
     all: [
@@ -111,7 +111,7 @@ export default function LeaderboardsPage() {
         avatar: "/placeholder.svg?height=32&width=32",
       },
     ],
-  };
+  }
 
   const studyTimeLeaders = [
     {
@@ -132,7 +132,7 @@ export default function LeaderboardsPage() {
       hours: 110,
       avatar: "/placeholder.svg?height=32&width=32",
     },
-  ];
+  ]
 
   const achievementLeaders = [
     {
@@ -153,14 +153,14 @@ export default function LeaderboardsPage() {
       achievements: 22,
       avatar: "/placeholder.svg?height=32&width=32",
     },
-  ];
+  ]
 
   const personalRanking = {
     overall: 42,
     course: 15,
     studyTime: 28,
     achievements: 37,
-  };
+  }
   return (
     <section>
       <PageTitle title="Leaderboards" />
@@ -201,5 +201,5 @@ export default function LeaderboardsPage() {
         </CardContent>
       </Card>
     </section>
-  );
+  )
 }

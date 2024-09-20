@@ -2,8 +2,8 @@ export default function PageTitle({
   title,
   button,
 }: {
-  title: string;
-  button?: React.ReactNode;
+  title: string
+  button?: React.ReactNode
 }) {
   return (
     <div className="flex h-20 w-full flex-row items-center justify-between bg-background px-4">
@@ -12,5 +12,5 @@ export default function PageTitle({
       </h2>
       {button && button}
     </div>
-  );
+  )
 }

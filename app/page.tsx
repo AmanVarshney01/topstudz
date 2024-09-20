@@ -1,5 +1,5 @@
-import GoToActionButton from "@/components/go-to-action-button";
-import Logo from "@/components/logo";
+import GoToActionButton from "@/components/go-to-action-button"
+import Logo from "@/components/logo"
 
 function Header() {
   return (
@@ -9,7 +9,7 @@ function Header() {
       </nav>
       <GoToActionButton />
     </header>
-  );
+  )
 }
 
 export default async function Home() {
@@ -20,5 +20,5 @@ export default async function Home() {
         <h1>Welcome to TopStudz</h1>
       </main>
     </div>
-  );
+  )
 }

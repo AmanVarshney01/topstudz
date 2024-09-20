@@ -1,9 +1,9 @@
-import Link from "next/link";
-import AuthButton from "./auth-button";
-import Logo from "./logo";
-import NavButton from "./nav-button";
-import ThemeToggle from "./theme-toggle";
-import { ScrollArea } from "./ui/scroll-area";
+import Link from "next/link"
+import AuthButton from "./auth-button"
+import Logo from "./logo"
+import NavButton from "./nav-button"
+import ThemeToggle from "./theme-toggle"
+import { ScrollArea } from "./ui/scroll-area"
 
 export default function DesktopSidebar() {
   return (
@@ -25,5 +25,5 @@ export default function DesktopSidebar() {
         <AuthButton />
       </div>
     </div>
-  );
+  )
 }

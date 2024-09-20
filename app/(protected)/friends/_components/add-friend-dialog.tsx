@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 import {
   Form,
   FormControl,
@@ -16,44 +16,44 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useAction } from "next-safe-action/hooks";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { useAction } from "next-safe-action/hooks"
 
-import { createFriendRequest } from "@/db/actions";
-import { createFriendRequestSchema } from "@/lib/validations";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderCircle } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
+import { createFriendRequest } from "@/db/actions"
+import { createFriendRequestSchema } from "@/lib/validations"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { LoaderCircle } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import { z } from "zod"
 
-const formSchema = createFriendRequestSchema;
+const formSchema = createFriendRequestSchema
 
 export default function AddFriendDialog() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   const { executeAsync, isExecuting } = useAction(createFriendRequest, {
     onSuccess: ({ data }) => {
-      toast.success(data?.message);
-      setOpen(false);
+      toast.success(data?.message)
+      setOpen(false)
     },
     onError: ({ error }) => {
-      toast.error(error.serverError);
+      toast.error(error.serverError)
     },
-  });
+  })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
     },
-  });
+  })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await executeAsync(values);
-    form.reset();
+    await executeAsync(values)
+    form.reset()
   }
 
   return (
@@ -95,5 +95,5 @@ export default function AddFriendDialog() {
         </Form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

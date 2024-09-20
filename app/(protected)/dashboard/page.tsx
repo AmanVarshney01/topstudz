@@ -1,12 +1,12 @@
-import PageTitle from "@/components/page-title";
+import PageTitle from "@/components/page-title"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { BookOpen, Calendar, Clock } from "lucide-react";
+} from "@/components/ui/card"
+import { BookOpen, Calendar, Clock } from "lucide-react"
 
 export default function DashboardPage() {
   return (
@@ -117,5 +117,5 @@ export default function DashboardPage() {
         </Card>
       </div>
     </section>
-  );
+  )
 }

@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import { Menu } from "lucide-react";
-import { useState } from "react";
-import Logo from "./logo";
-import NavButton from "./nav-button";
-import { Button } from "./ui/button";
+import { Menu } from "lucide-react"
+import { useState } from "react"
+import Logo from "./logo"
+import NavButton from "./nav-button"
+import { Button } from "./ui/button"
 import {
   Sheet,
   SheetContent,
@@ -12,10 +12,10 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./ui/sheet";
+} from "./ui/sheet"
 
 export default function MobileSidebar() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -60,5 +60,5 @@ export default function MobileSidebar() {
         </nav>
       </SheetContent>
     </Sheet>
-  );
+  )
 }

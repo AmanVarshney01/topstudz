@@ -2,7 +2,8 @@
 
 Student study management app
 
-## Tech Stack 
+## Tech Stack
+
 - Next.js
 - TailwindCSS
 - Shadcn

@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCurrentUser, getUserFriendRequests } from "@/db/queries";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { getCurrentUser, getUserFriendRequests } from "@/db/queries"
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 
 export default async function FriendRequestsCard() {
-  const user = await getCurrentUser();
+  const user = await getCurrentUser()
 
-  const friendRequests = await getUserFriendRequests(user.id!);
+  const friendRequests = await getUserFriendRequests(user.id!)
 
   return (
     <Card className="">
@@ -44,5 +44,5 @@ export default async function FriendRequestsCard() {
         )}
       </CardContent>
     </Card>
-  );
+  )
 }

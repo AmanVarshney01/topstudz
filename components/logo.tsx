@@ -5,5 +5,5 @@ export default function Logo() {
         Top<span className="text-blue-600">Studz</span>
       </h1>
     </div>
-  );
+  )
 }

@@ -1,12 +1,12 @@
-import DesktopSidebar from "@/components/desktop-sidebar";
-import Header from "@/components/header";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Toaster } from "@/components/ui/sonner";
+import DesktopSidebar from "@/components/desktop-sidebar"
+import Header from "@/components/header"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Toaster } from "@/components/ui/sonner"
 
 export default function DashboardLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr] p-2">
@@ -21,5 +21,5 @@ export default function DashboardLayout({
       </div>
       <Toaster richColors />
     </div>
-  );
+  )
 }

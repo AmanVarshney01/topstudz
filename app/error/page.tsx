@@ -1,19 +1,19 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import Link from "next/link";
+} from "@/components/ui/card"
+import Link from "next/link"
 
 export default function ErrorPage({
   searchParams,
 }: {
-  searchParams: { error: string };
+  searchParams: { error: string }
 }) {
-  const error = searchParams.error;
+  const error = searchParams.error
 
   return (
     <div className="flex min-h-dvh items-center justify-center">
@@ -29,5 +29,5 @@ export default function ErrorPage({
         </CardFooter>
       </Card>
     </div>
-  );
+  )
 }

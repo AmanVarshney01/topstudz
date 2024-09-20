@@ -1,5 +1,5 @@
-import type { Config } from "tailwindcss";
-const { fontFamily } = require("tailwindcss/defaultTheme");
+import type { Config } from "tailwindcss"
+const { fontFamily } = require("tailwindcss/defaultTheme")
 
 const config = {
   darkMode: ["class"],
@@ -64,6 +64,6 @@ const config = {
       },
     },
   },
-} satisfies Config;
+} satisfies Config
 
-export default config;
+export default config

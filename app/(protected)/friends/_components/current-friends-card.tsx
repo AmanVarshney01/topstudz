@@ -1,13 +1,13 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Search } from "lucide-react";
-import { useState } from "react";
+"use client"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
+import { Search } from "lucide-react"
+import { useState } from "react"
 
 export default function CurrentFriendsCard() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("")
   // const friends = await getUserFriends()
 
   const friends = [
@@ -31,7 +31,7 @@ export default function CurrentFriendsCard() {
       avatar: "/placeholder.svg?height=40&width=40",
       status: "In a study group",
     },
-  ];
+  ]
   return (
     <Card>
       <CardHeader>
@@ -71,5 +71,5 @@ export default function CurrentFriendsCard() {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }
