@@ -1,6 +1,6 @@
 import PageTitle from "@/components/page-title"
-import { StudyPerformanceChart } from "./_components/study-performace-chart"
-import { StudyProgressChart } from "./_components/study-progress-chart"
+import { StudentPerformanceChart } from "./_components/student-performace-chart"
+import { StudentProgressChart } from "./_components/student-progress-chart"
 import {
   Card,
   CardContent,
@@ -21,9 +21,6 @@ export default async function DashboardPage() {
       <PageTitle title="Dashboard" />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
-          {/* <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Name</CardTitle>
-          </CardHeader> */}
           <CardContent className="gap-4 p-6">
             <Avatar className="mb-2 h-20 w-20">
               <AvatarImage src={currentUser.image!} />
@@ -100,8 +97,8 @@ export default async function DashboardPage() {
             </div>
           </CardContent>
         </Card> */}
-        <StudyPerformanceChart />
-        <StudyProgressChart />
+        <StudentPerformanceChart />
+        <StudentProgressChart />
         {/* <Card className="col-span-3">
           <CardHeader>
             <CardTitle>Study Progress</CardTitle>

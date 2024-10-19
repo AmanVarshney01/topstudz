@@ -18,29 +18,29 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-export const description = "A bar chart with a label"
+export const description = "A bar chart showing student progress"
 
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
+  { month: "January", progress: 65 },
+  { month: "February", progress: 80 },
+  { month: "March", progress: 72 },
+  { month: "April", progress: 50 },
+  { month: "May", progress: 85 },
+  { month: "June", progress: 90 },
 ]
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  progress: {
+    label: "Progress",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig
 
-export function StudyProgressChart() {
+export function StudentProgressChart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bar Chart - Label</CardTitle>
+        <CardTitle>Student Progress Chart</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
@@ -64,7 +64,7 @@ export function StudyProgressChart() {
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+            <Bar dataKey="progress" fill="var(--color-progress)" radius={8}>
               <LabelList
                 position="top"
                 offset={12}
@@ -77,10 +77,10 @@ export function StudyProgressChart() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Trending up by 10% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Showing total progress made by students in the last 6 months
         </div>
       </CardFooter>
     </Card>

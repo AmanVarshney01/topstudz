@@ -1,8 +1,6 @@
 "use client"
-
 import { TrendingUp } from "lucide-react"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
-
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 import {
   Card,
   CardContent,
@@ -18,30 +16,31 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-export const description = "A line chart"
+export const description =
+  "A line chart showing student performance over a semester"
 
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
+  { month: "January", avgScore: 72 },
+  { month: "February", avgScore: 78 },
+  { month: "March", avgScore: 75 },
+  { month: "April", avgScore: 82 },
+  { month: "May", avgScore: 85 },
+  { month: "June", avgScore: 88 },
 ]
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  avgScore: {
+    label: "Average Score",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig
 
-export function StudyPerformanceChart() {
+export function StudentPerformanceChart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Line Chart</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Student Performance Chart</CardTitle>
+        <CardDescription>January - June 2024 Semester</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -51,6 +50,8 @@ export function StudyPerformanceChart() {
             margin={{
               left: 12,
               right: 12,
+              top: 12,
+              bottom: 12,
             }}
           >
             <CartesianGrid vertical={false} />
@@ -61,26 +62,30 @@ export function StudyPerformanceChart() {
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              domain={[60, 100]}
+              ticks={[60, 70, 80, 90, 100]}
             />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Line
-              dataKey="desktop"
-              type="natural"
-              stroke="var(--color-desktop)"
+              dataKey="avgScore"
+              type="monotone"
+              stroke="var(--color-avgScore)"
               strokeWidth={2}
-              dot={false}
+              dot={true}
             />
           </LineChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Trending up by 3.5% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Showing average student scores for the last 6 months
         </div>
       </CardFooter>
     </Card>
