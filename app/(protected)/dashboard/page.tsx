@@ -1,4 +1,6 @@
 import PageTitle from "@/components/page-title"
+import { StudyPerformanceChart } from "./_components/study-performace-chart"
+import { StudyProgressChart } from "./_components/study-progress-chart"
 import {
   Card,
   CardContent,
@@ -7,12 +9,32 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { BookOpen, Calendar, Clock } from "lucide-react"
+import { getCurrentUser } from "@/db/queries"
+import Image from "next/image"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const currentUser = await getCurrentUser()
+
   return (
     <section>
       <PageTitle title="Dashboard" />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          {/* <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Name</CardTitle>
+          </CardHeader> */}
+          <CardContent className="gap-4 p-6">
+            <Avatar className="mb-2 h-20 w-20">
+              <AvatarImage src={currentUser.image!} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <div className="text-2xl font-bold">{currentUser.name}</div>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {currentUser.email}
+            </p>
+          </CardContent>
+        </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -53,21 +75,9 @@ export default function DashboardPage() {
             </p>
           </CardContent>
         </Card>
-        {/* <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Overall Progress
-            </CardTitle>
-            <LayoutDashboard className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">68%</div>
-            <Progress value={68} className="mt-2" />
-          </CardContent>
-        </Card> */}
       </div>
-      <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
+      <div className="mt-4 grid grid-cols-2 gap-4">
+        {/* <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Upcoming Assignments</CardTitle>
           </CardHeader>
@@ -89,8 +99,10 @@ export default function DashboardPage() {
               ))}
             </div>
           </CardContent>
-        </Card>
-        <Card className="col-span-3">
+        </Card> */}
+        <StudyPerformanceChart />
+        <StudyProgressChart />
+        {/* <Card className="col-span-3">
           <CardHeader>
             <CardTitle>Study Progress</CardTitle>
             <CardDescription>
@@ -108,13 +120,12 @@ export default function DashboardPage() {
                         {65 + index * 5}%
                       </span>
                     </div>
-                    {/* <Progress value={65 + index * 5} /> */}
                   </div>
                 ),
               )}
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </section>
   )
