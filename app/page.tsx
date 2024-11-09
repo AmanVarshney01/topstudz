@@ -1,12 +1,13 @@
 import GoToActionButton from "@/components/go-to-action-button"
 import Logo from "@/components/logo"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import MainPage from "@/public/main.png"
 
 function Header() {
   return (
-    <header className="flex w-full flex-row items-center justify-between p-4">
-      <nav>
+    <header className="sticky top-0 z-50 flex w-full flex-row items-center justify-between bg-background/80 p-4 backdrop-blur-sm transition-all duration-200 ease-in-out">
+      <nav className="transition-opacity duration-200 hover:opacity-80">
         <Logo />
       </nav>
       <GoToActionButton />
@@ -18,9 +19,6 @@ export default async function Home() {
   return (
     <div className="mx-auto flex max-w-7xl flex-col">
       <Header />
-      {/* <main>
-        <h1>Welcome to TopStudz</h1>
-      </main> */}
       <LandingPage />
     </div>
   )
@@ -32,100 +30,150 @@ import Image from "next/image"
 const LandingPage = () => {
   return (
     <div className="min-h-screen">
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-6 py-16">
         {/* Hero Section */}
-        <div className="flex flex-col items-center rounded-2xl bg-indigo-900 p-8 md:flex-row md:p-12">
-          <div className="mb-8 w-full md:mb-0 md:w-1/2 md:pr-8">
-            <h1 className="mb-4 text-4xl font-bold leading-tight md:text-5xl">
-              Competitive Studying with TopStudz
-            </h1>
-            <p className="mb-6 text-indigo-200">
-              Motivate yourself to study more by turning learning into a fun,
-              competitive activity. Track your progress, compete with friends,
-              and achieve your academic goals!
-            </p>
-            <div className="mb-8 space-x-4">
-              <Button className="rounded-full bg-blue-500 px-6 py-3 transition hover:bg-blue-600">
-                Get Started
-              </Button>
-              <Button className="rounded-full px-6 py-3">Learn More</Button>
+        <Card className="relative overflow-hidden bg-gradient-to-br from-violet-950 to-violet-900 p-12 shadow-2xl dark:from-violet-900 dark:to-violet-800 md:p-16">
+          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+          <div className="relative flex flex-col items-center md:flex-row">
+            <div className="mb-12 w-full md:mb-0 md:w-1/2 md:pr-12">
+              {/* <span className="mb-4 inline-block rounded-full bg-violet-800/60 px-4 py-2 text-sm font-medium text-violet-200">
+                New: Weekly Study Challenges 🚀
+              </span> */}
+              <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight text-white md:text-6xl">
+                Competitive Studying with TopStudz
+              </h1>
+              <p className="mb-8 text-lg leading-relaxed text-violet-100">
+                Motivate yourself to study more by turning learning into a fun,
+                competitive activity. Track your progress, compete with friends,
+                and achieve your academic goals!
+              </p>
+              <div className="mb-10 space-x-6">
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="rounded-full bg-white px-8 text-violet-900 hover:bg-violet-100"
+                >
+                  Get Started
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="rounded-full text-white hover:bg-violet-800/30"
+                >
+                  Learn More
+                </Button>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Users className="h-6 w-6 text-emerald-300" />
+                <span className="text-lg font-medium text-violet-100">
+                  Join thousands of motivated students
+                </span>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <Users className="text-blue-400" />
-              <span className="text-lg">
-                Join thousands of motivated students
-              </span>
+            <div className="w-full transform transition-transform duration-500 hover:scale-105 md:w-1/2">
+              <Image
+                src={MainPage}
+                alt="main page"
+                className="rounded-2xl shadow-2xl hover:shadow-violet-500/50"
+                priority
+              />
             </div>
           </div>
-          <div className="w-full md:w-1/2">
-            <Image src={MainPage} alt="main page" />
-          </div>
-        </div>
+        </Card>
 
-        <section className="mt-16">
-          <h2 className="mb-8 text-center text-3xl font-bold">Key Features</h2>
+        <section className="mt-24">
+          <h2 className="mb-12 text-center text-4xl font-bold tracking-tight dark:text-white">
+            Key Features
+          </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             {[
               {
-                icon: <Timer className="h-12 w-12 text-indigo-600" />,
+                icon: (
+                  <Timer className="h-12 w-12 text-emerald-600 dark:text-emerald-500" />
+                ),
                 title: "Study Tracking",
                 description:
                   "Log your study sessions with subject-specific timers.",
               },
               {
-                icon: <Trophy className="h-12 w-12 text-indigo-600" />,
+                icon: (
+                  <Trophy className="h-12 w-12 text-emerald-600 dark:text-emerald-500" />
+                ),
                 title: "Leaderboards",
                 description:
                   "Compete with friends, college peers, and city-wide rankings.",
               },
               {
-                icon: <Star className="h-12 w-12 text-indigo-600" />,
+                icon: (
+                  <Star className="h-12 w-12 text-emerald-600 dark:text-emerald-500" />
+                ),
                 title: "Achievements",
                 description:
                   "Earn badges and rewards for your study milestones.",
               },
               {
-                icon: <Users className="h-12 w-12 text-indigo-600" />,
+                icon: (
+                  <Users className="h-12 w-12 text-emerald-600 dark:text-emerald-500" />
+                ),
                 title: "Friend Management",
                 description:
                   "Add friends and create study groups for collaborative learning.",
               },
               {
-                icon: <BookOpen className="h-12 w-12 text-indigo-600" />,
+                icon: (
+                  <BookOpen className="h-12 w-12 text-emerald-600 dark:text-emerald-500" />
+                ),
                 title: "Weekly Challenges",
                 description:
                   "Participate in study challenges for extra points and motivation.",
               },
               {
-                icon: <Video className="h-12 w-12 text-indigo-600" />,
+                icon: (
+                  <Video className="h-12 w-12 text-emerald-600 dark:text-emerald-500" />
+                ),
                 title: "Analytics & Insights",
                 description:
                   "Visualize your study habits and track progress over time.",
               },
             ].map((feature, index) => (
-              <div key={index} className="rounded-xl p-6 shadow-md">
-                {feature.icon}
-                <h3 className="mb-2 mt-4 text-xl font-semibold">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </div>
+              <Card
+                key={index}
+                className="group transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              >
+                <CardContent className="p-8">
+                  <div className="mb-6 transform transition-transform duration-300 group-hover:scale-110">
+                    {feature.icon}
+                  </div>
+                  <h3 className="mb-3 text-2xl font-semibold tracking-tight dark:text-white">
+                    {feature.title}
+                  </h3>
+                  <p className="leading-relaxed text-gray-600 dark:text-gray-300">
+                    {feature.description}
+                  </p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </section>
 
         {/* Call to Action */}
-        <section className="mt-16 text-center">
-          <h2 className="mb-4 text-3xl font-bold">
-            Ready to Boost Your Study Habits?
-          </h2>
-          <p className="mb-8 text-xl">
-            Join TopStudz today and transform the way you learn!
-          </p>
-          <Button className="rounded-full bg-indigo-600 px-8 py-3 text-lg transition hover:bg-indigo-700">
-            Sign Up Now
-          </Button>
-        </section>
+        <Card className="relative mt-24 overflow-hidden bg-gradient-to-r from-violet-700 to-violet-600 p-16 text-center text-white shadow-2xl dark:from-violet-800 dark:to-violet-700">
+          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+          <div className="relative">
+            <h2 className="mb-6 text-4xl font-bold tracking-tight">
+              Ready to Boost Your Study Habits?
+            </h2>
+            <p className="mb-10 text-2xl font-light text-violet-100">
+              Join TopStudz today and transform the way you learn!
+            </p>
+            <Button
+              size="lg"
+              className="rounded-full bg-white px-10 text-violet-700 hover:bg-violet-100"
+            >
+              Sign Up Now
+            </Button>
+          </div>
+        </Card>
       </main>
     </div>
   )

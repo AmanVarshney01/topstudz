@@ -38,7 +38,7 @@ export default async function Login() {
           >
             <Button className="w-full" type="submit">
               <Image
-                className="mr-2 invert"
+                className="mr-2 invert dark:invert-0"
                 src={githubLogo}
                 alt="Github Logo"
                 width={20}
