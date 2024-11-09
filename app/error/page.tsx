@@ -8,11 +8,10 @@ import {
 } from "@/components/ui/card"
 import Link from "next/link"
 
-export default function ErrorPage({
-  searchParams,
-}: {
-  searchParams: { error: string }
+export default async function ErrorPage(props: {
+  searchParams: Promise<{ error: string }>
 }) {
+  const searchParams = await props.searchParams
   const error = searchParams.error
 
   return (
