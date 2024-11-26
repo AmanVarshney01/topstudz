@@ -18,19 +18,15 @@ export default async function Home() {
       <div className="min-h-screen">
         <main className="container mx-auto px-6 py-16">
           <Card className="relative overflow-hidden p-12 shadow-2xl dark:from-violet-900 md:p-16">
-            <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
             <div className="relative flex flex-col items-center md:flex-row">
               <div className="mb-12 w-full md:mb-0 md:w-1/2 md:pr-12">
-                {/* <span className="mb-4 inline-block rounded-full bg-violet-800/60 px-4 py-2 text-sm font-medium text-violet-200">
-                  New: Weekly Study Challenges 🚀
-                </span> */}
                 <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight text-white md:text-6xl">
-                  Competitive Studying with TopStudz
+                  Elevate Your Academic Excellence
                 </h1>
                 <p className="mb-8 text-lg leading-relaxed text-violet-100">
-                  Motivate yourself to study more by turning learning into a
-                  fun, competitive activity. Track your progress, compete with
-                  friends, and achieve your academic goals!
+                  Transform your learning journey with data-driven insights,
+                  collaborative competition, and personalized study analytics.
+                  Join the next generation of high-achievers.
                 </p>
                 <div className="mb-10 space-x-6">
                   <Button

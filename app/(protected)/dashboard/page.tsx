@@ -9,18 +9,15 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { BookOpen, Calendar, Clock } from "lucide-react"
-import { getCurrentUser } from "@/db/queries"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default async function DashboardPage() {
-  const currentUser = await getCurrentUser()
-
   return (
     <section>
       <PageTitle title="Dashboard" />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        {/* <Card>
           <CardContent className="gap-4 p-6">
             <Avatar className="mb-2 h-20 w-20">
               <AvatarImage src={currentUser.image!} />
@@ -31,7 +28,7 @@ export default async function DashboardPage() {
               {currentUser.email}
             </p>
           </CardContent>
-        </Card>
+        </Card> */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">

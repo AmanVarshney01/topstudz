@@ -1,5 +1,5 @@
 import Link from "next/link"
-import AuthButton from "./auth-button"
+// import AuthButton from "./auth-button"
 import Logo from "./logo"
 import MobileSidebar from "./mobile-sidebar"
 import ThemeToggle from "./theme-toggle"
@@ -15,7 +15,7 @@ export default function Header() {
       </div>
       <nav className="flex flex-row items-center gap-2">
         <ThemeToggle />
-        <AuthButton />
+        {/* <AuthButton /> */}
       </nav>
     </header>
   )

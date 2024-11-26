@@ -1,4 +1,3 @@
-import { auth, signIn } from "@/auth"
 import Logo from "@/components/logo"
 import { Button } from "@/components/ui/button"
 import {
@@ -12,12 +11,6 @@ import Image from "next/image"
 import { redirect } from "next/navigation"
 
 export default async function Login() {
-  const session = await auth()
-
-  if (session) {
-    redirect("/dashboard")
-  }
-
   return (
     <div className="flex min-h-dvh items-center justify-center">
       <Card>
@@ -31,10 +24,10 @@ export default async function Login() {
         <CardFooter>
           <form
             className="w-full"
-            action={async () => {
-              "use server"
-              await signIn("github", { redirectTo: "/dashboard" })
-            }}
+            // action={async () => {
+            //   "use server"
+            //   await signIn("github", { redirectTo: "/dashboard" })
+            // }}
           >
             <Button className="w-full" type="submit">
               <Image

@@ -18,10 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useAction } from "next-safe-action/hooks"
 
-import { createFriendRequest } from "@/db/actions"
-import { createFriendRequestSchema } from "@/lib/validations"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { LoaderCircle } from "lucide-react"
 import { useState } from "react"
@@ -29,20 +26,12 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 
-const formSchema = createFriendRequestSchema
+const formSchema = z.object({
+  email: z.string().email(),
+})
 
 export default function AddFriendDialog() {
   const [open, setOpen] = useState(false)
-
-  const { executeAsync, isExecuting } = useAction(createFriendRequest, {
-    onSuccess: ({ data }) => {
-      toast.success(data?.message)
-      setOpen(false)
-    },
-    onError: ({ error }) => {
-      toast.error(error.serverError)
-    },
-  })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,7 +41,6 @@ export default function AddFriendDialog() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await executeAsync(values)
     form.reset()
   }
 
@@ -87,8 +75,8 @@ export default function AddFriendDialog() {
                 </FormItem>
               )}
             />
-            <Button disabled={isExecuting} type="submit">
-              {isExecuting && <LoaderCircle className="animate-spin" />}
+            <Button type="submit">
+              {/* {isExecuting && <LoaderCircle className="animate-spin" />} */}
               Submit
             </Button>
           </form>

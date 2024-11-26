@@ -38,22 +38,22 @@ export default function MobileSidebar() {
             onClick={() => setOpen(false)}
           />
           <NavButton
-            href="/study"
+            href="/dashboard/study"
             name="Study"
             onClick={() => setOpen(false)}
           />
           <NavButton
-            href="/friends"
+            href="/dashboard/friends"
             name="Friends"
             onClick={() => setOpen(false)}
           />
           <NavButton
-            href="/groups"
+            href="/dashboard/groups"
             name="Groups"
             onClick={() => setOpen(false)}
           />
           <NavButton
-            href="/leaderboards"
+            href="/dashboard/leaderboards"
             name="Leaderboards"
             onClick={() => setOpen(false)}
           />
