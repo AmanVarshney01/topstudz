@@ -42,11 +42,11 @@ export default function MobileSidebar() {
             name="Study"
             onClick={() => setOpen(false)}
           />
-          <NavButton
+          {/* <NavButton
             href="/dashboard/friends"
             name="Friends"
             onClick={() => setOpen(false)}
-          />
+          /> */}
           <NavButton
             href="/dashboard/groups"
             name="Groups"

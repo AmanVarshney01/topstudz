@@ -23,7 +23,7 @@ export default async function DesktopSidebar() {
         <nav className="flex flex-col gap-2">
           <NavButton href="/dashboard" name="Dashboard" />
           <NavButton href="/dashboard/study" name="Study" />
-          <NavButton href="/dashboard/friends" name="Friends" />
+          {/* <NavButton href="/dashboard/friends" name="Friends" /> */}
           <NavButton href="/dashboard/groups" name="Groups" />
           <NavButton href="/dashboard/leaderboards" name="Leaderboards" />
         </nav>

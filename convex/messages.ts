@@ -3,28 +3,47 @@ import { v } from "convex/values"
 import { mutation, query } from "./_generated/server"
 
 export const list = query({
-  args: {},
-  handler: async (ctx) => {
-    // Grab the most recent messages.
-    const messages = await ctx.db.query("messages").order("desc").take(100)
-    // Add the author's name to each message.
-    return Promise.all(
+  args: {
+    groupId: v.id("groups"),
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const messages = await ctx.db
+      .query("messages")
+      .filter((q) => q.eq(q.field("groupId"), args.groupId))
+      // .order("desc")
+      .take(args.limit ?? 50)
+
+    return await Promise.all(
       messages.map(async (message) => {
-        const { name, email } = (await ctx.db.get(message.userId))!
-        return { ...message, author: name ?? email! }
+        const user = await ctx.db.get(message.userId)
+        const name = user?.name
+        const email = user?.email
+        return {
+          ...message,
+          author: name ?? email ?? "Unknown",
+        }
       }),
     )
   },
 })
 
 export const send = mutation({
-  args: { body: v.string(), author: v.string() },
-  handler: async (ctx, { body }) => {
+  args: {
+    body: v.string(),
+    groupId: v.id("groups"),
+  },
+  handler: async (ctx, { body, groupId }) => {
     const userId = await getAuthUserId(ctx)
     if (userId === null) {
       throw new Error("Not signed in")
     }
-    // Send a new message.
-    await ctx.db.insert("messages", { body, userId })
+
+    await ctx.db.insert("messages", {
+      body,
+      userId,
+      groupId,
+      createdAt: Date.now(),
+    })
   },
 })
