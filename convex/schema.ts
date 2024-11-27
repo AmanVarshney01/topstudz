@@ -29,4 +29,22 @@ export default defineSchema({
   })
     .index("by_group", ["groupId", "createdAt"])
     .index("by_user", ["userId", "createdAt"]),
+  studySessions: defineTable({
+    userId: v.id("users"),
+    startTime: v.number(),
+    endTime: v.optional(v.number()),
+    duration: v.number(),
+    type: v.string(),
+    completed: v.boolean(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_user_and_time", ["userId", "startTime"]),
+
+  studySettings: defineTable({
+    userId: v.id("users"),
+    studyDuration: v.number(),
+    breakDuration: v.number(),
+    totalStudyTime: v.number(),
+    lastUpdated: v.number(),
+  }).index("by_user", ["userId"]),
 })
