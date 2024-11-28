@@ -28,7 +28,6 @@ export const getSettings = query({
 export const updateSettings = mutation({
   args: {
     studyDuration: v.number(),
-    breakDuration: v.number(),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx)
@@ -42,14 +41,12 @@ export const updateSettings = mutation({
     if (existing) {
       await ctx.db.patch(existing._id, {
         studyDuration: args.studyDuration,
-        breakDuration: args.breakDuration,
         lastUpdated: Date.now(),
       })
     } else {
       await ctx.db.insert("studySettings", {
         userId,
         studyDuration: args.studyDuration,
-        breakDuration: args.breakDuration,
         totalStudyTime: 0,
         lastUpdated: Date.now(),
       })
@@ -57,26 +54,15 @@ export const updateSettings = mutation({
   },
 })
 
-// Complete a study session
 export const completeSession = mutation({
   args: {
     duration: v.number(),
-    type: v.string(), // "study" or "break"
+    type: v.string(),
     completed: v.boolean(),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx)
     if (!userId) throw new Error("Not authenticated")
-
-    // Record the session
-    await ctx.db.insert("studySessions", {
-      userId,
-      startTime: Date.now() - args.duration * 1000, // Calculate start time
-      endTime: Date.now(),
-      duration: args.duration,
-      type: args.type,
-      completed: args.completed,
-    })
 
     if (args.type === "study" && args.completed) {
       const settings = await ctx.db
@@ -85,12 +71,31 @@ export const completeSession = mutation({
         .first()
 
       if (settings) {
+        const newTotalTime = settings.totalStudyTime + args.duration
+        console.log("Updating total study time:", newTotalTime) // Add this
         await ctx.db.patch(settings._id, {
-          totalStudyTime: settings.totalStudyTime + args.duration,
+          totalStudyTime: newTotalTime,
+          lastUpdated: Date.now(),
+        })
+      } else {
+        await ctx.db.insert("studySettings", {
+          userId,
+          studyDuration: 25 * 60,
+          totalStudyTime: args.duration,
           lastUpdated: Date.now(),
         })
       }
     }
+
+    // Record the session
+    await ctx.db.insert("studySessions", {
+      userId,
+      startTime: Date.now() - args.duration * 1000,
+      endTime: Date.now(),
+      duration: args.duration,
+      type: args.type,
+      completed: args.completed,
+    })
   },
 })
 

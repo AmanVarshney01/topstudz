@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
-import { Clock, BookOpen, Coffee, Save } from "lucide-react"
+import { Clock, BookOpen, Save } from "lucide-react"
 import { useQueryState } from "nuqs"
 import PageTitle from "@/components/page-title"
 import { useQuery, useMutation } from "convex/react"
@@ -23,18 +23,8 @@ export default function StudyPage() {
     defaultValue: false,
     parse: (value) => value === "true",
   })
-  const [isBreak, setIsBreak] = useQueryState("isBreak", {
-    defaultValue: false,
-    parse: (value) => value === "true",
-  })
-
-  // Settings states
   const [studyDuration, setStudyDuration] = useQueryState("studyDuration", {
     defaultValue: 25 * 60,
-    parse: (value) => Number(value),
-  })
-  const [breakDuration, setBreakDuration] = useQueryState("breakDuration", {
-    defaultValue: 5 * 60,
     parse: (value) => Number(value),
   })
 
@@ -46,9 +36,8 @@ export default function StudyPage() {
   useEffect(() => {
     if (settings) {
       setStudyDuration(settings.studyDuration)
-      setBreakDuration(settings.breakDuration)
     }
-  }, [settings, setStudyDuration, setBreakDuration])
+  }, [settings, setStudyDuration])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -63,32 +52,22 @@ export default function StudyPage() {
       interval = setInterval(() => {
         setStudyTime((prevTime) => {
           const nextTime = prevTime + 1
-          const currentGoal = isBreak ? breakDuration : studyDuration
-
-          if (nextTime >= currentGoal) {
+          if (nextTime >= studyDuration) {
             setIsStudying(false)
             completeSession({
               duration: nextTime,
-              type: isBreak ? "break" : "study",
+              type: "study",
               completed: true,
             })
-
-            if (isBreak) {
-              setIsBreak(false)
-              if (Notification.permission === "granted") {
-                new Notification("Study Time!", {
-                  body: "Break is over. Let's get back to studying!",
-                  icon: "/favicon.ico",
-                })
-              }
-            } else {
-              setIsBreak(true)
-              if (Notification.permission === "granted") {
-                new Notification("Break Time!", {
-                  body: "Time for a break! Take some rest.",
-                  icon: "/favicon.ico",
-                })
-              }
+            toast({
+              title: "Study Session Complete!",
+              description: "Great job! Take a break if you need one.",
+            })
+            if (Notification.permission === "granted") {
+              new Notification("Study Session Complete!", {
+                body: "Great job! Take a break if you need one.",
+                icon: "/favicon.ico",
+              })
             }
             return 0
           }
@@ -100,21 +79,28 @@ export default function StudyPage() {
     return () => clearInterval(interval)
   }, [
     isStudying,
-    isBreak,
     studyDuration,
-    breakDuration,
     completeSession,
     setStudyTime,
-    setIsBreak,
     setIsStudying,
+    toast,
   ])
 
   const startStopStudy = () => {
     if (isStudying) {
       completeSession({
         duration: studyTime,
-        type: isBreak ? "break" : "study",
+        type: "study",
         completed: false,
+      })
+      toast({
+        title: "Session Paused",
+        description: `Study session paused at ${formatTime(studyTime)}.`,
+      })
+    } else {
+      toast({
+        title: "Session Started",
+        description: "Study session started.",
       })
     }
     setIsStudying(!isStudying)
@@ -124,20 +110,22 @@ export default function StudyPage() {
     if (isStudying) {
       completeSession({
         duration: studyTime,
-        type: isBreak ? "break" : "study",
+        type: "study",
         completed: false,
       })
     }
     setStudyTime(0)
     setIsStudying(false)
-    setIsBreak(false)
+    toast({
+      title: "Timer Reset",
+      description: "Timer has been reset to 0.",
+    })
   }
 
   const saveSettings = async () => {
     try {
       await updateSettings({
         studyDuration,
-        breakDuration,
       })
       toast({
         title: "Settings Saved",
@@ -152,12 +140,21 @@ export default function StudyPage() {
     }
   }
 
+  const handleStudyDurationChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newDuration = Math.max(1, Number(e.target.value)) * 60
+    setStudyDuration(newDuration)
+    toast({
+      title: "Study Duration Updated",
+      description: `Study duration set to ${e.target.value} minutes.`,
+    })
+  }
+
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60)
     const seconds = time % 60
-    return `${minutes.toString().padStart(2, "0")}:${seconds
-      .toString()
-      .padStart(2, "0")}`
+    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
   }
 
   const formatHours = (time: number) => {
@@ -166,9 +163,7 @@ export default function StudyPage() {
     return `${hours}h ${minutes}m`
   }
 
-  const progress = isBreak
-    ? (studyTime / breakDuration) * 100
-    : (studyTime / studyDuration) * 100
+  const progress = (studyTime / studyDuration) * 100
 
   return (
     <div className="min-h-screen bg-background">
@@ -177,12 +172,8 @@ export default function StudyPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-center text-2xl">
-              {isBreak ? (
-                <Coffee className="mr-3 h-8 w-8" />
-              ) : (
-                <Clock className="mr-3 h-8 w-8" />
-              )}
-              {isBreak ? "Break Time" : "Study Time"}
+              <Clock className="mr-3 h-8 w-8" />
+              Study Time
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -215,22 +206,7 @@ export default function StudyPage() {
                   id="study-goal"
                   type="number"
                   value={studyDuration / 60}
-                  onChange={(e) =>
-                    setStudyDuration(Math.max(1, Number(e.target.value)) * 60)
-                  }
-                  min={1}
-                  className="text-lg"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="break-time">Break Duration (minutes)</Label>
-                <Input
-                  id="break-time"
-                  type="number"
-                  value={breakDuration / 60}
-                  onChange={(e) =>
-                    setBreakDuration(Math.max(1, Number(e.target.value)) * 60)
-                  }
+                  onChange={handleStudyDurationChange}
                   min={1}
                   className="text-lg"
                 />
@@ -259,7 +235,6 @@ export default function StudyPage() {
               <p className="text-lg">
                 Progress: {Math.min(Math.round(progress), 100)}%
               </p>
-              <p className="text-lg">Mode: {isBreak ? "Break" : "Study"}</p>
             </div>
             <div className="border-t pt-4">
               <p className="text-xl font-semibold">
@@ -282,11 +257,7 @@ export default function StudyPage() {
                     className="flex items-center justify-between rounded-lg border p-4"
                   >
                     <div>
-                      <p className="font-medium">
-                        {session.type.charAt(0).toUpperCase() +
-                          session.type.slice(1)}{" "}
-                        Session
-                      </p>
+                      <p className="font-medium">Study Session</p>
                       <p className="text-sm text-gray-500">
                         {new Date(session.startTime).toLocaleString()}
                       </p>

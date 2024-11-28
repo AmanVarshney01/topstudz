@@ -39,12 +39,12 @@ export default defineSchema({
   })
     .index("by_user", ["userId"])
     .index("by_user_and_time", ["userId", "startTime"]),
-
   studySettings: defineTable({
     userId: v.id("users"),
     studyDuration: v.number(),
-    breakDuration: v.number(),
     totalStudyTime: v.number(),
     lastUpdated: v.number(),
-  }).index("by_user", ["userId"]),
+  })
+    .index("by_user", ["userId"])
+    .index("by_total_time", ["totalStudyTime"]),
 })
