@@ -57,7 +57,7 @@ export function Chat({ groupId }: ChatProps) {
       <CardContent>
         <div className="flex h-[400px] flex-col">
           <ScrollArea className="flex-1 p-4">
-            <div className="space-y-4">
+            <div className="space-y-6">
               {messages.map((message) => {
                 const isCurrentUser = message.userId === currentUser?._id
                 return (
@@ -68,8 +68,8 @@ export function Chat({ groupId }: ChatProps) {
                     }`}
                   >
                     <div
-                      className={`flex items-center space-x-2 ${
-                        isCurrentUser ? "justify-end" : "justify-start"
+                      className={`flex items-center gap-2 ${
+                        isCurrentUser ? "flex-row-reverse" : "justify-start"
                       }`}
                     >
                       <span className="text-xs text-gray-500">
@@ -78,10 +78,8 @@ export function Chat({ groupId }: ChatProps) {
                       <span className="font-medium">{message.author}</span>
                     </div>
                     <div
-                      className={`rounded-lg p-3 ${
-                        isCurrentUser
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-100 text-gray-900"
+                      className={`rounded-lg p-1 ${
+                        isCurrentUser ? "text-end" : "text-start"
                       }`}
                     >
                       <p className="text-sm">{message.body}</p>
