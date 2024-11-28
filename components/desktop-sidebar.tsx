@@ -1,40 +1,85 @@
+"use client"
 import Link from "next/link"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarSeparator,
+  useSidebar,
+} from "./ui/sidebar"
 import Logo from "./logo"
-import NavButton from "./nav-button"
-import ThemeToggle from "./theme-toggle"
-import { ScrollArea } from "./ui/scroll-area"
-import { UserMenu } from "./user-menu"
 import { api } from "@/convex/_generated/api"
-import { convexAuthNextjsToken } from "@convex-dev/auth/nextjs/server"
-import { fetchQuery } from "convex/nextjs"
+import { LayoutDashboard, BookOpen, Users, Trophy } from "lucide-react"
+import { UserMenu } from "./user-menu"
+import { useQuery } from "convex/react"
 
-export default async function DesktopSidebar() {
-  const viewer = await fetchQuery(
-    api.users.viewer,
-    {},
-    { token: convexAuthNextjsToken() },
-  )
+const menuItems = [
+  {
+    name: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    name: "Study",
+    href: "/dashboard/study",
+    icon: BookOpen,
+  },
+  {
+    name: "Groups",
+    href: "/dashboard/groups",
+    icon: Users,
+  },
+  {
+    name: "Leaderboards",
+    href: "/dashboard/leaderboards",
+    icon: Trophy,
+  },
+]
+
+export default function DesktopSidebar() {
+  const viewer = useQuery(api.users.viewer)
+
+  const { state } = useSidebar()
+
   return (
-    <div className="hidden h-full flex-col gap-6 overflow-hidden p-2 pt-4 lg:flex">
-      <Link href={"/"} className="px-4">
-        <Logo />
-      </Link>
-      <ScrollArea className="h-full w-52">
-        <nav className="flex flex-col gap-2">
-          <NavButton href="/dashboard" name="Dashboard" />
-          <NavButton href="/dashboard/study" name="Study" />
-          {/* <NavButton href="/dashboard/friends" name="Friends" /> */}
-          <NavButton href="/dashboard/groups" name="Groups" />
-          <NavButton href="/dashboard/leaderboards" name="Leaderboards" />
-        </nav>
-      </ScrollArea>
-      <div className="flex flex-col items-center gap-2">
+    <Sidebar
+      variant="inset"
+      collapsible="icon"
+      className="rounded-lg border bg-background"
+    >
+      <SidebarHeader className="items-center p-4">
+        <Link href="/" className="flex items-center gap-2">
+          <Logo />
+        </Link>
+      </SidebarHeader>
+      <SidebarSeparator />
+      <SidebarContent className="p-2">
+        <SidebarMenu>
+          {menuItems.map((item) => (
+            <SidebarMenuItem key={item.name}>
+              <SidebarMenuButton asChild tooltip={item.name} className="gap-3">
+                <Link href={item.href}>
+                  <item.icon className="h-4 w-4 shrink-0" />
+                  <span>{item.name}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarContent>
+      <SidebarSeparator />
+      <SidebarFooter>
         <UserMenu
-          name={viewer.name!}
-          avatar={viewer.image!}
-          email={viewer.email!}
+          state={state}
+          avatar={viewer?.image!}
+          name={viewer?.name!}
+          email={viewer?.email!}
         />
-      </div>
-    </div>
+      </SidebarFooter>
+    </Sidebar>
   )
 }

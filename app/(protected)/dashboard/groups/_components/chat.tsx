@@ -50,7 +50,7 @@ export function Chat({ groupId }: ChatProps) {
   }
 
   return (
-    <Card className="col-span-2">
+    <Card>
       <CardHeader>
         <CardTitle>Group Chat</CardTitle>
       </CardHeader>

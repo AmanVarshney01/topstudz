@@ -42,7 +42,7 @@ export default function GroupPage({ params }: { params: { groupId: string } }) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto">
       <div className="mb-8 flex items-center justify-between">
         <PageTitle title={group.name} />
         <Button

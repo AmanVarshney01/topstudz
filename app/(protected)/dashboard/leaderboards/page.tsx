@@ -204,7 +204,7 @@ export default function LeaderboardsPage() {
 
   if (globalLeaderboard.length === 0) {
     return (
-      <div className="container mx-auto">
+      <div>
         <PageTitle title="Leaderboards" />
         <Card>
           <CardContent className="flex flex-col items-center p-6 text-center">
@@ -220,7 +220,7 @@ export default function LeaderboardsPage() {
   }
 
   return (
-    <div className="container mx-auto">
+    <div>
       <div className="mb-8">
         <PageTitle title="Leaderboards" />
         <p className="text-muted-foreground">

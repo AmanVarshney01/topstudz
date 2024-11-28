@@ -77,7 +77,7 @@ export default function DashboardPage() {
   ]
 
   return (
-    <div className="container mx-auto">
+    <div>
       <PageTitle title="Dashboard" />
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

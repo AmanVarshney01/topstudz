@@ -17,25 +17,23 @@ export function UserMenu({
   name,
   avatar,
   email,
+  state,
 }: {
   name: string
   avatar: string
   email: string
+  state: "expanded" | "collapsed"
 }) {
   return (
-    <div className="flex items-center gap-2 text-sm font-medium">
+    <div className="flex w-full items-center gap-2 text-sm font-medium">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="secondary"
-            size="icon"
-            className="gap-2 rounded-full"
-          >
-            <span>{name}</span>
-            <Avatar className="size-8">
+          <Button variant="outline" className="w-full gap-2">
+            <Avatar className="size-6">
               <AvatarImage src={avatar} />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
+            {state === "expanded" && <span>{name}</span>}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

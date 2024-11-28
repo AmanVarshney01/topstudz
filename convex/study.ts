@@ -72,7 +72,6 @@ export const completeSession = mutation({
 
       if (settings) {
         const newTotalTime = settings.totalStudyTime + args.duration
-        console.log("Updating total study time:", newTotalTime) // Add this
         await ctx.db.patch(settings._id, {
           totalStudyTime: newTotalTime,
           lastUpdated: Date.now(),

@@ -8,6 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Dialog,
   DialogContent,
@@ -16,13 +18,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Badge } from "@/components/ui/badge"
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 import { useToast } from "@/hooks/use-toast"
 import { useMutation, useQuery } from "convex/react"
-import { Plus, Search, Users } from "lucide-react"
+import { Plus, Search, Users, UserPlus, Info } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -86,12 +89,51 @@ export default function GroupsPage() {
     }
   }
 
-  return (
-    <div className="container mx-auto">
-      <PageTitle title="Study Groups" />
+  const GroupCard = ({ group, action }: any) => (
+    <Card className="transition-colors hover:bg-accent/50">
+      <CardHeader className="p-4">
+        <div className="flex items-start justify-between">
+          <div className="space-y-1">
+            <CardTitle className="text-lg">{group.name}</CardTitle>
+            <CardDescription className="line-clamp-2">
+              {group.description || "No description"}
+            </CardDescription>
+          </div>
+          {action === "view" ? (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => router.push(`/dashboard/groups/${group._id}`)}
+            >
+              View Group
+            </Button>
+          ) : (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => handleJoinGroup(group._id)}
+            >
+              <UserPlus className="mr-2 h-4 w-4" />
+              Join
+            </Button>
+          )}
+        </div>
+        <div className="mt-2 flex gap-2">
+          <Badge variant="secondary">
+            <Users className="mr-1 h-3 w-3" />
+            {group.memberCount || 0} members
+          </Badge>
+          <Badge variant="outline">Active</Badge>
+        </div>
+      </CardHeader>
+    </Card>
+  )
 
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-1 items-center space-x-2">
+  return (
+    <div>
+      <PageTitle title="Study Groups" />
+      <div className="mb-2 flex flex-col justify-between gap-4 sm:flex-row">
+        <div className="flex flex-1 gap-2">
           <Input
             placeholder="Search groups..."
             value={searchQuery}
@@ -141,92 +183,92 @@ export default function GroupsPage() {
         </Dialog>
       </div>
 
-      <div className="grid gap-8 md:grid-cols-2">
-        <Card className="h-fit">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              My Study Groups
-            </CardTitle>
-            <CardDescription>
-              Groups you&apos;re currently participating in
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {filteredMyGroups.length === 0 ? (
-                <p className="text-center text-muted-foreground">
-                  You haven&apos;t joined any groups yet
-                </p>
-              ) : (
-                filteredMyGroups.map((group) => (
-                  <div
-                    key={group._id}
-                    className="flex flex-col gap-2 rounded-lg border p-4 transition-colors hover:bg-accent"
+      <Tabs defaultValue="my-groups" className="w-full">
+        <TabsList className="grid w-full max-w-[400px] grid-cols-2">
+          <TabsTrigger value="my-groups">My Groups</TabsTrigger>
+          <TabsTrigger value="discover">Discover</TabsTrigger>
+        </TabsList>
+        <TabsContent value="my-groups" className="space-y-4">
+          <ScrollArea className="h-full">
+            {filteredMyGroups.length === 0 ? (
+              <Card>
+                <CardContent className="flex h-[200px] flex-col items-center justify-center space-y-4">
+                  <Info className="h-8 w-8 text-muted-foreground" />
+                  <p className="text-muted-foreground">
+                    You haven&apos;t joined any groups yet
+                  </p>
+                  <Button
+                    variant="secondary"
+                    onClick={() => router.push("#discover")}
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <h3 className="font-semibold">{group.name}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          {group.description || "No description"}
-                        </p>
-                      </div>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() =>
-                          router.push(`/dashboard/groups/${group._id}`)
-                        }
-                      >
-                        View
-                      </Button>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </CardContent>
-        </Card>
+                    Discover Groups
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-4 gap-4">
+                {filteredMyGroups.map((group) => (
+                  <GroupCard key={group._id} group={group} action="view" />
+                ))}
+                {filteredMyGroups.map((group) => (
+                  <GroupCard key={group._id} group={group} action="view" />
+                ))}
+                {filteredMyGroups.map((group) => (
+                  <GroupCard key={group._id} group={group} action="view" />
+                ))}
+                {filteredMyGroups.map((group) => (
+                  <GroupCard key={group._id} group={group} action="view" />
+                ))}
+                {filteredMyGroups.map((group) => (
+                  <GroupCard key={group._id} group={group} action="view" />
+                ))}
+                {filteredMyGroups.map((group) => (
+                  <GroupCard key={group._id} group={group} action="view" />
+                ))}
+                {filteredMyGroups.map((group) => (
+                  <GroupCard key={group._id} group={group} action="view" />
+                ))}
+                {filteredMyGroups.map((group) => (
+                  <GroupCard key={group._id} group={group} action="view" />
+                ))}
+                {filteredMyGroups.map((group) => (
+                  <GroupCard key={group._id} group={group} action="view" />
+                ))}
+                {filteredMyGroups.map((group) => (
+                  <GroupCard key={group._id} group={group} action="view" />
+                ))}
+                {filteredMyGroups.map((group) => (
+                  <GroupCard key={group._id} group={group} action="view" />
+                ))}
+                {filteredMyGroups.map((group) => (
+                  <GroupCard key={group._id} group={group} action="view" />
+                ))}
+              </div>
+            )}
+          </ScrollArea>
+        </TabsContent>
 
-        <Card className="h-fit">
-          <CardHeader>
-            <CardTitle>Suggested Groups</CardTitle>
-            <CardDescription>Groups you might be interested in</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {suggestedGroups.length === 0 ? (
-                <p className="text-center text-muted-foreground">
-                  No suggested groups available
-                </p>
-              ) : (
-                suggestedGroups.map((group) => (
-                  <div
-                    key={group._id}
-                    className="flex flex-col gap-2 rounded-lg border p-4 transition-colors hover:bg-accent"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <h3 className="font-semibold">{group.name}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          {group.description || "No description"}
-                        </p>
-                      </div>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => handleJoinGroup(group._id)}
-                      >
-                        Join
-                      </Button>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+        <TabsContent value="discover" className="space-y-4">
+          <ScrollArea className="h-[600px] pr-4">
+            {suggestedGroups.length === 0 ? (
+              <Card>
+                <CardContent className="flex h-[200px] flex-col items-center justify-center">
+                  <Info className="h-8 w-8 text-muted-foreground" />
+                  <p className="text-muted-foreground">
+                    No suggested groups available
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-4 gap-4">
+                {suggestedGroups.map((group) => (
+                  <GroupCard key={group._id} group={group} action="join" />
+                ))}
+              </div>
+            )}
+          </ScrollArea>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

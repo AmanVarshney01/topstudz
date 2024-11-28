@@ -11,12 +11,9 @@ export const getStudyTimeLeaderboard = query({
       .order("desc")
       .take(10)
 
-    console.log("Retrieved settings:", settings)
-
     const leaderboard = await Promise.all(
       settings.map(async (setting, index) => {
         const user = await ctx.db.get(setting.userId)
-        console.log("User data:", user)
         return {
           rank: index + 1,
           userId: setting.userId,
@@ -28,7 +25,6 @@ export const getStudyTimeLeaderboard = query({
       }),
     )
 
-    console.log("Final leaderboard:", leaderboard)
     return leaderboard
   },
 })
