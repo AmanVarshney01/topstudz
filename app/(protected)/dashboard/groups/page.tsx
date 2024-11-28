@@ -202,7 +202,7 @@ export default function GroupsPage() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {filteredMyGroups.map((group) => (
                   <GroupCard key={group._id} group={group} action="view" />
                 ))}
@@ -223,7 +223,7 @@ export default function GroupsPage() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {suggestedGroups.map((group) => (
                   <GroupCard key={group._id} group={group} action="join" />
                 ))}
