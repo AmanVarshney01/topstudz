@@ -161,7 +161,7 @@ function LeaderboardCard({
 
 function LoadingState() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 py-6">
       <Skeleton className="h-8 w-[200px]" />
       <Card>
         <CardHeader>
@@ -204,7 +204,7 @@ export default function LeaderboardsPage() {
 
   if (globalLeaderboard.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto">
         <PageTitle title="Leaderboards" />
         <Card>
           <CardContent className="flex flex-col items-center p-6 text-center">
@@ -220,7 +220,7 @@ export default function LeaderboardsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto">
       <div className="mb-8">
         <PageTitle title="Leaderboards" />
         <p className="text-muted-foreground">

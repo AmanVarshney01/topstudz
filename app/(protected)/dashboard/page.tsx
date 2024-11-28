@@ -10,7 +10,6 @@ import { StudentProgressChart } from "./_components/student-progress-chart"
 import { StudySessionsChart } from "./_components/study-sessions-chart"
 import { BookOpen, Calendar, Clock, Trophy, ArrowUp } from "lucide-react"
 
-// Stats Card Component
 interface StatsCardProps {
   title: string
   value: string
@@ -43,7 +42,6 @@ function StatsCard({ title, value, description, icon, trend }: StatsCardProps) {
 }
 
 export default function DashboardPage() {
-  // Queries
   const stats = useQuery(api.study.getStats)
   const settings = useQuery(api.study.getSettings)
   const userRank = useQuery(api.leaderboards.getUserRanking)
@@ -76,16 +74,10 @@ export default function DashboardPage() {
       description: "Current timer setting",
       icon: <Calendar className="h-4 w-4 text-muted-foreground" />,
     },
-    {
-      title: "Current Streak",
-      value: "5 days",
-      description: "Keep up the momentum!",
-      icon: <Trophy className="h-4 w-4 text-muted-foreground" />,
-    },
   ]
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto">
       <PageTitle title="Dashboard" />
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -123,7 +115,7 @@ function LoadingSkeleton() {
       <Skeleton className="mb-8 h-8 w-[200px]" />
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {[1, 2, 3, 4].map((i) => (
+        {[1, 2, 3].map((i) => (
           <Card key={i}>
             <CardHeader>
               <Skeleton className="h-4 w-[150px]" />

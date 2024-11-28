@@ -337,7 +337,7 @@ export default function StudyPage() {
   const progress = (studyTime / studyDuration) * 100
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto">
       <PageTitle title="Study Session" />
       <div className="grid gap-8 md:grid-cols-2">
         <div className="md:col-span-2">
