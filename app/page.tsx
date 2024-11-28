@@ -1,160 +1,219 @@
-import GoToActionButton from "@/components/go-to-action-button"
 import Logo from "@/components/logo"
+import GoToActionButton from "@/components/go-to-action-button"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import MainPage from "@/public/main.png"
-import { BookOpen, Star, Timer, Trophy, Users, Video } from "lucide-react"
+import {
+  BookOpen,
+  Star,
+  Timer,
+  Trophy,
+  Users,
+  BarChart,
+  Target,
+  Zap,
+  ChevronRight,
+  Clock,
+  LineChart,
+} from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
+import Meteors from "@/components/ui/meteors"
 
-export default async function Home() {
+const features = [
+  {
+    icon: <Timer className="h-12 w-12" />,
+    title: "Focus Timer",
+    description: "Customizable study sessions with break reminders",
+    badge: "Popular",
+  },
+  {
+    icon: <Trophy className="h-12 w-12" />,
+    title: "Competitive Learning",
+    description: "Global and group-based leaderboards",
+  },
+  {
+    icon: <Users className="h-12 w-12" />,
+    title: "Study Groups",
+    description: "Create and join study groups for collaborative learning",
+    badge: "New",
+  },
+  {
+    icon: <BarChart className="h-12 w-12" />,
+    title: "Progress Analytics",
+    description: "Detailed insights into your study patterns",
+  },
+  {
+    icon: <Target className="h-12 w-12" />,
+    title: "Goal Setting",
+    description: "Set and track daily and weekly study goals",
+  },
+  {
+    icon: <Zap className="h-12 w-12" />,
+    title: "Achievements",
+    description: "Earn rewards for consistent study habits",
+  },
+]
+
+const stats = [
+  {
+    value: "10,000+",
+    label: "Active Students",
+    icon: <Users className="h-4 w-4" />,
+  },
+  {
+    value: "1M+",
+    label: "Study Hours",
+    icon: <Clock className="h-4 w-4" />,
+  },
+  {
+    value: "5,000+",
+    label: "Study Groups",
+    icon: <BookOpen className="h-4 w-4" />,
+  },
+  {
+    value: "50+",
+    label: "Universities",
+    icon: <Star className="h-4 w-4" />,
+  },
+]
+
+export default function Home() {
   return (
-    <div className="mx-auto flex max-w-7xl flex-col">
-      <header className="sticky top-0 z-50 flex w-full flex-row items-center justify-between bg-background/80 p-4 backdrop-blur-sm transition-all duration-200 ease-in-out">
-        <nav className="transition-opacity duration-200 hover:opacity-80">
+    <div className="flex min-h-screen flex-col">
+      <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm">
+        <div className="container mx-auto flex h-16 items-center justify-between">
           <Logo />
-        </nav>
-        <GoToActionButton />
+          <GoToActionButton />
+        </div>
       </header>
-      <div className="min-h-screen">
-        <main className="container mx-auto px-6 py-16">
-          <Card className="relative overflow-hidden p-12 shadow-2xl dark:from-violet-900 md:p-16">
-            <div className="relative flex flex-col items-center md:flex-row">
-              <div className="mb-12 w-full md:mb-0 md:w-1/2 md:pr-12">
-                <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight text-white md:text-6xl">
-                  Elevate Your Academic Excellence
-                </h1>
-                <p className="mb-8 text-lg leading-relaxed text-violet-100">
-                  Transform your learning journey with data-driven insights,
-                  collaborative competition, and personalized study analytics.
-                  Join the next generation of high-achievers.
-                </p>
-                <div className="mb-10 space-x-6">
-                  <Button
-                    variant="default"
-                    size="lg"
-                    className="rounded-full bg-white px-8 text-violet-900 hover:bg-violet-100"
-                  >
-                    Get Started
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="rounded-full text-white hover:bg-violet-800/30"
-                  >
-                    Learn More
-                  </Button>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Users className="h-6 w-6 text-emerald-300" />
-                  <span className="text-lg font-medium text-violet-100">
-                    Join thousands of motivated students
-                  </span>
-                </div>
-              </div>
-              <div className="w-full transform transition-transform duration-500 hover:scale-105 md:w-1/2">
-                <Image
-                  src={MainPage}
-                  alt="main page"
-                  className="rounded-2xl shadow-2xl hover:shadow-violet-500/50"
-                  priority
-                />
-              </div>
-            </div>
-          </Card>
 
-          <section className="mt-24">
-            <h2 className="mb-12 text-center text-4xl font-bold tracking-tight dark:text-white">
-              Key Features
-            </h2>
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-              {[
-                {
-                  icon: (
-                    <Timer className="h-12 w-12 text-emerald-600 dark:text-emerald-500" />
-                  ),
-                  title: "Study Tracking",
-                  description:
-                    "Log your study sessions with subject-specific timers.",
-                },
-                {
-                  icon: (
-                    <Trophy className="h-12 w-12 text-emerald-600 dark:text-emerald-500" />
-                  ),
-                  title: "Leaderboards",
-                  description:
-                    "Compete with friends, college peers, and city-wide rankings.",
-                },
-                {
-                  icon: (
-                    <Star className="h-12 w-12 text-emerald-600 dark:text-emerald-500" />
-                  ),
-                  title: "Achievements",
-                  description:
-                    "Earn badges and rewards for your study milestones.",
-                },
-                {
-                  icon: (
-                    <Users className="h-12 w-12 text-emerald-600 dark:text-emerald-500" />
-                  ),
-                  title: "Friend Management",
-                  description:
-                    "Add friends and create study groups for collaborative learning.",
-                },
-                {
-                  icon: (
-                    <BookOpen className="h-12 w-12 text-emerald-600 dark:text-emerald-500" />
-                  ),
-                  title: "Weekly Challenges",
-                  description:
-                    "Participate in study challenges for extra points and motivation.",
-                },
-                {
-                  icon: (
-                    <Video className="h-12 w-12 text-emerald-600 dark:text-emerald-500" />
-                  ),
-                  title: "Analytics & Insights",
-                  description:
-                    "Visualize your study habits and track progress over time.",
-                },
-              ].map((feature, index) => (
-                <Card
-                  key={index}
-                  className="group transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                >
-                  <CardContent className="p-8">
-                    <div className="mb-6 transform transition-transform duration-300 group-hover:scale-110">
-                      {feature.icon}
-                    </div>
-                    <h3 className="mb-3 text-2xl font-semibold tracking-tight dark:text-white">
-                      {feature.title}
-                    </h3>
-                    <p className="leading-relaxed text-gray-600 dark:text-gray-300">
-                      {feature.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-
-          <Card className="relative mt-24 overflow-hidden p-16 text-center text-white shadow-2xl">
-            <div className="relative">
-              <h2 className="mb-6 text-4xl font-bold tracking-tight">
-                Ready to Boost Your Study Habits?
-              </h2>
-              <p className="mb-10 text-2xl font-light text-violet-100">
-                Join TopStudz today and transform the way you learn!
-              </p>
-              <Button
-                size="lg"
-                className="rounded-full bg-white px-10 text-violet-700 hover:bg-violet-100"
-              >
-                Sign Up Now
+      <main className="relative flex-1">
+        <div className="absolute inset-0 overflow-hidden">
+          <Meteors number={20} />
+        </div>
+        <section className="container relative mx-auto space-y-8 py-24 sm:py-32">
+          <div className="mx-auto flex max-w-[64rem] flex-col items-center gap-4 text-center">
+            <h1 className="text-4xl font-bold sm:text-6xl">
+              Your Path to Academic
+              <span className="text-primary">Excellence</span>
+            </h1>
+            <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
+              Join the community of high-achievers. Track your study sessions,
+              compete with peers, and unlock your academic potential.
+            </p>
+            <div className="space-x-4">
+              <Button size="lg" className="rounded-full" asChild>
+                <Link href="/dashboard">
+                  Get Started <ChevronRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="rounded-full">
+                Learn More
               </Button>
             </div>
-          </Card>
-        </main>
-      </div>
+          </div>
+          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-4">
+            {stats.map((stat, i) => (
+              <Card key={i} className="bg-background/60 backdrop-blur-sm">
+                <CardContent className="flex flex-col items-center gap-2 p-4">
+                  <div className="flex items-center gap-2">
+                    {stat.icon}
+                    <span className="text-2xl font-bold">{stat.value}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{stat.label}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          {/* Preview Image */}
+          <div className="mx-auto max-w-5xl rounded-[20px] border bg-background/60 p-4 backdrop-blur-sm">
+            <Image
+              src={MainPage}
+              alt="App preview"
+              className="rounded-[12px] shadow-xl"
+              priority
+            />
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="container mx-auto py-20">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold sm:text-4xl">
+              Everything you need to excel
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              Comprehensive tools designed for serious students
+            </p>
+          </div>
+
+          <div className="grid items-center justify-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature, i) => (
+              <Card
+                key={i}
+                className="bg-background/60 backdrop-blur-sm transition-all hover:-translate-y-1"
+              >
+                <CardHeader>
+                  <div className="mb-4 flex items-center gap-2">
+                    <div className="rounded-lg bg-primary/10 p-2 text-primary">
+                      {feature.icon}
+                    </div>
+                    {feature.badge && (
+                      <Badge variant="secondary" className="ml-auto">
+                        {feature.badge}
+                      </Badge>
+                    )}
+                  </div>
+                  <CardTitle>{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <section className="border-t bg-muted/50">
+          <div className="container py-20">
+            <Card className="relative mx-auto max-w-4xl overflow-hidden bg-foreground">
+              <div className="absolute inset-0">
+                <Meteors number={10} />
+              </div>
+              <CardContent className="relative flex flex-col items-center gap-4 p-12 text-center text-primary-foreground">
+                <LineChart className="h-12 w-12" />
+                <h2 className="text-3xl font-bold sm:text-4xl">
+                  Ready to Transform Your Study Habits?
+                </h2>
+                <p className="max-w-[42rem] text-lg text-primary-foreground/80">
+                  Join thousands of students who are already improving their
+                  academic performance with TopStudz.
+                </p>
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="mt-4 rounded-full backdrop-blur-sm"
+                >
+                  Start Your Journey
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      </main>
+
+      <footer className="relative border-t bg-background/80 backdrop-blur-sm">
+        <div className="container mx-auto flex h-16 items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            © 2024 TopStudz. All rights reserved.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Made with ❤️ for students
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }
