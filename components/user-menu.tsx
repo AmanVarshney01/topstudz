@@ -13,20 +13,37 @@ import {
 import { useAuthActions } from "@convex-dev/auth/react"
 import { PersonIcon } from "@radix-ui/react-icons"
 import { ReactNode } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
-export function UserMenu({ children }: { children: ReactNode }) {
+export function UserMenu({
+  name,
+  avatar,
+  email,
+}: {
+  name: string
+  avatar: string
+  email: string
+}) {
   return (
     <div className="flex items-center gap-2 text-sm font-medium">
-      {children}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="secondary" size="icon" className="rounded-full">
-            <PersonIcon className="h-5 w-5" />
-            <span className="sr-only">Toggle user menu</span>
+          <Button
+            variant="secondary"
+            size="icon"
+            className="gap-2 rounded-full"
+          >
+            <span>{name}</span>
+            <Avatar className="size-8">
+              <AvatarImage src={avatar} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{children}</DropdownMenuLabel>
+          <DropdownMenuLabel>{name}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuLabel>{email}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuLabel className="flex items-center gap-2 py-0 font-normal">
             Theme

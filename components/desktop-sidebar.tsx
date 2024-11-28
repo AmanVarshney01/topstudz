@@ -29,7 +29,11 @@ export default async function DesktopSidebar() {
         </nav>
       </ScrollArea>
       <div className="flex flex-col items-center gap-2">
-        <UserMenu>{viewer.name}</UserMenu>
+        <UserMenu
+          name={viewer.name!}
+          avatar={viewer.image!}
+          email={viewer.email!}
+        />
       </div>
     </div>
   )
