@@ -55,8 +55,8 @@ export function Chat({ groupId }: ChatProps) {
         <CardTitle>Group Chat</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex h-[400px] flex-col">
-          <ScrollArea className="flex-1 p-4">
+        <div className="flex flex-col">
+          <ScrollArea className="h-[calc(100svh-310px)] p-4">
             <div className="space-y-6">
               {messages.toReversed().map((message) => {
                 const isCurrentUser = message.userId === currentUser?._id

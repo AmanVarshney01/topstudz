@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -25,7 +26,7 @@ import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 import { useToast } from "@/hooks/use-toast"
 import { useMutation, useQuery } from "convex/react"
-import { Plus, Search, Users, UserPlus, Info } from "lucide-react"
+import { Plus, Search, Users, UserPlus, Info, ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -90,49 +91,44 @@ export default function GroupsPage() {
   }
 
   const GroupCard = ({ group, action }: any) => (
-    <Card className="transition-colors hover:bg-accent/50">
-      <CardHeader className="p-4">
-        <div className="flex items-start justify-between">
-          <div className="space-y-1">
-            <CardTitle className="text-lg">{group.name}</CardTitle>
-            <CardDescription className="line-clamp-2">
-              {group.description || "No description"}
-            </CardDescription>
-          </div>
-          {action === "view" ? (
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => router.push(`/dashboard/groups/${group._id}`)}
-            >
-              View Group
-            </Button>
-          ) : (
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => handleJoinGroup(group._id)}
-            >
+    <div className="flex flex-col gap-3 rounded-lg border p-2">
+      <div className="flex flex-col p-2">
+        <span className="text-lg">{group.name}</span>
+        <span className="line-clamp-2 text-sm text-gray-600">
+          {group.description || "No description"}
+        </span>
+      </div>
+      <div className="border-t pt-2">
+        {action === "view" ? (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.push(`/dashboard/groups/${group._id}`)}
+            className="w-full justify-between"
+          >
+            View Group
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+        ) : (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => handleJoinGroup(group._id)}
+          >
+            <span className="flex flex-row gap-2">
               <UserPlus className="mr-2 h-4 w-4" />
               Join
-            </Button>
-          )}
-        </div>
-        <div className="mt-2 flex gap-2">
-          <Badge variant="secondary">
-            <Users className="mr-1 h-3 w-3" />
-            {group.memberCount || 0} members
-          </Badge>
-          <Badge variant="outline">Active</Badge>
-        </div>
-      </CardHeader>
-    </Card>
+            </span>
+          </Button>
+        )}
+      </div>
+    </div>
   )
 
   return (
     <div>
       <PageTitle title="Study Groups" />
-      <div className="mb-2 flex flex-col justify-between gap-4 sm:flex-row">
+      <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row">
         <div className="flex flex-1 gap-2">
           <Input
             placeholder="Search groups..."
@@ -207,39 +203,6 @@ export default function GroupsPage() {
               </Card>
             ) : (
               <div className="grid grid-cols-4 gap-4">
-                {filteredMyGroups.map((group) => (
-                  <GroupCard key={group._id} group={group} action="view" />
-                ))}
-                {filteredMyGroups.map((group) => (
-                  <GroupCard key={group._id} group={group} action="view" />
-                ))}
-                {filteredMyGroups.map((group) => (
-                  <GroupCard key={group._id} group={group} action="view" />
-                ))}
-                {filteredMyGroups.map((group) => (
-                  <GroupCard key={group._id} group={group} action="view" />
-                ))}
-                {filteredMyGroups.map((group) => (
-                  <GroupCard key={group._id} group={group} action="view" />
-                ))}
-                {filteredMyGroups.map((group) => (
-                  <GroupCard key={group._id} group={group} action="view" />
-                ))}
-                {filteredMyGroups.map((group) => (
-                  <GroupCard key={group._id} group={group} action="view" />
-                ))}
-                {filteredMyGroups.map((group) => (
-                  <GroupCard key={group._id} group={group} action="view" />
-                ))}
-                {filteredMyGroups.map((group) => (
-                  <GroupCard key={group._id} group={group} action="view" />
-                ))}
-                {filteredMyGroups.map((group) => (
-                  <GroupCard key={group._id} group={group} action="view" />
-                ))}
-                {filteredMyGroups.map((group) => (
-                  <GroupCard key={group._id} group={group} action="view" />
-                ))}
                 {filteredMyGroups.map((group) => (
                   <GroupCard key={group._id} group={group} action="view" />
                 ))}

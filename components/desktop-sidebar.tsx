@@ -16,6 +16,7 @@ import { api } from "@/convex/_generated/api"
 import { LayoutDashboard, BookOpen, Users, Trophy } from "lucide-react"
 import { UserMenu } from "./user-menu"
 import { useQuery } from "convex/react"
+import { usePathname } from "next/navigation"
 
 const menuItems = [
   {
@@ -42,7 +43,7 @@ const menuItems = [
 
 export default function DesktopSidebar() {
   const viewer = useQuery(api.users.viewer)
-
+  const pathname = usePathname()
   const { state } = useSidebar()
 
   return (
@@ -51,17 +52,22 @@ export default function DesktopSidebar() {
       collapsible="icon"
       className="rounded-lg border bg-background"
     >
-      <SidebarHeader className="items-center p-4">
+      <SidebarHeader className="items-center bg-background p-4">
         <Link href="/" className="flex items-center gap-2">
           <Logo />
         </Link>
       </SidebarHeader>
       <SidebarSeparator />
-      <SidebarContent className="p-2">
+      <SidebarContent className="bg-background p-2">
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.name}>
-              <SidebarMenuButton asChild tooltip={item.name} className="gap-3">
+              <SidebarMenuButton
+                asChild
+                tooltip={item.name}
+                className="gap-3"
+                isActive={pathname === item.href}
+              >
                 <Link href={item.href}>
                   <item.icon className="h-4 w-4 shrink-0" />
                   <span>{item.name}</span>
@@ -72,7 +78,7 @@ export default function DesktopSidebar() {
         </SidebarMenu>
       </SidebarContent>
       <SidebarSeparator />
-      <SidebarFooter>
+      <SidebarFooter className="bg-background">
         <UserMenu
           state={state}
           avatar={viewer?.image!}

@@ -3,11 +3,12 @@ import PageTitle from "@/components/page-title"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 import { useToast } from "@/hooks/use-toast"
 import { useMutation, useQuery } from "convex/react"
-import { Info, LogOut, Users } from "lucide-react"
+import { Info, LogOut, MessageSquare, Users } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Chat } from "../_components/chat"
 
@@ -42,8 +43,8 @@ export default function GroupPage({ params }: { params: { groupId: string } }) {
   }
 
   return (
-    <div className="container mx-auto">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="grid grid-rows-[auto_1fr]">
+      <div className="flex items-center justify-between">
         <PageTitle title={group.name} />
         <Button
           variant="destructive"
@@ -56,8 +57,25 @@ export default function GroupPage({ params }: { params: { groupId: string } }) {
         </Button>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-3">
-        <div className="space-y-8 lg:col-span-1">
+      <Tabs defaultValue="chat" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="chat" className="flex items-center gap-2">
+            <MessageSquare className="h-4 w-4" />
+            Chat
+          </TabsTrigger>
+          <TabsTrigger value="details" className="flex items-center gap-2">
+            <Info className="h-4 w-4" />
+            Details
+          </TabsTrigger>
+          <TabsTrigger value="members" className="flex items-center gap-2">
+            <Users className="h-4 w-4" />
+            Members
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="chat" className="space-y-4">
+          <Chat groupId={groupId} />
+        </TabsContent>
+        <TabsContent value="details" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -82,7 +100,8 @@ export default function GroupPage({ params }: { params: { groupId: string } }) {
               </div>
             </CardContent>
           </Card>
-
+        </TabsContent>
+        <TabsContent value="members" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -110,28 +129,36 @@ export default function GroupPage({ params }: { params: { groupId: string } }) {
               </div>
             </CardContent>
           </Card>
-        </div>
-
-        <div className="lg:col-span-2">
-          <Chat groupId={groupId} />
-        </div>
-      </div>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
 
 function LoadingState() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Skeleton className="mb-8 h-8 w-48" />
-      <div className="grid gap-8 lg:grid-cols-3">
-        <div className="space-y-8 lg:col-span-1">
-          <GroupDetailsSkeleton />
-          <MembersSkeleton />
-        </div>
-        <div className="lg:col-span-2">
-          <Skeleton className="h-[600px] w-full rounded-lg" />
-        </div>
+    <div className="grid grid-rows-[auto_1fr] px-2 py-4">
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-8 w-48" />
+        <Skeleton className="h-9 w-32" />
+      </div>
+      <div className="space-y-4">
+        <Skeleton className="h-10 w-[300px] rounded-lg" />
+        <Card>
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="flex gap-4">
+                  <Skeleton className="h-8 w-8 rounded-full" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-4 w-[200px]" />
+                    <Skeleton className="h-4 w-full" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

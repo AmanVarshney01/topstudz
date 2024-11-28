@@ -1,14 +1,13 @@
 "use client"
-import { useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
-import { formatTime } from "@/lib/utils"
-
 import PageTitle from "@/components/page-title"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
+import { api } from "@/convex/_generated/api"
+import { formatTime } from "@/lib/utils"
+import { useQuery } from "convex/react"
+import { ArrowUp, BookOpen, Calendar, Clock } from "lucide-react"
 import { StudentProgressChart } from "./_components/student-progress-chart"
 import { StudySessionsChart } from "./_components/study-sessions-chart"
-import { BookOpen, Calendar, Clock, Trophy, ArrowUp } from "lucide-react"
 
 interface StatsCardProps {
   title: string
@@ -87,23 +86,8 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Study Sessions Overview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <StudySessionsChart sessions={stats.recentSessions} />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Progress Tracking</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <StudentProgressChart />
-          </CardContent>
-        </Card>
+        <StudySessionsChart sessions={stats.recentSessions} />
+        <StudentProgressChart />
       </div>
     </div>
   )
