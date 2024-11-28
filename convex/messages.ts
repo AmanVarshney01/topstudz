@@ -11,7 +11,7 @@ export const list = query({
     const messages = await ctx.db
       .query("messages")
       .filter((q) => q.eq(q.field("groupId"), args.groupId))
-      // .order("desc")
+      .order("desc")
       .take(args.limit ?? 50)
 
     return await Promise.all(
