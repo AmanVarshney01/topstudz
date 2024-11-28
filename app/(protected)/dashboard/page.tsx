@@ -1,34 +1,33 @@
-import PageTitle from "@/components/page-title"
-import { StudentPerformanceChart } from "./_components/student-performace-chart"
-import { StudentProgressChart } from "./_components/student-progress-chart"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { BookOpen, Calendar, Clock } from "lucide-react"
-import Image from "next/image"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+"use client"
 
-export default async function DashboardPage() {
+import PageTitle from "@/components/page-title"
+import { StudentProgressChart } from "./_components/student-progress-chart"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { BookOpen, Calendar, Clock } from "lucide-react"
+import { useQuery } from "convex/react"
+import { api } from "@/convex/_generated/api"
+import { formatTime } from "@/lib/utils" // You'll need to create this utility
+import { Skeleton } from "@/components/ui/skeleton"
+import { StudySessionsChart } from "./_components/study-sessions-chart"
+
+export default function DashboardPage() {
+  const stats = useQuery(api.study.getStats)
+  const settings = useQuery(api.study.getSettings)
+  const userRank = useQuery(api.leaderboards.getUserRanking)
+
+  if (!stats || !settings || !userRank) {
+    return <LoadingSkeleton />
+  }
+
+  const totalHours = Math.floor(stats.totalStudyTime / 3600)
+  const completedSessions = stats.recentSessions.filter(
+    (session) => session.completed,
+  ).length
+
   return (
     <section>
       <PageTitle title="Dashboard" />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {/* <Card>
-          <CardContent className="gap-4 p-6">
-            <Avatar className="mb-2 h-20 w-20">
-              <AvatarImage src={currentUser.image!} />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <div className="text-2xl font-bold">{currentUser.name}</div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              {currentUser.email}
-            </p>
-          </CardContent>
-        </Card> */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -37,89 +36,73 @@ export default async function DashboardPage() {
             <Clock className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">24.5</div>
+            <div className="text-2xl font-bold">
+              {formatTime(stats.totalStudyTime)}
+            </div>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              +2.5 from last week
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Courses</CardTitle>
-            <BookOpen className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">4</div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Computer Science, Math, Physics, English
+              Rank #{userRank.rank || "N/A"}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Upcoming Exams
+              Completed Sessions
+            </CardTitle>
+            <BookOpen className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{completedSessions}</div>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Recent study sessions
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Session Duration
             </CardTitle>
             <Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">2</div>
+            <div className="text-2xl font-bold">
+              {formatTime(settings.studyDuration)}
+            </div>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              Next: Math (in 5 days)
+              Current timer setting
             </p>
           </CardContent>
         </Card>
       </div>
       <div className="mt-4 grid grid-cols-2 gap-4">
-        {/* <Card className="col-span-4">
-          <CardHeader>
-            <CardTitle>Upcoming Assignments</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {[
-                "Math Problem Set",
-                "Physics Lab Report",
-                "English Essay",
-                "CS Project",
-              ].map((assignment, index) => (
-                <div key={index} className="flex items-center">
-                  <div className="mr-2 h-2 w-2 rounded-full bg-blue-500" />
-                  <span className="flex-grow">{assignment}</span>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Due in {index + 1} days
-                  </span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card> */}
-        <StudentPerformanceChart />
+        <StudySessionsChart sessions={stats.recentSessions} />
         <StudentProgressChart />
-        {/* <Card className="col-span-3">
-          <CardHeader>
-            <CardTitle>Study Progress</CardTitle>
-            <CardDescription>
-              Your study progress across all courses
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {["Computer Science", "Mathematics", "Physics", "English"].map(
-                (course, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">{course}</span>
-                      <span className="text-sm text-gray-500 dark:text-gray-400">
-                        {65 + index * 5}%
-                      </span>
-                    </div>
-                  </div>
-                ),
-              )}
-            </div>
-          </CardContent>
-        </Card> */}
+      </div>
+    </section>
+  )
+}
+
+function LoadingSkeleton() {
+  return (
+    <section>
+      <PageTitle title="Dashboard" />
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {[1, 2, 3].map((i) => (
+          <Card key={i}>
+            <CardHeader>
+              <Skeleton className="h-4 w-[150px]" />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-8 w-[100px]" />
+              <Skeleton className="mt-2 h-4 w-[200px]" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <div className="mt-4 grid grid-cols-2 gap-4">
+        <Skeleton className="h-[400px]" />
+        <Skeleton className="h-[400px]" />
       </div>
     </section>
   )
