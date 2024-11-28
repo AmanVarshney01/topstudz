@@ -1,6 +1,5 @@
 "use client"
 import PageTitle from "@/components/page-title"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -9,12 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Plus, Search } from "lucide-react"
-import { useState } from "react"
-import { useQuery, useMutation } from "convex/react"
-import { api } from "@/convex/_generated/api"
-import { useRouter } from "next/navigation"
 import {
   Dialog,
   DialogContent,
@@ -23,9 +16,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { useToast } from "@/hooks/use-toast"
+import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
+import { useToast } from "@/hooks/use-toast"
+import { useMutation, useQuery } from "convex/react"
+import { Plus, Search, Users } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function GroupsPage() {
   const router = useRouter()
@@ -35,20 +34,16 @@ export default function GroupsPage() {
   const [newGroupDescription, setNewGroupDescription] = useState("")
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
 
-  // Fetch groups
   const myGroups = useQuery(api.groups.listMyGroups) || []
   const allGroups = useQuery(api.groups.list, { limit: 50 }) || []
 
-  // Mutations
   const createGroup = useMutation(api.groups.create)
   const joinGroup = useMutation(api.groups.join)
 
-  // Filter groups based on search query
   const filteredMyGroups = myGroups.filter((group) =>
     group.name.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
-  // Get suggested groups (groups user is not a member of)
   const suggestedGroups = allGroups.filter(
     (group) => !myGroups.some((myGroup) => myGroup._id === group._id),
   )
@@ -92,71 +87,29 @@ export default function GroupsPage() {
   }
 
   return (
-    <section>
+    <div className="container mx-auto">
       <PageTitle title="Study Groups" />
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="col-span-2">
-          <CardHeader>
-            <CardTitle>My Study Groups</CardTitle>
-            <CardDescription>
-              Groups you&apos;re currently participating in
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex space-x-2">
-                <Input
-                  placeholder="Search groups..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-grow"
-                />
-                <Button>
-                  <Search className="mr-2 h-4 w-4" />
-                  Search
-                </Button>
-              </div>
-              <div className="space-y-4">
-                {filteredMyGroups.map((group) => (
-                  <div
-                    key={group._id}
-                    className="flex items-center justify-between rounded-lg border p-4"
-                  >
-                    <div>
-                      <p className="font-medium">{group.name}</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {group.description || "No description"}
-                      </p>
-                    </div>
-                    <Button
-                      variant="outline"
-                      onClick={() =>
-                        router.push(`/dashboard/groups/${group._id}`)
-                      }
-                    >
-                      View Group
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-1 items-center space-x-2">
+          <Input
+            placeholder="Search groups..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="max-w-md"
+          />
+          <Button variant="secondary">
+            <Search className="mr-2 h-4 w-4" />
+            Search
+          </Button>
+        </div>
 
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Card className="cursor-pointer hover:bg-accent">
-              <CardHeader>
-                <CardTitle>Create New Group</CardTitle>
-                <CardDescription>Start a new study group</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Create Group
-                </Button>
-              </CardContent>
-            </Card>
+            <Button>
+              <Plus className="mr-2 h-4 w-4" />
+              Create New Group
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -186,38 +139,94 @@ export default function GroupsPage() {
             </div>
           </DialogContent>
         </Dialog>
+      </div>
 
-        <Card className="col-span-2 lg:col-span-3">
+      <div className="grid gap-8 md:grid-cols-2">
+        <Card className="h-fit">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5" />
+              My Study Groups
+            </CardTitle>
+            <CardDescription>
+              Groups you&apos;re currently participating in
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {filteredMyGroups.length === 0 ? (
+                <p className="text-center text-muted-foreground">
+                  You haven&apos;t joined any groups yet
+                </p>
+              ) : (
+                filteredMyGroups.map((group) => (
+                  <div
+                    key={group._id}
+                    className="flex flex-col gap-2 rounded-lg border p-4 transition-colors hover:bg-accent"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <h3 className="font-semibold">{group.name}</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {group.description || "No description"}
+                        </p>
+                      </div>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() =>
+                          router.push(`/dashboard/groups/${group._id}`)
+                        }
+                      >
+                        View
+                      </Button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="h-fit">
           <CardHeader>
             <CardTitle>Suggested Groups</CardTitle>
             <CardDescription>Groups you might be interested in</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {suggestedGroups.map((group) => (
-                <div
-                  key={group._id}
-                  className="flex items-center justify-between rounded-lg border p-4"
-                >
-                  <div>
-                    <p className="font-medium">{group.name}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {group.description || "No description"}
-                    </p>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleJoinGroup(group._id)}
+              {suggestedGroups.length === 0 ? (
+                <p className="text-center text-muted-foreground">
+                  No suggested groups available
+                </p>
+              ) : (
+                suggestedGroups.map((group) => (
+                  <div
+                    key={group._id}
+                    className="flex flex-col gap-2 rounded-lg border p-4 transition-colors hover:bg-accent"
                   >
-                    Join
-                  </Button>
-                </div>
-              ))}
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <h3 className="font-semibold">{group.name}</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {group.description || "No description"}
+                        </p>
+                      </div>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => handleJoinGroup(group._id)}
+                      >
+                        Join
+                      </Button>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </CardContent>
         </Card>
       </div>
-    </section>
+    </div>
   )
 }

@@ -2,37 +2,23 @@
 import PageTitle from "@/components/page-title"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useToast } from "@/hooks/use-toast"
-import { api } from "@/convex/_generated/api"
-import { useMutation, useQuery } from "convex/react"
-import { useRouter } from "next/navigation"
-import { Id } from "@/convex/_generated/dataModel"
-import { Chat } from "../_components/chat"
 import { Skeleton } from "@/components/ui/skeleton"
+import { api } from "@/convex/_generated/api"
+import { Id } from "@/convex/_generated/dataModel"
+import { useToast } from "@/hooks/use-toast"
+import { useMutation, useQuery } from "convex/react"
+import { Info, LogOut, Users } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { Chat } from "../_components/chat"
 
 export default function GroupPage({ params }: { params: { groupId: string } }) {
   const router = useRouter()
   const { toast } = useToast()
-
   const groupId = params.groupId as Id<"groups">
+
   const group = useQuery(api.groups.get, { groupId })
   const members = useQuery(api.groups.getMembers, { groupId })
   const leaveGroup = useMutation(api.groups.leave)
-
-  if (!group) {
-    return (
-      <section>
-        <Skeleton className="mb-6 h-8 w-48" /> {/* PageTitle skeleton */}
-        <div className="grid gap-4 md:grid-cols-2">
-          <GroupDetailsSkeleton />
-          <MembersSkeleton />
-          <div className="md:col-span-2">
-            <Skeleton className="h-[400px] w-full" /> {/* Chat skeleton */}
-          </div>
-        </div>
-      </section>
-    )
-  }
 
   const handleLeaveGroup = async () => {
     try {
@@ -51,51 +37,103 @@ export default function GroupPage({ params }: { params: { groupId: string } }) {
     }
   }
 
-  return (
-    <section>
-      <PageTitle title={group.name} />
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Group Details</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-500 dark:text-gray-400">
-              {group.description || "No description"}
-            </p>
-            <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-              Created by: {group.creator?.name || "Unknown"}
-            </p>
-            <Button
-              variant="destructive"
-              className="mt-4"
-              onClick={handleLeaveGroup}
-            >
-              Leave Group
-            </Button>
-          </CardContent>
-        </Card>
+  if (!group) {
+    return <LoadingState />
+  }
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Members</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              {members?.map((member) => (
-                <div key={member._id} className="rounded-lg border p-2">
-                  <p>{member.user?.name || "Unknown User"}</p>
-                  <p className="text-sm text-gray-500">
-                    Joined: {new Date(member.joinedAt).toLocaleDateString()}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-        <Chat groupId={groupId} />
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8 flex items-center justify-between">
+        <PageTitle title={group.name} />
+        <Button
+          variant="destructive"
+          size="sm"
+          onClick={handleLeaveGroup}
+          className="flex items-center gap-2"
+        >
+          <LogOut className="h-4 w-4" />
+          Leave Group
+        </Button>
       </div>
-    </section>
+
+      <div className="grid gap-8 lg:grid-cols-3">
+        <div className="space-y-8 lg:col-span-1">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Info className="h-5 w-5" />
+                Group Details
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground">
+                  Description
+                </h3>
+                <p className="mt-1">
+                  {group.description || "No description provided"}
+                </p>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground">
+                  Created by
+                </h3>
+                <p className="mt-1">{group.creator?.name || "Unknown"}</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Members ({members?.length || 0})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {members?.map((member) => (
+                  <div
+                    key={member._id}
+                    className="flex items-center justify-between rounded-lg border p-3 transition-colors hover:bg-accent"
+                  >
+                    <div>
+                      <p className="font-medium">
+                        {member.user?.name || "Unknown User"}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Joined {new Date(member.joinedAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="lg:col-span-2">
+          <Chat groupId={groupId} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function LoadingState() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <Skeleton className="mb-8 h-8 w-48" />
+      <div className="grid gap-8 lg:grid-cols-3">
+        <div className="space-y-8 lg:col-span-1">
+          <GroupDetailsSkeleton />
+          <MembersSkeleton />
+        </div>
+        <div className="lg:col-span-2">
+          <Skeleton className="h-[600px] w-full rounded-lg" />
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -104,10 +142,15 @@ const GroupDetailsSkeleton = () => (
     <CardHeader>
       <CardTitle>Group Details</CardTitle>
     </CardHeader>
-    <CardContent>
-      <Skeleton className="mb-4 h-4 w-3/4" />
-      <Skeleton className="mb-4 h-4 w-1/2" />
-      <Skeleton className="h-9 w-28" />
+    <CardContent className="space-y-4">
+      <div>
+        <Skeleton className="mb-2 h-4 w-24" />
+        <Skeleton className="h-4 w-3/4" />
+      </div>
+      <div>
+        <Skeleton className="mb-2 h-4 w-24" />
+        <Skeleton className="h-4 w-1/2" />
+      </div>
     </CardContent>
   </Card>
 )
@@ -118,9 +161,9 @@ const MembersSkeleton = () => (
       <CardTitle>Members</CardTitle>
     </CardHeader>
     <CardContent>
-      <div className="space-y-2">
+      <div className="space-y-3">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="rounded-lg border p-2">
+          <div key={i} className="rounded-lg border p-3">
             <Skeleton className="mb-2 h-4 w-1/3" />
             <Skeleton className="h-3 w-1/4" />
           </div>

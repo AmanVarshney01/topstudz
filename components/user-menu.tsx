@@ -11,8 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuthActions } from "@convex-dev/auth/react"
-import { PersonIcon } from "@radix-ui/react-icons"
-import { ReactNode } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
 export function UserMenu({
