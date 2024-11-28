@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast"
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 import { useMutation, useQuery } from "convex/react"
-import { useState } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 
 interface ChatProps {
   groupId: Id<"groups">
@@ -15,9 +15,20 @@ interface ChatProps {
 
 export function Chat({ groupId }: ChatProps) {
   const { toast } = useToast()
+  const currentUser = useQuery(api.users.viewer)
   const [message, setMessage] = useState("")
-  const messages = useQuery(api.messages.list, { groupId }) || []
+  const rawMessages = useQuery(api.messages.list, { groupId })
+  const messages = useMemo(() => rawMessages || [], [rawMessages])
   const sendMessage = useMutation(api.messages.send)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -47,17 +58,38 @@ export function Chat({ groupId }: ChatProps) {
         <div className="flex h-[400px] flex-col">
           <ScrollArea className="flex-1 p-4">
             <div className="space-y-4">
-              {messages.map((message) => (
-                <div key={message._id} className="flex flex-col space-y-1">
-                  <div className="flex items-center space-x-2">
-                    <span className="font-medium">{message.author}</span>
-                    <span className="text-xs text-gray-500">
-                      {new Date(message.createdAt).toLocaleTimeString()}
-                    </span>
+              {messages.map((message) => {
+                const isCurrentUser = message.userId === currentUser?._id
+                return (
+                  <div
+                    key={message._id}
+                    className={`flex max-w-[70%] flex-col space-y-1 ${
+                      isCurrentUser ? "ml-auto" : "mr-auto"
+                    }`}
+                  >
+                    <div
+                      className={`flex items-center space-x-2 ${
+                        isCurrentUser ? "justify-end" : "justify-start"
+                      }`}
+                    >
+                      <span className="text-xs text-gray-500">
+                        {new Date(message.createdAt).toLocaleTimeString()}
+                      </span>
+                      <span className="font-medium">{message.author}</span>
+                    </div>
+                    <div
+                      className={`rounded-lg p-3 ${
+                        isCurrentUser
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-100 text-gray-900"
+                      }`}
+                    >
+                      <p className="text-sm">{message.body}</p>
+                    </div>
                   </div>
-                  <p className="text-sm">{message.body}</p>
-                </div>
-              ))}
+                )
+              })}
+              <div ref={messagesEndRef} />
             </div>
           </ScrollArea>
           <form
