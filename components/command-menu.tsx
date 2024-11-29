@@ -24,6 +24,7 @@ import {
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { CreateGroupDialog } from "./create-group-dialog"
+import { ScrollArea } from "./ui/scroll-area"
 
 export function CommandMenu() {
   const [open, setOpen] = useState(false)
@@ -48,99 +49,101 @@ export function CommandMenu() {
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Type command to search..." />
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Navigation">
-            <CommandItem
-              onSelect={() => {
-                router.push("/dashboard")
-                setOpen(false)
-              }}
-            >
-              <LayoutDashboard className="mr-2 h-4 w-4" />
-              Go to Dashboard
-            </CommandItem>
-            <CommandItem
-              onSelect={() => {
-                router.push("/dashboard/study")
-                setOpen(false)
-              }}
-            >
-              <BookOpen className="mr-2 h-4 w-4" />
-              Go to Study
-            </CommandItem>
-            <CommandItem
-              onSelect={() => {
-                router.push("/dashboard/groups")
-                setOpen(false)
-              }}
-            >
-              <Users className="mr-2 h-4 w-4" />
-              Go to Groups
-            </CommandItem>
-            <CommandItem
-              onSelect={() => {
-                router.push("/dashboard/leaderboards")
-                setOpen(false)
-              }}
-            >
-              <Trophy className="mr-2 h-4 w-4" />
-              Go to Leaderboards
-            </CommandItem>
-          </CommandGroup>
-          <CommandSeparator />
-          <CommandGroup heading="Study">
-            <CommandItem
-              onSelect={() => {
-                router.push("/dashboard/study?isStudying=true")
-                setOpen(false)
-              }}
-            >
-              <Timer className="mr-2 h-4 w-4" />
-              Start Study Session
-            </CommandItem>
-            <CommandItem
-              onSelect={() => {
-                router.push("/dashboard/study?tab=history")
-                setOpen(false)
-              }}
-            >
-              <Clock className="mr-2 h-4 w-4" />
-              View Study History
-            </CommandItem>
-            <CommandItem
-              onSelect={() => {
-                router.push("/dashboard/study/?tab=settings")
-                setOpen(false)
-              }}
-            >
-              <Settings className="mr-2 h-4 w-4" />
-              Study Settings
-            </CommandItem>
-          </CommandGroup>
-          <CommandSeparator />
-          <CommandGroup heading="Groups">
-            <CommandItem
-              onSelect={() => {
-                setIsCreateGroupDialogOpen(true)
-                setOpen(false)
-              }}
-            >
-              <Users className="mr-2 h-4 w-4" />
-              Create Group
-            </CommandItem>
-            {groups?.map((group) => (
+          <ScrollArea className="h-[300px]">
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup heading="Navigation">
               <CommandItem
-                key={group._id}
                 onSelect={() => {
-                  router.push(`/dashboard/groups/${group._id}`)
+                  router.push("/dashboard")
+                  setOpen(false)
+                }}
+              >
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Go to Dashboard
+              </CommandItem>
+              <CommandItem
+                onSelect={() => {
+                  router.push("/dashboard/study")
+                  setOpen(false)
+                }}
+              >
+                <BookOpen className="mr-2 h-4 w-4" />
+                Go to Study
+              </CommandItem>
+              <CommandItem
+                onSelect={() => {
+                  router.push("/dashboard/groups")
                   setOpen(false)
                 }}
               >
                 <Users className="mr-2 h-4 w-4" />
-                {group.name}
+                Go to Groups
               </CommandItem>
-            ))}
-          </CommandGroup>
+              <CommandItem
+                onSelect={() => {
+                  router.push("/dashboard/leaderboards")
+                  setOpen(false)
+                }}
+              >
+                <Trophy className="mr-2 h-4 w-4" />
+                Go to Leaderboards
+              </CommandItem>
+            </CommandGroup>
+            <CommandSeparator />
+            <CommandGroup heading="Study">
+              <CommandItem
+                onSelect={() => {
+                  router.push("/dashboard/study?isStudying=true")
+                  setOpen(false)
+                }}
+              >
+                <Timer className="mr-2 h-4 w-4" />
+                Start Study Session
+              </CommandItem>
+              <CommandItem
+                onSelect={() => {
+                  router.push("/dashboard/study?tab=history")
+                  setOpen(false)
+                }}
+              >
+                <Clock className="mr-2 h-4 w-4" />
+                View Study History
+              </CommandItem>
+              <CommandItem
+                onSelect={() => {
+                  router.push("/dashboard/study/?tab=settings")
+                  setOpen(false)
+                }}
+              >
+                <Settings className="mr-2 h-4 w-4" />
+                Study Settings
+              </CommandItem>
+            </CommandGroup>
+            <CommandSeparator />
+            <CommandGroup heading="Groups">
+              <CommandItem
+                onSelect={() => {
+                  setIsCreateGroupDialogOpen(true)
+                  setOpen(false)
+                }}
+              >
+                <Users className="mr-2 h-4 w-4" />
+                Create Group
+              </CommandItem>
+              {groups?.map((group) => (
+                <CommandItem
+                  key={group._id}
+                  onSelect={() => {
+                    router.push(`/dashboard/groups/${group._id}`)
+                    setOpen(false)
+                  }}
+                >
+                  <Users className="mr-2 h-4 w-4" />
+                  {group.name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </ScrollArea>
         </CommandList>
       </CommandDialog>
       <CreateGroupDialog

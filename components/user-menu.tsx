@@ -33,7 +33,7 @@ export function UserMenu({
               <AvatarImage src={avatar} />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            {state === "expanded" && <span>{name}</span>}
+            {state === "expanded" && <span className="truncate">{name}</span>}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

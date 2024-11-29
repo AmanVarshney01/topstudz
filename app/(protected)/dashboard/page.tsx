@@ -79,7 +79,7 @@ export default function DashboardPage() {
     <div>
       <PageTitle title="Dashboard" />
 
-      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statsCards.map((card, index) => (
           <StatsCard key={index} {...card} />
         ))}
@@ -96,9 +96,9 @@ export default function DashboardPage() {
 function LoadingSkeleton() {
   return (
     <div className="container mx-auto px-4 py-8">
-      <Skeleton className="mb-8 h-8 w-[200px]" />
+      <Skeleton className="mb-4 h-8 w-[200px]" />
 
-      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[1, 2, 3].map((i) => (
           <Card key={i}>
             <CardHeader>

@@ -65,7 +65,7 @@ export default function DesktopSidebar() {
     >
       <SidebarHeader className="items-center bg-background p-4">
         <Link href="/" className="flex items-center gap-2">
-          <Logo />
+          <Logo variant={state === "collapsed" ? "small" : "default"} />
         </Link>
       </SidebarHeader>
       <SidebarSeparator />
