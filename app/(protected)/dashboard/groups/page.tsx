@@ -126,6 +126,8 @@ export default function GroupsPage() {
     </div>
   )
 
+  const [isCreateGroupDialogOpen, setIsCreateGroupDialogOpen] = useState(false)
+
   return (
     <div>
       <PageTitle title="Study Groups" />
@@ -142,7 +144,15 @@ export default function GroupsPage() {
             Search
           </Button>
         </div>
-        <CreateGroupDialog />
+        <CreateGroupDialog
+          open={isCreateGroupDialogOpen}
+          setOpen={setIsCreateGroupDialogOpen}
+        >
+          <Button>
+            <Plus className="mr-2 h-4 w-4" />
+            Create New Group
+          </Button>
+        </CreateGroupDialog>
       </div>
 
       <Tabs defaultValue="my-groups" className="w-full">

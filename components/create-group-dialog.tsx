@@ -10,39 +10,63 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Plus } from "lucide-react"
-import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { useMutation } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+
+const formSchema = z.object({
+  name: z.string().min(1, "Group name is required"),
+  description: z.string(),
+})
+
+type FormValues = z.infer<typeof formSchema>
 
 export function CreateGroupDialog({
-  variant = "default",
+  open,
+  setOpen,
+  children,
 }: {
-  variant?: "default" | "ghost"
+  open: boolean
+  setOpen: (open: boolean) => void
+  children?: React.ReactNode
 }) {
   const router = useRouter()
   const { toast } = useToast()
-  const [isOpen, setIsOpen] = useState(false)
-  const [newGroupName, setNewGroupName] = useState("")
-  const [newGroupDescription, setNewGroupDescription] = useState("")
-
   const createGroup = useMutation(api.groups.create)
 
-  const handleCreateGroup = async () => {
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+    },
+  })
+
+  const onSubmit = async (values: FormValues) => {
     try {
       const newGroup = await createGroup({
-        name: newGroupName,
-        description: newGroupDescription,
+        name: values.name,
+        description: values.description,
       })
       toast({
         title: "Success",
         description: "Group created successfully",
       })
-      setNewGroupName("")
-      setNewGroupDescription("")
-      setIsOpen(false)
+      form.reset()
+      setOpen(false)
       router.push(`/dashboard/groups/${newGroup}`)
     } catch (error) {
       toast({
@@ -52,17 +76,10 @@ export function CreateGroupDialog({
       })
     }
   }
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant={variant}
-          className={cn(variant === "ghost" && "h-min p-0 font-normal")}
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Create New Group
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create New Group</DialogTitle>
@@ -70,25 +87,39 @@ export function CreateGroupDialog({
             Create a new study group to collaborate with others
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4">
-          <Input
-            placeholder="Group name"
-            value={newGroupName}
-            onChange={(e) => setNewGroupName(e.target.value)}
-          />
-          <Textarea
-            placeholder="Group description"
-            value={newGroupDescription}
-            onChange={(e) => setNewGroupDescription(e.target.value)}
-          />
-          <Button
-            className="w-full"
-            onClick={handleCreateGroup}
-            disabled={!newGroupName}
-          >
-            Create Group
-          </Button>
-        </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Group Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Group name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="Group description" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full">
+              Create Group
+            </Button>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   )

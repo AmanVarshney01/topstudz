@@ -14,10 +14,6 @@ export default function Header() {
           <Logo />
         </Link>
       </div>
-      <nav className="flex flex-row items-center gap-2">
-        <ThemeToggle />
-        {/* <AuthButton /> */}
-      </nav>
     </header>
   )
 }
