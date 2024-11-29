@@ -92,10 +92,10 @@ export default function GroupsPage() {
   }
 
   const GroupCard = ({ group, action }: any) => (
-    <div className="flex flex-col gap-3 rounded-lg border p-2">
+    <div className="flex flex-col justify-between gap-3 rounded-lg border p-2">
       <div className="flex flex-col p-2">
         <span className="text-lg">{group.name}</span>
-        <span className="line-clamp-2 text-sm text-gray-600">
+        <span className="line-clamp-2 break-words text-sm text-gray-600">
           {group.description || "No description"}
         </span>
       </div>
@@ -115,11 +115,10 @@ export default function GroupsPage() {
             variant="ghost"
             size="sm"
             onClick={() => handleJoinGroup(group._id)}
+            className="w-full justify-between"
           >
-            <span className="flex flex-row gap-2">
-              <UserPlus className="mr-2 h-4 w-4" />
-              Join
-            </span>
+            Join
+            <UserPlus className="h-4 w-4" />
           </Button>
         )}
       </div>

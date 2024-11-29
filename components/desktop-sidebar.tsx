@@ -67,7 +67,7 @@ export default function DesktopSidebar() {
       className="rounded-lg border bg-background"
     >
       <SidebarHeader className="w-full items-center bg-background">
-        <Link href="/" className="flex items-center gap-2 p-4 pb-2">
+        <Link href="/" className="flex items-center gap-2 pb-2">
           <Logo variant={state === "collapsed" ? "small" : "default"} />
         </Link>
         {state === "expanded" && <CommandMenu />}
