@@ -8,12 +8,21 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
   SidebarSeparator,
   useSidebar,
 } from "./ui/sidebar"
 import Logo from "./logo"
 import { api } from "@/convex/_generated/api"
-import { LayoutDashboard, BookOpen, Users, Trophy } from "lucide-react"
+import {
+  LayoutDashboard,
+  BookOpen,
+  Users,
+  Trophy,
+  UserPlus,
+} from "lucide-react"
 import { UserMenu } from "./user-menu"
 import { useQuery } from "convex/react"
 import { usePathname } from "next/navigation"
@@ -33,6 +42,7 @@ const menuItems = [
     name: "Groups",
     href: "/dashboard/groups",
     icon: Users,
+    hasSubMenu: true, // Add this to indicate it has a submenu
   },
   {
     name: "Leaderboards",
@@ -43,6 +53,7 @@ const menuItems = [
 
 export default function DesktopSidebar() {
   const viewer = useQuery(api.users.viewer)
+  const groups = useQuery(api.groups.listMyGroups)
   const pathname = usePathname()
   const { state } = useSidebar()
 
@@ -73,6 +84,22 @@ export default function DesktopSidebar() {
                   <span>{item.name}</span>
                 </Link>
               </SidebarMenuButton>
+              {item.hasSubMenu && groups && (
+                <SidebarMenuSub>
+                  {groups.map((group) => (
+                    <SidebarMenuSubItem key={group._id}>
+                      <SidebarMenuSubButton
+                        asChild
+                        isActive={pathname === `/dashboard/groups/${group._id}`}
+                      >
+                        <Link href={`/dashboard/groups/${group._id}`}>
+                          <span>{group.name}</span>
+                        </Link>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              )}
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
