@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { api } from "@/convex/_generated/api"
 import { useToast } from "@/hooks/use-toast"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { useMutation, useQuery } from "convex/react"
 import {
   BookOpen,
@@ -17,6 +18,7 @@ import {
   Play,
   RotateCcw,
   Save,
+  Settings,
 } from "lucide-react"
 import { useQueryState } from "nuqs"
 import { useEffect } from "react"
@@ -100,10 +102,10 @@ function StudySettings({
   onSave: () => void
 }) {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle className="flex items-center">
-          <BookOpen className="mr-2 h-5 w-5" /> Study Settings
+          <Settings className="mr-2 h-5 w-5" /> Study Settings
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -139,14 +141,14 @@ function StudyStats({
   totalStudyTime: number
 }) {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle className="flex items-center">
-          <ChartBar className="mr-2 h-5 w-5" /> Study Stats
+          <ChartBar className="mr-2 h-5 w-5" /> Study Statistics
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid gap-4">
+      <CardContent>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="rounded-lg border p-4">
             <p className="text-sm text-muted-foreground">Current Session</p>
             <p className="text-2xl font-bold">{formatTime(studyTime)}</p>
@@ -169,14 +171,14 @@ function StudyStats({
 
 function RecentSessions({ sessions }: { sessions: any[] }) {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle className="flex items-center">
-          <History className="mr-2 h-5 w-5" /> Recent Sessions
+          <History className="mr-2 h-5 w-5" /> Study History
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="max-h-[400px] space-y-4 overflow-y-auto">
           {sessions.map((session) => (
             <div
               key={session._id}
@@ -215,6 +217,11 @@ export default function StudyPage() {
   const [studyDuration, setStudyDuration] = useQueryState("studyDuration", {
     defaultValue: 25 * 60,
     parse: (value) => Number(value),
+  })
+
+  const [activeTab, setActiveTab] = useQueryState("tab", {
+    defaultValue: "stats",
+    parse: (value) => value as "stats" | "settings" | "history",
   })
 
   const settings = useQuery(api.study.getSettings)
@@ -338,35 +345,52 @@ export default function StudyPage() {
 
   return (
     <div className="">
-      <PageTitle title="Study Session" />
-      <div className="grid gap-8 md:grid-cols-2">
-        <div className="md:col-span-2">
-          <StudyTimer
-            studyTime={studyTime}
-            studyDuration={studyDuration}
-            isStudying={isStudying}
-            onStartStop={handleStartStop}
-            onReset={handleReset}
-          />
-        </div>
+      <PageTitle title="Study Dashboard" />
 
-        <StudySettings
-          studyDuration={studyDuration}
-          onDurationChange={handleDurationChange}
-          onSave={handleSaveSettings}
-        />
-
-        <StudyStats
+      <div className="grid gap-6">
+        <StudyTimer
           studyTime={studyTime}
-          progress={progress}
-          totalStudyTime={stats?.totalStudyTime ?? 0}
+          studyDuration={studyDuration}
+          isStudying={isStudying}
+          onStartStop={handleStartStop}
+          onReset={handleReset}
         />
 
-        {stats?.recentSessions && stats.recentSessions.length > 0 && (
-          <div className="md:col-span-2">
-            <RecentSessions sessions={stats.recentSessions} />
-          </div>
-        )}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="stats">Statistics</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="history">History</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="stats" className="mt-6">
+            <StudyStats
+              studyTime={studyTime}
+              progress={progress}
+              totalStudyTime={stats?.totalStudyTime ?? 0}
+            />
+          </TabsContent>
+
+          <TabsContent value="settings" className="mt-6">
+            <StudySettings
+              studyDuration={studyDuration}
+              onDurationChange={handleDurationChange}
+              onSave={handleSaveSettings}
+            />
+          </TabsContent>
+
+          <TabsContent value="history" className="mt-6">
+            {stats?.recentSessions && stats.recentSessions.length > 0 ? (
+              <RecentSessions sessions={stats.recentSessions} />
+            ) : (
+              <Card>
+                <CardContent className="pt-6 text-center text-muted-foreground">
+                  No study sessions recorded yet.
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   )

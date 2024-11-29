@@ -29,6 +29,7 @@ import { useMutation, useQuery } from "convex/react"
 import { Plus, Search, Users, UserPlus, Info, ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { CreateGroupDialog } from "@/components/create-group-dialog"
 
 export default function GroupsPage() {
   const router = useRouter()
@@ -141,42 +142,7 @@ export default function GroupsPage() {
             Search
           </Button>
         </div>
-
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              Create New Group
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create New Group</DialogTitle>
-              <DialogDescription>
-                Create a new study group to collaborate with others
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4">
-              <Input
-                placeholder="Group name"
-                value={newGroupName}
-                onChange={(e) => setNewGroupName(e.target.value)}
-              />
-              <Textarea
-                placeholder="Group description"
-                value={newGroupDescription}
-                onChange={(e) => setNewGroupDescription(e.target.value)}
-              />
-              <Button
-                className="w-full"
-                onClick={handleCreateGroup}
-                disabled={!newGroupName}
-              >
-                Create Group
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <CreateGroupDialog />
       </div>
 
       <Tabs defaultValue="my-groups" className="w-full">
