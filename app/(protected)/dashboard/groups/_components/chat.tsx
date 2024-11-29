@@ -73,7 +73,10 @@ export function Chat({ groupId }: ChatProps) {
                       }`}
                     >
                       <span className="text-xs text-gray-500">
-                        {new Date(message.createdAt).toLocaleTimeString()}
+                        {new Date(message.createdAt).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
                       </span>
                       <span className="font-medium">{message.author}</span>
                     </div>
