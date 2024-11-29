@@ -1,94 +1,72 @@
 "use client"
 import PageTitle from "@/components/page-title"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { api } from "@/convex/_generated/api"
+import { useQuery } from "convex/react"
+import { Crown, Medal, MessageSquare, Trophy } from "lucide-react"
+import { Chat } from "../_components/chat"
+import { GroupActionsSheet } from "../_components/group-actions-sheet"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
+  TableHeader,
+  TableRow,
+  TableHead,
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
 } from "@/components/ui/table"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
-import { useToast } from "@/hooks/use-toast"
 import { formatDuration } from "@/lib/utils"
-import { useMutation, useQuery } from "convex/react"
-import {
-  Crown,
-  Info,
-  LogOut,
-  Medal,
-  MessageSquare,
-  Trophy,
-  Users,
-} from "lucide-react"
-import { useRouter } from "next/navigation"
-import { Chat } from "../_components/chat"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 
 export default function GroupPage({ params }: { params: { groupId: string } }) {
-  const router = useRouter()
-  const { toast } = useToast()
   const groupId = params.groupId as Id<"groups">
-
   const group = useQuery(api.groups.get, { groupId })
   const members = useQuery(api.groups.getMembers, { groupId })
-  const leaveGroup = useMutation(api.groups.leave)
+  const user = useQuery(api.users.viewer)
 
-  const handleLeaveGroup = async () => {
-    try {
-      await leaveGroup({ groupId })
-      toast({
-        title: "Success",
-        description: "Left group successfully",
-      })
-      router.push("/dashboard/groups")
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to leave group",
-        variant: "destructive",
-      })
-    }
-  }
-
-  if (!group) {
+  if (!group || !user) {
     return <LoadingState />
   }
+
+  const isCreator = group.createdBy === user._id
 
   return (
     <div className="grid grid-rows-[auto_1fr]">
       <div className="flex items-center justify-between">
         <PageTitle title={group.name} />
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={handleLeaveGroup}
-          className="flex items-center gap-2"
-        >
-          <LogOut className="h-4 w-4" />
-          Leave Group
-        </Button>
+        <GroupActionsSheet
+          group={{
+            _id: group._id,
+            name: group.name,
+            description: group.description,
+            creator: group.creator
+              ? {
+                  name: group.creator.name,
+                }
+              : undefined,
+          }}
+          members={members?.map((member) => ({
+            _id: member._id,
+            user: member.user
+              ? {
+                  _id: member.user._id,
+                  name: member.user.name,
+                }
+              : null,
+            joinedAt: member.joinedAt,
+          }))}
+          isCreator={isCreator}
+        />
       </div>
 
       <Tabs defaultValue="chat" className="space-y-4">
-        <TabsList className="">
+        <TabsList>
           <div className="flex max-w-80 flex-row overflow-x-scroll md:max-w-full md:overflow-auto">
             <TabsTrigger value="chat" className="flex items-center gap-2">
               <MessageSquare className="h-4 w-4" />
               Chat
-            </TabsTrigger>
-            <TabsTrigger value="details" className="flex items-center gap-2">
-              <Info className="h-4 w-4" />
-              Details
-            </TabsTrigger>
-            <TabsTrigger value="members" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              Members
             </TabsTrigger>
             <TabsTrigger
               value="leaderboard"
@@ -101,61 +79,6 @@ export default function GroupPage({ params }: { params: { groupId: string } }) {
         </TabsList>
         <TabsContent value="chat" className="space-y-4">
           <Chat groupId={groupId} />
-        </TabsContent>
-        <TabsContent value="details" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Info className="h-5 w-5" />
-                Group Details
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">
-                  Description
-                </h3>
-                <p className="mt-1">
-                  {group.description || "No description provided"}
-                </p>
-              </div>
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">
-                  Created by
-                </h3>
-                <p className="mt-1">{group.creator?.name || "Unknown"}</p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        <TabsContent value="members" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                Members ({members?.length || 0})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {members?.map((member) => (
-                  <div
-                    key={member._id}
-                    className="flex items-center justify-between rounded-lg border p-3 transition-colors hover:bg-accent"
-                  >
-                    <div>
-                      <p className="font-medium">
-                        {member.user?.name || "Unknown User"}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        Joined {new Date(member.joinedAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </TabsContent>
         <TabsContent value="leaderboard" className="space-y-4">
           <Card>

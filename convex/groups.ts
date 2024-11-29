@@ -133,6 +133,47 @@ export const update = mutation({
   },
 })
 
+export const deleteGroup = mutation({
+  args: {
+    groupId: v.id("groups"),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx)
+    if (!userId) {
+      throw new Error("Not authenticated")
+    }
+
+    const group = await ctx.db.get(args.groupId)
+    if (!group) {
+      throw new Error("Group not found")
+    }
+
+    if (group.createdBy !== userId) {
+      throw new Error("Not authorized to delete this group")
+    }
+
+    const members = await ctx.db
+      .query("groupMembers")
+      .filter((q) => q.eq(q.field("groupId"), args.groupId))
+      .collect()
+
+    const messages = await ctx.db
+      .query("messages")
+      .filter((q) => q.eq(q.field("groupId"), args.groupId))
+      .collect()
+
+    for (const message of messages) {
+      await ctx.db.delete(message._id)
+    }
+
+    for (const member of members) {
+      await ctx.db.delete(member._id)
+    }
+
+    await ctx.db.delete(args.groupId)
+  },
+})
+
 export const join = mutation({
   args: {
     groupId: v.id("groups"),
