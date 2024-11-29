@@ -26,7 +26,8 @@ TopStudz is a modern student study management platform designed to help students
 ## Tech Stack
 
 ### Frontend
-- **Next.js 14** - React framework with App Router
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Typed JavaScript
 - **TailwindCSS** - Utility-first CSS framework
 - **Shadcn/ui** - Re-usable component system
 

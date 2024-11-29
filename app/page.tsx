@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Clock,
   LineChart,
+  Github,
 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -83,7 +84,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col px-4">
       <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto flex h-16 items-center justify-between">
+        <div className="mx-auto flex h-16 items-center justify-between">
           <Logo />
           <GoToActionButton />
         </div>
@@ -93,7 +94,7 @@ export default function Home() {
         <div className="absolute inset-0 overflow-hidden">
           <Meteors number={20} />
         </div>
-        <section className="container relative mx-auto space-y-8 py-24 sm:py-32">
+        <section className="relative mx-auto space-y-8 py-24 sm:py-32">
           <div className="mx-auto flex max-w-[64rem] flex-col items-center gap-4 text-center">
             <h1 className="text-4xl font-bold sm:text-6xl">
               Your Path to Academic
@@ -106,11 +107,22 @@ export default function Home() {
             <div className="space-x-4">
               <Button size="lg" className="rounded-full" asChild>
                 <Link href="/dashboard">
-                  Get Started <ChevronRight className="ml-2 h-4 w-4" />
+                  Get Started <ChevronRight className="h-4 w-4" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="rounded-full">
-                Learn More
+              <Button
+                size="lg"
+                variant="outline"
+                className="rounded-full"
+                asChild
+              >
+                <Link
+                  href={"https://github.com/AmanVarshney01/topstudz"}
+                  target="_blank"
+                >
+                  <Github className="h-4 w-4" />
+                  Github
+                </Link>
               </Button>
             </div>
           </div>
@@ -127,7 +139,6 @@ export default function Home() {
               </Card>
             ))}
           </div>
-          {/* Preview Image */}
           <div className="mx-auto max-w-5xl rounded-[20px] border bg-background/60 p-4 backdrop-blur-sm">
             <Image
               src={MainPage}
@@ -138,8 +149,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="container mx-auto py-20">
+        <section className="mx-auto py-20">
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-bold sm:text-4xl">
               Everything you need to excel
@@ -177,7 +187,7 @@ export default function Home() {
         </section>
 
         <section className="border-t bg-muted/50">
-          <div className="container py-20">
+          <div className="py-20">
             <Card className="relative mx-auto max-w-4xl overflow-hidden bg-foreground">
               <div className="absolute inset-0">
                 <Meteors number={10} />
@@ -195,8 +205,9 @@ export default function Home() {
                   size="lg"
                   variant="secondary"
                   className="mt-4 rounded-full backdrop-blur-sm"
+                  asChild
                 >
-                  Start Your Journey
+                  <Link href={"/dashboard"}>Start Your Journey</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -205,7 +216,7 @@ export default function Home() {
       </main>
 
       <footer className="relative border-t bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto flex h-16 items-center justify-between">
+        <div className="mx-auto flex h-16 items-center justify-between">
           <p className="text-sm text-muted-foreground">
             © 2024 TopStudz. All rights reserved.
           </p>
