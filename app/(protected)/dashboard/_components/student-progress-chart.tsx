@@ -1,7 +1,7 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts"
+import { TrendingUp } from "lucide-react"
 import {
   Card,
   CardContent,
@@ -20,11 +20,9 @@ import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { formatTime } from "@/lib/utils"
 
-export const description = "A bar chart showing study progress"
-
 const chartConfig = {
   progress: {
-    label: "Hours",
+    label: "Study Hours",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig
@@ -46,12 +44,12 @@ export function StudentProgressChart() {
     if (!acc[monthYear]) {
       acc[monthYear] = {
         month: monthYear,
-        totalHours: 0,
+        progress: 0,
       }
     }
 
     if (session.completed) {
-      acc[monthYear].totalHours += session.duration / 3600 // Convert seconds to hours
+      acc[monthYear].progress += session.duration / 3600
     }
 
     return acc
@@ -67,9 +65,9 @@ export function StudentProgressChart() {
 
   const trend =
     chartData.length >= 2
-      ? (((chartData[chartData.length - 1] as any).totalHours -
-          (chartData[chartData.length - 2] as any).totalHours) /
-          (chartData[chartData.length - 2] as any).totalHours) *
+      ? (((chartData[chartData.length - 1] as any).progress -
+          (chartData[chartData.length - 2] as any).progress) /
+          (chartData[chartData.length - 2] as any).progress) *
         100
       : 0
 
@@ -98,29 +96,12 @@ export function StudentProgressChart() {
               axisLine={false}
               tickFormatter={(value) => value.split(" ")[0].slice(0, 3)}
             />
-            <ChartTooltip
-              cursor={false}
-              content={({ payload }) => {
-                if (!payload?.[0]) return null
-                const data = payload[0].payload
-                return (
-                  <div className="rounded-lg bg-white p-2 shadow-md dark:bg-gray-800">
-                    <p className="font-semibold">{data.month}</p>
-                    <p className="text-sm">
-                      {formatTime(data.totalHours * 3600)}
-                    </p>
-                  </div>
-                )
-              }}
-            />
-            <Bar dataKey="totalHours" fill="var(--color-progress)" radius={8}>
+            <ChartTooltip content={<ChartTooltipContent />} />
+            <Bar dataKey="progress" fill="var(--color-progress)" radius={4}>
               <LabelList
-                dataKey="totalHours"
+                dataKey="progress"
                 position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
-                formatter={(value: number) => value.toFixed(1)}
+                formatter={(value: number) => formatTime(value * 3600)}
               />
             </Bar>
           </BarChart>
@@ -128,17 +109,14 @@ export function StudentProgressChart() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         {trend !== 0 && (
-          <div className="flex gap-2 font-medium leading-none">
+          <div className="flex items-center gap-1 font-medium">
             {trend > 0 ? "Increased" : "Decreased"} by{" "}
-            {Math.abs(trend).toFixed(1)}% from last month{" "}
+            {Math.abs(trend).toFixed(1)}% from last month
             <TrendingUp
               className={`h-4 w-4 ${trend < 0 ? "rotate-180" : ""}`}
             />
           </div>
         )}
-        <div className="leading-none text-muted-foreground">
-          Showing your monthly study hours for the last 6 months
-        </div>
       </CardFooter>
     </Card>
   )
