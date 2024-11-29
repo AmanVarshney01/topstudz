@@ -1,30 +1,30 @@
 "use client"
-import { useRouter } from "next/navigation"
 import {
   CommandDialog,
-  CommandInput,
-  CommandList,
   CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
+  CommandList,
   CommandSeparator,
 } from "@/components/ui/command"
-import { useEffect, useState } from "react"
+import { api } from "@/convex/_generated/api"
+import { useQuery } from "convex/react"
 import {
-  LayoutDashboard,
   BookOpen,
-  Users,
-  Trophy,
-  UserPlus,
   Clock,
+  LayoutDashboard,
   Settings,
   Timer,
-  Search,
+  Trophy,
+  Users,
 } from "lucide-react"
-import { useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 import { CreateGroupDialog } from "./create-group-dialog"
 import { ScrollArea } from "./ui/scroll-area"
+import { cn } from "@/lib/utils"
+import { Button } from "./ui/button"
 
 export function CommandMenu() {
   const [open, setOpen] = useState(false)
@@ -35,7 +35,16 @@ export function CommandMenu() {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || e.key === "/") {
+        if (
+          (e.target instanceof HTMLElement && e.target.isContentEditable) ||
+          e.target instanceof HTMLInputElement ||
+          e.target instanceof HTMLTextAreaElement ||
+          e.target instanceof HTMLSelectElement
+        ) {
+          return
+        }
+
         e.preventDefault()
         setOpen((open) => !open)
       }
@@ -46,6 +55,18 @@ export function CommandMenu() {
 
   return (
     <>
+      <Button
+        variant="outline"
+        className={cn(
+          "relative h-8 w-full justify-start rounded-[0.5rem] bg-muted/50 text-sm font-normal text-muted-foreground shadow-none",
+        )}
+        onClick={() => setOpen(true)}
+      >
+        <span className="inline-flex">Search...</span>
+        <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+          <span className="text-xs">ctrl</span>K
+        </kbd>
+      </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Type command to search..." />
         <CommandList>

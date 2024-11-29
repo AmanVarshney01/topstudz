@@ -1,8 +1,5 @@
 import Link from "next/link"
-// import AuthButton from "./auth-button"
 import Logo from "./logo"
-import MobileSidebar from "./mobile-sidebar"
-import ThemeToggle from "./theme-toggle"
 import { SidebarTrigger } from "./ui/sidebar"
 
 export default function Header() {

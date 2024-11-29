@@ -154,7 +154,6 @@ export default function GroupsPage() {
           </Button>
         </CreateGroupDialog>
       </div>
-
       <Tabs defaultValue="my-groups" className="w-full">
         <TabsList className="grid w-full max-w-[400px] grid-cols-2">
           <TabsTrigger value="my-groups">My Groups</TabsTrigger>
@@ -186,7 +185,6 @@ export default function GroupsPage() {
             )}
           </ScrollArea>
         </TabsContent>
-
         <TabsContent value="discover" className="space-y-4">
           <ScrollArea className="h-[600px] pr-4">
             {suggestedGroups.length === 0 ? (

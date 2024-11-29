@@ -10,7 +10,9 @@ export default function Logo({
           Top<span className="text-blue-600">Studz</span>
         </h1>
       ) : (
-        <h1 className="text-2xl font-medium tracking-tight">TS</h1>
+        <h1 className="text-2xl font-medium tracking-tight">
+          T<span className="text-blue-600">S</span>
+        </h1>
       )}
     </div>
   )

@@ -13,6 +13,7 @@ import {
   SidebarMenuSubButton,
   SidebarSeparator,
   useSidebar,
+  SidebarRail,
 } from "./ui/sidebar"
 import Logo from "./logo"
 import { api } from "@/convex/_generated/api"
@@ -26,6 +27,8 @@ import {
 import { UserMenu } from "./user-menu"
 import { useQuery } from "convex/react"
 import { usePathname } from "next/navigation"
+import { useState } from "react"
+import { CommandMenu } from "./command-menu"
 
 const menuItems = [
   {
@@ -63,10 +66,11 @@ export default function DesktopSidebar() {
       collapsible="icon"
       className="rounded-lg border bg-background"
     >
-      <SidebarHeader className="items-center bg-background p-4">
-        <Link href="/" className="flex items-center gap-2">
+      <SidebarHeader className="w-full items-center bg-background">
+        <Link href="/" className="flex items-center gap-2 p-4 pb-2">
           <Logo variant={state === "collapsed" ? "small" : "default"} />
         </Link>
+        {state === "expanded" && <CommandMenu />}
       </SidebarHeader>
       <SidebarSeparator />
       <SidebarContent className="bg-background p-2">
@@ -113,6 +117,7 @@ export default function DesktopSidebar() {
           email={viewer?.email!}
         />
       </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   )
 }

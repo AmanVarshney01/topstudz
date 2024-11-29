@@ -1,10 +1,9 @@
-import DesktopSidebar from "@/components/desktop-sidebar"
-import { NuqsAdapter } from "nuqs/adapters/next/app"
-import Header from "@/components/header"
-import { Toaster } from "@/components/ui/sonner"
 import ConvexClientProvider from "@/components/convex-client-provider"
+import DesktopSidebar from "@/components/desktop-sidebar"
+import Header from "@/components/header"
 import { SidebarProvider } from "@/components/ui/sidebar"
-import { CommandMenu } from "@/components/command-menu"
+import { Toaster } from "@/components/ui/sonner"
+import { NuqsAdapter } from "nuqs/adapters/next/app"
 
 export default function DashboardLayout({
   children,
@@ -19,7 +18,6 @@ export default function DashboardLayout({
           <DesktopSidebar />
           <main className="w-full bg-background p-4">{children}</main>
           <Toaster richColors />
-          <CommandMenu />
         </SidebarProvider>
       </NuqsAdapter>
     </ConvexClientProvider>
