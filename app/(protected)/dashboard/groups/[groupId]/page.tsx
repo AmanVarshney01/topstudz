@@ -1,14 +1,32 @@
 "use client"
 import PageTitle from "@/components/page-title"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 import { useToast } from "@/hooks/use-toast"
+import { formatDuration } from "@/lib/utils"
 import { useMutation, useQuery } from "convex/react"
-import { Info, LogOut, MessageSquare, Users } from "lucide-react"
+import {
+  Crown,
+  Info,
+  LogOut,
+  Medal,
+  MessageSquare,
+  Trophy,
+  Users,
+} from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Chat } from "../_components/chat"
 
@@ -71,6 +89,10 @@ export default function GroupPage({ params }: { params: { groupId: string } }) {
             <Users className="h-4 w-4" />
             Members
           </TabsTrigger>
+          <TabsTrigger value="leaderboard" className="flex items-center gap-2">
+            <Trophy className="h-4 w-4" />
+            Leaderboard
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="chat" className="space-y-4">
           <Chat groupId={groupId} />
@@ -130,7 +152,94 @@ export default function GroupPage({ params }: { params: { groupId: string } }) {
             </CardContent>
           </Card>
         </TabsContent>
+        <TabsContent value="leaderboard" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Trophy className="h-5 w-5 text-yellow-500" />
+                Group Leaderboard
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <GroupLeaderboard groupId={groupId} />
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
+    </div>
+  )
+}
+
+function GroupLeaderboard({ groupId }: { groupId: Id<"groups"> }) {
+  const leaderboard = useQuery(api.leaderboards.getGroupLeaderboard, {
+    groupId,
+  })
+
+  const getRankBadge = (rank: number) => {
+    const badges = {
+      1: { icon: <Crown className="h-4 w-4" />, color: "bg-yellow-500" },
+      2: { icon: <Medal className="h-4 w-4" />, color: "bg-gray-400" },
+      3: { icon: <Medal className="h-4 w-4" />, color: "bg-amber-600" },
+    }
+    return badges[rank as keyof typeof badges]
+  }
+
+  if (!leaderboard || leaderboard.length === 0) {
+    return (
+      <div className="flex flex-col items-center p-6 text-center">
+        <Trophy className="mb-4 h-12 w-12 text-muted-foreground" />
+        <h3 className="mb-2 text-lg font-semibold">No Data Available</h3>
+        <p className="text-muted-foreground">
+          Complete some study sessions to see the leaderboard!
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="rounded-lg border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Rank</TableHead>
+            <TableHead>Student</TableHead>
+            <TableHead className="text-right">Study Time</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {leaderboard.map((leader) => (
+            <TableRow key={leader.userId}>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  {getRankBadge(leader.rank) ? (
+                    <div
+                      className={`rounded-full p-1 ${
+                        getRankBadge(leader.rank)?.color
+                      }`}
+                    >
+                      {getRankBadge(leader.rank)?.icon}
+                    </div>
+                  ) : (
+                    <span className="font-medium">#{leader.rank}</span>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src={leader.avatar} alt={leader.name} />
+                    <AvatarFallback>{leader.name[0]}</AvatarFallback>
+                  </Avatar>
+                  <span className="font-medium">{leader.name}</span>
+                </div>
+              </TableCell>
+              <TableCell className="text-right font-medium">
+                {formatDuration(leader.totalStudyTime)}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   )
 }

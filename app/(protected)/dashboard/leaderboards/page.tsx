@@ -192,12 +192,6 @@ export default function LeaderboardsPage() {
   const userRanking = useQuery(api.leaderboards.getUserRanking)
   const myGroups = useQuery(api.groups.listMyGroups)
 
-  const activeGroupId = myGroups?.[0]?._id
-  const groupLeaderboard = useQuery(
-    api.leaderboards.getGroupLeaderboard,
-    activeGroupId ? { groupId: activeGroupId } : "skip",
-  )
-
   if (!globalLeaderboard || !userRanking || !myGroups) {
     return <LoadingState />
   }
@@ -235,14 +229,6 @@ export default function LeaderboardsPage() {
           icon={<Trophy className="h-5 w-5 text-yellow-500" />}
           data={globalLeaderboard}
         />
-        {activeGroupId && groupLeaderboard && groupLeaderboard.length > 0 && (
-          <LeaderboardCard
-            title={`${myGroups[0].name} Rankings`}
-            description="Top performers in your study group"
-            icon={<Users className="h-5 w-5 text-blue-500" />}
-            data={groupLeaderboard}
-          />
-        )}
       </div>
     </div>
   )
