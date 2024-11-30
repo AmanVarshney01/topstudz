@@ -23,6 +23,13 @@ TopStudz is a modern student study management platform designed to help students
   - Group-specific leaderboards
   - Personal progress tracking
 
+- **🤖 AI Study Assistant**
+  - Personalized study advice
+  - Context-aware recommendations
+  - Real-time study habit analysis
+  - Interactive chat interface
+  - Study technique suggestions based on performance
+
 ## Tech Stack
 
 ### Frontend
@@ -33,6 +40,7 @@ TopStudz is a modern student study management platform designed to help students
 
 ### Backend
 - **Convex** - Backend application platform with real-time capabilities
+- **Google Gemini** - Advanced AI model for study assistance
 
 ## Getting Started
 
@@ -67,7 +75,10 @@ bun run dev
 topstudz/
 ├── app/                    # Next.js app directory
 │   ├── (protected)/       # Protected routes (dashboard, groups, etc.)
-│   └── signin/            # Authentication pages
+│   │   └── dashboard/
+│   ├── api/              # API routes
+│   │   └── ai-helper/   # AI assistant endpoint
+│   └── signin/           # Authentication page
 ├── components/            # Reusable UI components
 │   ├── ui/               # Base UI components (shadcn)
 │   └── ...               # Feature-specific components
@@ -77,7 +88,7 @@ topstudz/
 │   └── ...              # Backend functions
 ├── hooks/               # Custom React hooks
 ├── lib/                 # Utility functions and shared logic
-└── public/             # Static assets
+└── public/             # Static assets and favicons
 ```
 
 ## Acknowledgments
@@ -89,8 +100,7 @@ topstudz/
 
 ## Roadmap
 
-- [ ] Mobile application
-- [ ] Study material sharing
-- [ ] AI-powered study recommendations
+- [x] AI-powered study recommendations
+- [x] Mobile application (PWA)
 - [ ] Integration with calendar apps
 - [ ] Advanced analytics and insights
