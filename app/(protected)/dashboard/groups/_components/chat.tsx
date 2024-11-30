@@ -54,7 +54,7 @@ export function Chat({ groupId }: ChatProps) {
         style={{ height: "calc(100% - 80px)" }}
       >
         {messages.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center text-center text-muted-foreground">
+          <div className="flex h-full flex-col items-center justify-center py-10 text-center text-muted-foreground">
             <User className="mb-4 h-12 w-12" />
             <h3 className="mb-2 text-lg font-semibold">
               Start chatting with your group

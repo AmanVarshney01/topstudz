@@ -1,26 +1,33 @@
 "use client"
 
-import { useChat } from "ai/react"
-import { useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
 import PageTitle from "@/components/page-title"
-import { Card } from "@/components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { api } from "@/convex/_generated/api"
+import { cn } from "@/lib/utils"
+import { useChat } from "ai/react"
+import { useQuery } from "convex/react"
 import {
   Bot,
-  User,
-  Send,
-  RefreshCw,
-  StopCircle,
   Loader2,
+  RefreshCw,
+  Send,
+  StopCircle,
   TrashIcon,
+  User,
 } from "lucide-react"
-import { useRef, useEffect } from "react"
-import { cn } from "@/lib/utils"
+import { useEffect, useRef } from "react"
 import { toast } from "sonner"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
+const PREDEFINED_MESSAGES = [
+  "How can I improve my study focus?",
+  "What's the best study technique for me based on my stats?",
+  "Give me tips for better time management",
+  "How can I make my study sessions more effective?",
+] as const
 
 export default function AIHelperPage() {
   const getStudyStats = useQuery(api.study.getFullStats)
@@ -37,6 +44,7 @@ export default function AIHelperPage() {
     error,
     reload,
     stop,
+    append,
     setMessages,
   } = useChat({
     api: "/api/ai-helper",
@@ -82,22 +90,36 @@ export default function AIHelperPage() {
           Clear Chat
         </Button>
       </div>
-
       <Card className="flex h-[calc(100svh-120px)] flex-col">
         <ScrollArea
           className="flex-1 p-4"
           style={{ height: "calc(100% - 80px)" }}
         >
           {messages.length === 0 ? (
-            <div className="flex h-full flex-col items-center justify-center text-center text-muted-foreground">
+            <div className="flex h-full flex-col items-center justify-center py-10 text-center text-muted-foreground">
               <Bot className="mb-4 h-12 w-12" />
               <h3 className="mb-2 text-lg font-semibold">
                 How can I help you study better?
               </h3>
-              <p className="max-w-sm text-sm">
+              <p className="mb-6 max-w-sm text-sm">
                 Ask me anything about study techniques, time management, or get
                 personalized advice based on your study patterns.
               </p>
+              <div className="grid w-full max-w-2xl grid-cols-1 gap-2 md:grid-cols-2">
+                {PREDEFINED_MESSAGES.map((message) => (
+                  <Button
+                    key={message}
+                    variant="outline"
+                    className="h-auto whitespace-normal text-left text-sm"
+                    onClick={() => {
+                      append({ role: "user", content: message })
+                    }}
+                    disabled={isLoading}
+                  >
+                    {message}
+                  </Button>
+                ))}
+              </div>
             </div>
           ) : (
             <div className="space-y-4">
@@ -133,6 +155,14 @@ export default function AIHelperPage() {
                   </div>
                 </div>
               ))}
+              {error && (
+                <>
+                  <div>An error occurred.</div>
+                  <button type="button" onClick={() => reload()}>
+                    Retry
+                  </button>
+                </>
+              )}
               {isLoading && (
                 <div className="flex gap-3">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
@@ -148,7 +178,6 @@ export default function AIHelperPage() {
             </div>
           )}
         </ScrollArea>
-
         <div className="border-t p-4">
           <form onSubmit={handleSubmit} className="flex items-center gap-2">
             <Input
