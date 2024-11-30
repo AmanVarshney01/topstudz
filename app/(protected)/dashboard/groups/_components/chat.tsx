@@ -10,6 +10,7 @@ import { useState, useEffect, useRef, useMemo } from "react"
 import { toast } from "sonner"
 import { Send, User } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 interface ChatProps {
   groupId: Id<"groups">
@@ -21,12 +22,10 @@ export function Chat({ groupId }: ChatProps) {
   const rawMessages = useQuery(api.messages.list, { groupId })
   const messages = useMemo(() => rawMessages || [], [rawMessages])
   const sendMessage = useMutation(api.messages.send)
-  const scrollAreaRef = useRef<HTMLDivElement>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
   useEffect(() => {
@@ -51,7 +50,6 @@ export function Chat({ groupId }: ChatProps) {
   return (
     <Card className="flex h-[calc(100svh-170px)] flex-col">
       <ScrollArea
-        ref={scrollAreaRef}
         className="flex-1 p-4"
         style={{ height: "calc(100% - 80px)" }}
       >
@@ -85,7 +83,12 @@ export function Chat({ groupId }: ChatProps) {
                         : "bg-muted",
                     )}
                   >
-                    <User className="h-4 w-4" />
+                    <Avatar className="size-8">
+                      <AvatarImage src={message.authorImage} />
+                      <AvatarFallback>
+                        <User />
+                      </AvatarFallback>
+                    </Avatar>
                   </div>
                   <div className="flex flex-col gap-1">
                     <span
@@ -96,20 +99,14 @@ export function Chat({ groupId }: ChatProps) {
                     >
                       {message.author}
                     </span>
-                    <div
-                      className={cn(
-                        "rounded-lg px-4 py-3",
-                        isCurrentUser
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-muted",
-                      )}
-                    >
+                    <div className={cn("rounded-lg bg-muted px-4 py-3")}>
                       {message.body}
                     </div>
                   </div>
                 </div>
               )
             })}
+            <div ref={messagesEndRef} />
           </div>
         )}
       </ScrollArea>

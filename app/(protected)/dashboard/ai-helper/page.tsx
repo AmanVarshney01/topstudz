@@ -26,7 +26,6 @@ export default function AIHelperPage() {
   const getStudyStats = useQuery(api.study.getFullStats)
   const listMyGroups = useQuery(api.groups.listMyGroups)
   const user = useQuery(api.users.viewer)
-  const scrollAreaRef = useRef<HTMLDivElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const {
@@ -86,7 +85,6 @@ export default function AIHelperPage() {
 
       <Card className="flex h-[calc(100svh-120px)] flex-col">
         <ScrollArea
-          ref={scrollAreaRef}
           className="flex-1 p-4"
           style={{ height: "calc(100% - 80px)" }}
         >
@@ -130,14 +128,7 @@ export default function AIHelperPage() {
                       <Bot className="size-6" />
                     )}
                   </div>
-                  <div
-                    className={cn(
-                      "rounded-lg px-4 py-3",
-                      message.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted",
-                    )}
-                  >
+                  <div className={cn("rounded-lg bg-muted px-4 py-3")}>
                     {message.content}
                   </div>
                 </div>

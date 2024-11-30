@@ -19,9 +19,11 @@ export const list = query({
         const user = await ctx.db.get(message.userId)
         const name = user?.name
         const email = user?.email
+        const image = user?.image
         return {
           ...message,
           author: name ?? email ?? "Unknown",
+          authorImage: image,
         }
       }),
     )
