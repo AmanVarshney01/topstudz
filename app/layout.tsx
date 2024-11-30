@@ -2,6 +2,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import type { Metadata } from "next"
 import { Inter as FontSans } from "next/font/google"
 import "./globals.css"
+import { Analytics } from "@vercel/analytics/react"
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server"
 
 import { cn } from "@/lib/utils"
@@ -38,6 +39,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <Analytics />
           </ThemeProvider>
         </body>
       </html>
