@@ -5,12 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { api } from "@/convex/_generated/api"
-import { useToast } from "@/hooks/use-toast"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { useMutation, useQuery } from "convex/react"
 import {
-  BookOpen,
   ChartBar,
   Clock,
   History,
@@ -22,6 +20,7 @@ import {
 } from "lucide-react"
 import { useQueryState } from "nuqs"
 import { useEffect } from "react"
+import { toast } from "sonner"
 
 const formatTime = (time: number) => {
   const minutes = Math.floor(time / 60)
@@ -205,7 +204,6 @@ function RecentSessions({ sessions }: { sessions: any[] }) {
 }
 
 export default function StudyPage() {
-  const { toast } = useToast()
   const [studyTime, setStudyTime] = useQueryState("studyTime", {
     defaultValue: 0,
     parse: (value) => Number(value),
@@ -260,7 +258,6 @@ export default function StudyPage() {
     return () => clearInterval(interval)
   }, [isStudying, studyDuration])
 
-  // Handlers
   const handleSessionComplete = (time: number) => {
     setIsStudying(false)
     completeSession({
@@ -268,10 +265,7 @@ export default function StudyPage() {
       type: "study",
       completed: true,
     })
-    toast({
-      title: "Study Session Complete!",
-      description: "Great job! Take a break if you need one.",
-    })
+    toast.success("Great job! Take a break if you need one.")
     if (Notification.permission === "granted") {
       new Notification("Study Session Complete!", {
         body: "Great job! Take a break if you need one.",
@@ -287,15 +281,9 @@ export default function StudyPage() {
         type: "study",
         completed: false,
       })
-      toast({
-        title: "Session Paused",
-        description: `Study session paused at ${formatTime(studyTime)}.`,
-      })
+      toast.success(`Study session paused at ${formatTime(studyTime)}.`)
     } else {
-      toast({
-        title: "Session Started",
-        description: "Study session started.",
-      })
+      toast.success("Study session started.")
     }
     setIsStudying(!isStudying)
   }
@@ -310,35 +298,22 @@ export default function StudyPage() {
     }
     setStudyTime(0)
     setIsStudying(false)
-    toast({
-      title: "Timer Reset",
-      description: "Timer has been reset to 0.",
-    })
+    toast.success("Timer has been reset to 0.")
   }
 
   const handleSaveSettings = async () => {
     try {
       await updateSettings({ studyDuration })
-      toast({
-        title: "Settings Saved",
-        description: "Your study settings have been saved to your account.",
-      })
+      toast.success("Your study settings have been saved to your account.")
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to save settings.",
-        variant: "destructive",
-      })
+      toast.error("Failed to save settings.")
     }
   }
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDuration = Math.max(1, Number(e.target.value)) * 60
     setStudyDuration(newDuration)
-    toast({
-      title: "Study Duration Updated",
-      description: `Study duration set to ${e.target.value} minutes.`,
-    })
+    toast.success(`Study duration set to ${e.target.value} minutes.`)
   }
 
   const progress = (studyTime / studyDuration) * 100

@@ -176,7 +176,7 @@ function LoadingState() {
   return (
     <div className="grid grid-rows-[auto_1fr] px-2 py-4">
       <div className="flex items-center justify-between">
-        <Skeleton className="h-8 w-48" />
+        <Skeleton className="mb-4 h-8 w-48" />
         <Skeleton className="h-9 w-32" />
       </div>
       <div className="space-y-4">

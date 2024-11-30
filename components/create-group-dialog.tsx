@@ -7,17 +7,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Plus } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
-import { useMutation } from "convex/react"
-import { api } from "@/convex/_generated/api"
-import { useRouter } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
 import {
   Form,
   FormControl,
@@ -26,6 +15,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { api } from "@/convex/_generated/api"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation } from "convex/react"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import * as z from "zod"
 
 const formSchema = z.object({
   name: z.string().min(1, "Group name is required"),
@@ -44,7 +42,6 @@ export function CreateGroupDialog({
   children?: React.ReactNode
 }) {
   const router = useRouter()
-  const { toast } = useToast()
   const createGroup = useMutation(api.groups.create)
 
   const form = useForm<FormValues>({
@@ -61,19 +58,12 @@ export function CreateGroupDialog({
         name: values.name,
         description: values.description,
       })
-      toast({
-        title: "Success",
-        description: "Group created successfully",
-      })
+      toast.success("Group created successfully")
       form.reset()
       setOpen(false)
       router.push(`/dashboard/groups/${newGroup}`)
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to create group",
-        variant: "destructive",
-      })
+      toast.error("Failed to create group")
     }
   }
 

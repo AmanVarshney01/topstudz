@@ -24,16 +24,15 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
-import { useToast } from "@/hooks/use-toast"
 import { useMutation, useQuery } from "convex/react"
 import { Plus, Search, Users, UserPlus, Info, ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { CreateGroupDialog } from "@/components/create-group-dialog"
+import { toast } from "sonner"
 
 export default function GroupsPage() {
   const router = useRouter()
-  const { toast } = useToast()
   const [searchQuery, setSearchQuery] = useState("")
   const [newGroupName, setNewGroupName] = useState("")
   const [newGroupDescription, setNewGroupDescription] = useState("")
@@ -53,41 +52,12 @@ export default function GroupsPage() {
     (group) => !myGroups.some((myGroup) => myGroup._id === group._id),
   )
 
-  const handleCreateGroup = async () => {
-    try {
-      await createGroup({
-        name: newGroupName,
-        description: newGroupDescription,
-      })
-      toast({
-        title: "Success",
-        description: "Group created successfully",
-      })
-      setNewGroupName("")
-      setNewGroupDescription("")
-      setIsCreateDialogOpen(false)
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to create group",
-        variant: "destructive",
-      })
-    }
-  }
-
   const handleJoinGroup = async (groupId: Id<"groups">) => {
     try {
       await joinGroup({ groupId })
-      toast({
-        title: "Success",
-        description: "Joined group successfully",
-      })
+      toast.success("Joined group successfully")
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to join group",
-        variant: "destructive",
-      })
+      toast.error("Failed to join group")
     }
   }
 

@@ -3,18 +3,17 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { useToast } from "@/hooks/use-toast"
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 import { useMutation, useQuery } from "convex/react"
 import { useState, useEffect, useRef, useMemo } from "react"
+import { toast } from "sonner"
 
 interface ChatProps {
   groupId: Id<"groups">
 }
 
 export function Chat({ groupId }: ChatProps) {
-  const { toast } = useToast()
   const currentUser = useQuery(api.users.viewer)
   const [message, setMessage] = useState("")
   const rawMessages = useQuery(api.messages.list, { groupId })
@@ -41,11 +40,7 @@ export function Chat({ groupId }: ChatProps) {
       })
       setMessage("")
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to send message",
-        variant: "destructive",
-      })
+      toast.error("Failed to send message")
     }
   }
 

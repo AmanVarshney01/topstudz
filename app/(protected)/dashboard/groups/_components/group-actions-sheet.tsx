@@ -1,18 +1,3 @@
-import { Button } from "@/components/ui/button"
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
-import { api } from "@/convex/_generated/api"
-import { Id } from "@/convex/_generated/dataModel"
-import { useToast } from "@/hooks/use-toast"
-import { useMutation } from "convex/react"
-import { Info, LogOut, Trash2, Users } from "lucide-react"
-import { useRouter } from "next/navigation"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +9,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import { api } from "@/convex/_generated/api"
+import { Id } from "@/convex/_generated/dataModel"
+import { useMutation } from "convex/react"
+import { Info, LogOut, Trash2, Users } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 interface GroupActionsSheetProps {
   group: {
@@ -50,44 +50,28 @@ export function GroupActionsSheet({
   isCreator,
 }: GroupActionsSheetProps) {
   const router = useRouter()
-  const { toast } = useToast()
   const leaveGroup = useMutation(api.groups.leave)
   const deleteGroup = useMutation(api.groups.deleteGroup)
 
   const handleLeaveGroup = async () => {
     try {
       await leaveGroup({ groupId: group._id })
-      toast({
-        title: "Success",
-        description: "Left group successfully",
-      })
+      toast.success("Left group successfully")
       router.push("/dashboard/groups")
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to leave group",
-        variant: "destructive",
-      })
+      toast.error("Failed to leave group")
     }
   }
 
   const handleDeleteGroup = async () => {
     try {
       await deleteGroup({ groupId: group._id })
-      toast({
-        title: "Success",
-        description: "Group deleted successfully",
-      })
+      toast.success("Group deleted successfully")
       router.push("/dashboard/groups")
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to delete group",
-        variant: "destructive",
-      })
+      toast.error("Failed to delete group")
     }
   }
-
   return (
     <Sheet>
       <SheetTrigger asChild>
