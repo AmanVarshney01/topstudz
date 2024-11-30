@@ -20,12 +20,14 @@ import {
 import { useRef, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default function AIHelperPage() {
-  const getStudyStats = useQuery(api.study.getStats)
+  const getStudyStats = useQuery(api.study.getFullStats)
   const listMyGroups = useQuery(api.groups.listMyGroups)
   const user = useQuery(api.users.viewer)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const {
     messages,
@@ -55,9 +57,7 @@ export default function AIHelperPage() {
   })
 
   const scrollToBottom = () => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
   useEffect(() => {
@@ -120,9 +120,14 @@ export default function AIHelperPage() {
                     )}
                   >
                     {message.role === "user" ? (
-                      <User className="h-4 w-4" />
+                      <Avatar className="size-8">
+                        <AvatarImage src={user?.image} />
+                        <AvatarFallback>
+                          <User />
+                        </AvatarFallback>
+                      </Avatar>
                     ) : (
-                      <Bot className="h-4 w-4" />
+                      <Bot className="size-6" />
                     )}
                   </div>
                   <div
@@ -148,6 +153,7 @@ export default function AIHelperPage() {
                   </div>
                 </div>
               )}
+              <div ref={messagesEndRef} />
             </div>
           )}
         </ScrollArea>

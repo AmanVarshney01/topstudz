@@ -121,3 +121,56 @@ export const getStats = query({
     }
   },
 })
+
+export const getFullStats = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx)
+    if (!userId) throw new Error("Not authenticated")
+
+    const settings = await ctx.db
+      .query("studySettings")
+      .filter((q) => q.eq(q.field("userId"), userId))
+      .first()
+
+    const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000
+    const recentSessions = await ctx.db
+      .query("studySessions")
+      .filter((q) =>
+        q.and(
+          q.eq(q.field("userId"), userId),
+          q.gt(q.field("startTime"), sevenDaysAgo),
+        ),
+      )
+      .order("desc")
+      .collect()
+
+    const completedSessions = recentSessions.filter(
+      (session) => session.completed,
+    )
+    const totalSessionsCount = recentSessions.length
+    const completedSessionsCount = completedSessions.length
+
+    return {
+      totalStudyTime: settings?.totalStudyTime ?? 0,
+      studyDuration: settings?.studyDuration ?? 25 * 60,
+      recentSessions: recentSessions.map((session) => ({
+        startTime: new Date(session.startTime).toISOString(),
+        endTime: session.endTime
+          ? new Date(session.endTime).toISOString()
+          : null,
+        duration: session.duration,
+        type: session.type,
+        completed: session.completed,
+      })),
+      stats: {
+        totalSessions: totalSessionsCount,
+        completedSessions: completedSessionsCount,
+        completionRate:
+          totalSessionsCount > 0
+            ? ((completedSessionsCount / totalSessionsCount) * 100).toFixed(1)
+            : 0,
+      },
+    }
+  },
+})
