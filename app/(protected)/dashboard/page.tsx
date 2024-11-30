@@ -78,7 +78,6 @@ export default function DashboardPage() {
   return (
     <div>
       <PageTitle title="Dashboard" />
-
       <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statsCards.map((card, index) => (
           <StatsCard key={index} {...card} />

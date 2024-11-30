@@ -1,34 +1,27 @@
 "use client"
+import { api } from "@/convex/_generated/api"
+import { useQuery } from "convex/react"
+import { BookOpen, Bot, LayoutDashboard, Trophy, Users } from "lucide-react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { CommandMenu } from "./command-menu"
+import Logo from "./logo"
 import {
   Sidebar,
   SidebarContent,
-  SidebarHeader,
   SidebarFooter,
+  SidebarHeader,
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
   SidebarMenuSub,
-  SidebarMenuSubItem,
   SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarRail,
   SidebarSeparator,
   useSidebar,
-  SidebarRail,
 } from "./ui/sidebar"
-import Logo from "./logo"
-import { api } from "@/convex/_generated/api"
-import {
-  LayoutDashboard,
-  BookOpen,
-  Users,
-  Trophy,
-  UserPlus,
-} from "lucide-react"
 import { UserMenu } from "./user-menu"
-import { useQuery } from "convex/react"
-import { usePathname } from "next/navigation"
-import { useState } from "react"
-import { CommandMenu } from "./command-menu"
 
 const menuItems = [
   {
@@ -45,12 +38,17 @@ const menuItems = [
     name: "Groups",
     href: "/dashboard/groups",
     icon: Users,
-    hasSubMenu: true, // Add this to indicate it has a submenu
+    hasSubMenu: true,
   },
   {
     name: "Leaderboards",
     href: "/dashboard/leaderboards",
     icon: Trophy,
+  },
+  {
+    name: "AI Helper",
+    href: "/dashboard/ai-helper",
+    icon: Bot,
   },
 ]
 

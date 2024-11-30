@@ -75,6 +75,15 @@ export function CommandMenu() {
             <CommandGroup heading="Navigation">
               <CommandItem
                 onSelect={() => {
+                  router.push("/dashboard/ai-helper")
+                  setOpen(false)
+                }}
+              >
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Go to AI Helper
+              </CommandItem>
+              <CommandItem
+                onSelect={() => {
                   router.push("/dashboard")
                   setOpen(false)
                 }}
