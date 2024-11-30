@@ -1,207 +1,18 @@
 "use client"
 import PageTitle from "@/components/page-title"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Progress } from "@/components/ui/progress"
+import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { api } from "@/convex/_generated/api"
 import { useMutation, useQuery } from "convex/react"
-import {
-  ChartBar,
-  Clock,
-  History,
-  Pause,
-  Play,
-  RotateCcw,
-  Save,
-  Settings,
-} from "lucide-react"
 import { useQueryState } from "nuqs"
 import { useEffect } from "react"
 import { toast } from "sonner"
-
-const formatTime = (time: number) => {
-  const minutes = Math.floor(time / 60)
-  const seconds = time % 60
-  return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
-}
-
-const formatHours = (time: number) => {
-  const hours = Math.floor(time / 3600)
-  const minutes = Math.floor((time % 3600) / 60)
-  return `${hours}h ${minutes}m`
-}
-
-function StudyTimer({
-  studyTime,
-  studyDuration,
-  isStudying,
-  onStartStop,
-  onReset,
-}: {
-  studyTime: number
-  studyDuration: number
-  isStudying: boolean
-  onStartStop: () => void
-  onReset: () => void
-}) {
-  const progress = (studyTime / studyDuration) * 100
-
-  return (
-    <Card className="border-2">
-      <CardHeader>
-        <CardTitle className="flex items-center justify-center text-2xl">
-          <Clock className="mr-3 h-8 w-8" />
-          Study Timer
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="text-center text-7xl font-bold tracking-tighter">
-          {formatTime(studyTime)}
-        </div>
-        <Progress value={Math.min(progress, 100)} className="h-3" />
-        <div className="flex justify-center gap-4">
-          <Button size="lg" onClick={onStartStop} className="w-32">
-            {isStudying ? (
-              <>
-                <Pause className="mr-2 h-4 w-4" />
-                Pause
-              </>
-            ) : (
-              <>
-                <Play className="mr-2 h-4 w-4" />
-                Start
-              </>
-            )}
-          </Button>
-          <Button
-            size="lg"
-            onClick={onReset}
-            variant="outline"
-            className="w-32"
-          >
-            <RotateCcw className="mr-2 h-4 w-4" />
-            Reset
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
-function StudySettings({
-  studyDuration,
-  onDurationChange,
-  onSave,
-}: {
-  studyDuration: number
-  onDurationChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onSave: () => void
-}) {
-  return (
-    <Card className="h-full">
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <Settings className="mr-2 h-5 w-5" /> Study Settings
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="study-goal">Study Duration (minutes)</Label>
-            <Input
-              id="study-goal"
-              type="number"
-              value={studyDuration / 60}
-              onChange={onDurationChange}
-              min={1}
-              className="text-lg"
-            />
-          </div>
-          <Button className="w-full" onClick={onSave} variant="outline">
-            <Save className="mr-2 h-4 w-4" />
-            Save Settings
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
-function StudyStats({
-  studyTime,
-  progress,
-  totalStudyTime,
-}: {
-  studyTime: number
-  progress: number
-  totalStudyTime: number
-}) {
-  return (
-    <Card className="h-full">
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <ChartBar className="mr-2 h-5 w-5" /> Study Statistics
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div className="rounded-lg border p-4">
-            <p className="text-sm text-muted-foreground">Current Session</p>
-            <p className="text-2xl font-bold">{formatTime(studyTime)}</p>
-          </div>
-          <div className="rounded-lg border p-4">
-            <p className="text-sm text-muted-foreground">Progress</p>
-            <p className="text-2xl font-bold">
-              {Math.min(Math.round(progress), 100)}%
-            </p>
-          </div>
-          <div className="rounded-lg border p-4">
-            <p className="text-sm text-muted-foreground">Total Study Time</p>
-            <p className="text-2xl font-bold">{formatHours(totalStudyTime)}</p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
-function RecentSessions({ sessions }: { sessions: any[] }) {
-  return (
-    <Card className="h-full">
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <History className="mr-2 h-5 w-5" /> Study History
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="max-h-[400px] space-y-4 overflow-y-auto">
-          {sessions.map((session) => (
-            <div
-              key={session._id}
-              className="flex items-center justify-between rounded-lg border p-4 transition-colors hover:bg-accent"
-            >
-              <div>
-                <p className="font-medium">Study Session</p>
-                <p className="text-sm text-muted-foreground">
-                  {new Date(session.startTime).toLocaleString()}
-                </p>
-              </div>
-              <div className="text-right">
-                <p className="font-medium">{formatTime(session.duration)}</p>
-                <p className="text-sm text-muted-foreground">
-                  {session.completed ? "Completed" : "Incomplete"}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
+import RecentSessions from "./_components/recent-sessions"
+import StudySettings from "./_components/study-settings"
+import StudyStats from "./_components/study-stats"
+import StudyTimer from "./_components/study-timer"
+import NotificationPermission from "./_components/notification-permission"
+import { formatTimeTimer } from "@/lib/utils"
 
 export default function StudyPage() {
   const [studyTime, setStudyTime] = useQueryState("studyTime", {
@@ -227,6 +38,21 @@ export default function StudyPage() {
   const completeSession = useMutation(api.study.completeSession)
   const stats = useQuery(api.study.getStats)
 
+  const showNotification = (title: string, body: string) => {
+    if (
+      typeof window !== "undefined" &&
+      "Notification" in window &&
+      Notification.permission === "granted"
+    ) {
+      new Notification(title, {
+        body,
+        icon: "/favicon.ico",
+        badge: "/favicon.ico",
+        tag: "study-notification",
+      })
+    }
+  }
+
   useEffect(() => {
     if (settings) {
       setStudyDuration(settings.studyDuration)
@@ -234,7 +60,7 @@ export default function StudyPage() {
   }, [settings, setStudyDuration])
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && "Notification" in window) {
       Notification.requestPermission()
     }
   }, [])
@@ -265,13 +91,13 @@ export default function StudyPage() {
       type: "study",
       completed: true,
     })
+
+    showNotification(
+      "Study Session Complete! 🎉",
+      `Great job! You studied for ${formatTimeTimer(time)}`,
+    )
+
     toast.success("Great job! Take a break if you need one.")
-    if (Notification.permission === "granted") {
-      new Notification("Study Session Complete!", {
-        body: "Great job! Take a break if you need one.",
-        icon: "/favicon.ico",
-      })
-    }
   }
 
   const handleStartStop = () => {
@@ -281,7 +107,7 @@ export default function StudyPage() {
         type: "study",
         completed: false,
       })
-      toast.success(`Study session paused at ${formatTime(studyTime)}.`)
+      toast.success(`Study session paused at ${formatTimeTimer(studyTime)}.`)
     } else {
       toast.success("Study session started.")
     }
@@ -321,7 +147,7 @@ export default function StudyPage() {
   return (
     <div className="">
       <PageTitle title="Study Dashboard" />
-
+      <NotificationPermission />
       <div className="grid gap-6">
         <StudyTimer
           studyTime={studyTime}

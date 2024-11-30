@@ -96,7 +96,7 @@ export default function Home() {
         </div>
         <section className="relative mx-auto space-y-8 py-24 sm:py-32">
           <div className="mx-auto flex max-w-[64rem] flex-col items-center gap-4 text-center">
-            <h1 className="text-4xl font-bold sm:text-6xl">
+            <h1 className="text-pretty text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl">
               Your Path to Academic
               <span className="text-primary">Excellence</span>
             </h1>
