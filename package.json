@@ -16,7 +16,6 @@
     "@auth/core": "^0.34.2",
     "@convex-dev/auth": "^0.0.71",
     "@hookform/resolvers": "^3.9.1",
-    "@libsql/client": "^0.7.0",
     "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",

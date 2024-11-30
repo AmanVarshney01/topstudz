@@ -1,53 +1,29 @@
 "use client"
+import { CreateGroupDialog } from "@/components/create-group-dialog"
 import PageTitle from "@/components/page-title"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 import { useMutation, useQuery } from "convex/react"
-import { Plus, Search, Users, UserPlus, Info, ArrowRight } from "lucide-react"
+import { ArrowRight, Info, Plus, Search, UserPlus } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { CreateGroupDialog } from "@/components/create-group-dialog"
 import { toast } from "sonner"
 
 export default function GroupsPage() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
-  const [newGroupName, setNewGroupName] = useState("")
-  const [newGroupDescription, setNewGroupDescription] = useState("")
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-
+  const [isCreateGroupDialogOpen, setIsCreateGroupDialogOpen] = useState(false)
   const myGroups = useQuery(api.groups.listMyGroups) || []
   const allGroups = useQuery(api.groups.list, { limit: 50 }) || []
-
-  const createGroup = useMutation(api.groups.create)
   const joinGroup = useMutation(api.groups.join)
-
   const filteredMyGroups = myGroups.filter((group) =>
     group.name.toLowerCase().includes(searchQuery.toLowerCase()),
   )
-
   const suggestedGroups = allGroups.filter(
     (group) => !myGroups.some((myGroup) => myGroup._id === group._id),
   )
@@ -94,8 +70,6 @@ export default function GroupsPage() {
       </div>
     </div>
   )
-
-  const [isCreateGroupDialogOpen, setIsCreateGroupDialogOpen] = useState(false)
 
   return (
     <div>
