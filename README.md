@@ -101,6 +101,7 @@ topstudz/
 ## Roadmap
 
 - [x] AI-powered study recommendations
-- [x] Mobile application (PWA)
-- [ ] Integration with calendar apps
+- [x] PWA support
+- [x] Onboarding
+- [ ] Gamification and rewards system
 - [ ] Advanced analytics and insights

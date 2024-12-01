@@ -70,7 +70,7 @@ function NavGroupsSkeleton() {
     <SidebarMenu>
       {Array.from({ length: 3 }).map((_, index) => (
         <SidebarMenuItem key={index}>
-          <SidebarMenuSkeleton showIcon />
+          <SidebarMenuSkeleton />
         </SidebarMenuItem>
       ))}
     </SidebarMenu>

@@ -29,6 +29,7 @@ export const getSettings = query({
 export const updateSettings = mutation({
   args: {
     studyDuration: v.number(),
+    dailyGoal: v.number(),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx)
@@ -42,12 +43,14 @@ export const updateSettings = mutation({
     if (existing) {
       await ctx.db.patch(existing._id, {
         studyDuration: args.studyDuration,
+        dailyGoal: args.dailyGoal,
         lastUpdated: Date.now(),
       })
     } else {
       await ctx.db.insert("studySettings", {
         userId,
         studyDuration: args.studyDuration,
+        dailyGoal: args.dailyGoal ?? 120 * 60,
         totalStudyTime: 0,
         lastUpdated: Date.now(),
       })
@@ -86,8 +89,6 @@ export const completeSession = mutation({
         })
       }
     }
-
-    // Record the session
     await ctx.db.insert("studySessions", {
       userId,
       startTime: Date.now() - args.duration * 1000,
@@ -155,6 +156,7 @@ export const getFullStats = query({
     return {
       totalStudyTime: settings?.totalStudyTime ?? 0,
       studyDuration: settings?.studyDuration ?? 25 * 60,
+      dailyGoal: settings?.dailyGoal ?? 120 * 60,
       recentSessions: recentSessions.map((session) => ({
         startTime: new Date(session.startTime).toISOString(),
         endTime: session.endTime

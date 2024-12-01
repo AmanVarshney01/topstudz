@@ -38,6 +38,19 @@ export function Chat({ groupId }: ChatProps) {
     if (!message.trim()) return
 
     try {
+      const profanityCheck = await fetch("https://vector.profanity.dev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: message.trim() }),
+      })
+
+      const result = await profanityCheck.json()
+
+      if (result.isProfanity) {
+        toast.error("Message contains inappropriate content")
+        return
+      }
+
       await sendMessage({
         groupId,
         body: message.trim(),

@@ -5,23 +5,26 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { api } from "@/convex/_generated/api"
 import { formatTime } from "@/lib/utils"
 import { useQuery } from "convex/react"
-import { BookOpen, Calendar, Clock } from "lucide-react"
+import { BookOpen, Calendar, Clock, Target } from "lucide-react"
 import { StudentProgressChart } from "./_components/student-progress-chart"
 import StudyDurationChart from "./_components/study-duration-progress-chart"
 import StudySessionDistribution from "./_components/study-session-distribution-chart"
 import { StudySessionsChart } from "./_components/study-sessions-chart"
 import OnboardingDialogTrigger from "@/components/onboarding-dialog-trigger"
+import { Progress } from "@/components/ui/progress"
 
 function StatsCard({
   title,
   value,
   description,
   icon,
+  progress,
 }: {
   title: string
   value: string
   description: string
   icon: React.ReactNode
+  progress?: number
 }) {
   return (
     <Card>
@@ -34,6 +37,20 @@ function StatsCard({
           <span className="text-2xl font-bold">{value}</span>
         </div>
         <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+        {progress !== undefined && (
+          <Progress
+            value={progress}
+            className="mt-2"
+            style={{
+              background:
+                progress < 30
+                  ? "var(--red-100)"
+                  : progress < 70
+                    ? "var(--yellow-100)"
+                    : "var(--green-100)",
+            }}
+          />
+        )}
       </CardContent>
     </Card>
   )
@@ -48,9 +65,22 @@ export default function DashboardPage() {
     return <LoadingSkeleton />
   }
 
-  const completedSessions = stats.recentSessions.filter(
-    (session) => session.completed,
-  ).length
+  const startOfDay = new Date()
+  startOfDay.setHours(0, 0, 0, 0)
+
+  const todaysSessions = stats.recentSessions.filter(
+    (session) => new Date(session.startTime) >= startOfDay && session.completed,
+  )
+
+  const todaysStudyTime = todaysSessions.reduce(
+    (acc, session) => acc + session.duration,
+    0,
+  )
+
+  const dailyProgressPercentage = Math.min(
+    100,
+    (todaysStudyTime / stats.dailyGoal) * 100,
+  )
 
   const statsCards = [
     {
@@ -60,8 +90,15 @@ export default function DashboardPage() {
       icon: <Clock className="h-4 w-4 text-muted-foreground" />,
     },
     {
+      title: "Daily Goal Progress",
+      value: `${Math.round(dailyProgressPercentage)}%`,
+      description: `${todaysStudyTime} / ${stats.dailyGoal} minutes today`,
+      icon: <Target className="h-4 w-4 text-muted-foreground" />,
+      progress: dailyProgressPercentage,
+    },
+    {
       title: "Completed Sessions",
-      value: completedSessions.toString(),
+      value: stats.stats.completedSessions.toString(),
       description: "Recent study sessions completed",
       icon: <BookOpen className="h-4 w-4 text-muted-foreground" />,
     },
@@ -102,7 +139,7 @@ function LoadingSkeleton() {
       <Skeleton className="mb-4 h-8 w-[200px]" />
 
       <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {[1, 2, 3].map((i) => (
+        {[1, 2, 3, 4].map((i) => (
           <Card key={i}>
             <CardHeader>
               <Skeleton className="h-4 w-[150px]" />

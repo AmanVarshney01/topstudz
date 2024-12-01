@@ -28,6 +28,11 @@ export default function StudyPage() {
     parse: (value) => Number(value),
   })
 
+  const [dailyGoal, setDailyGoal] = useQueryState("dailyGoal", {
+    defaultValue: 120 * 60,
+    parse: (value) => Number(value),
+  })
+
   const [activeTab, setActiveTab] = useQueryState("tab", {
     defaultValue: "stats",
     parse: (value) => value as "stats" | "settings" | "history",
@@ -52,12 +57,6 @@ export default function StudyPage() {
       })
     }
   }
-
-  useEffect(() => {
-    if (settings) {
-      setStudyDuration(settings.studyDuration)
-    }
-  }, [settings, setStudyDuration])
 
   useEffect(() => {
     if (typeof window !== "undefined" && "Notification" in window) {
@@ -100,6 +99,12 @@ export default function StudyPage() {
     toast.success("Great job! Take a break if you need one.")
   }
 
+  const handleDailyGoalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newGoal = Math.max(1, Number(e.target.value)) * 60
+    setDailyGoal(newGoal)
+    toast.success(`Daily goal set to ${e.target.value} minutes.`)
+  }
+
   const handleStartStop = () => {
     if (isStudying) {
       completeSession({
@@ -129,7 +134,10 @@ export default function StudyPage() {
 
   const handleSaveSettings = async () => {
     try {
-      await updateSettings({ studyDuration })
+      await updateSettings({
+        studyDuration,
+        dailyGoal,
+      })
       toast.success("Your study settings have been saved to your account.")
     } catch (error) {
       toast.error("Failed to save settings.")
@@ -175,7 +183,9 @@ export default function StudyPage() {
           <TabsContent value="settings" className="mt-6">
             <StudySettings
               studyDuration={studyDuration}
+              dailyGoal={dailyGoal}
               onDurationChange={handleDurationChange}
+              onDailyGoalChange={handleDailyGoalChange}
               onSave={handleSaveSettings}
             />
           </TabsContent>
