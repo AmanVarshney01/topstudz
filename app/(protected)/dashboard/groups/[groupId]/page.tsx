@@ -174,65 +174,37 @@ function GroupLeaderboard({ groupId }: { groupId: Id<"groups"> }) {
 
 function LoadingState() {
   return (
-    <div className="grid grid-rows-[auto_1fr] px-2 py-4">
+    <div className="grid grid-rows-[auto_1fr] gap-4 pt-6">
       <div className="flex items-center justify-between">
-        <Skeleton className="mb-4 h-8 w-48" />
+        <Skeleton className="h-8 w-48" />
         <Skeleton className="h-9 w-32" />
       </div>
-      <div className="space-y-4">
-        <Skeleton className="h-10 w-[300px] rounded-lg" />
-        <Card>
-          <CardContent className="p-6">
-            <div className="space-y-4">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="flex gap-4">
-                  <Skeleton className="h-8 w-8 rounded-full" />
-                  <div className="flex-1 space-y-2">
-                    <Skeleton className="h-4 w-[200px]" />
-                    <Skeleton className="h-4 w-full" />
+
+      <Tabs defaultValue="chat" className="space-y-4">
+        <TabsList>
+          <div className="flex max-w-80 flex-row overflow-x-scroll md:max-w-full md:overflow-auto">
+            <Skeleton className="h-10 w-24 rounded-md" />
+            <Skeleton className="ml-1 h-10 w-24 rounded-md" />
+          </div>
+        </TabsList>
+        <TabsContent value="chat" className="space-y-4">
+          <Card className="flex h-[calc(100svh-170px)] flex-col">
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <Skeleton className="h-8 w-8 rounded-full" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-24" />
+                      <Skeleton className="h-10 w-[200px] rounded-lg" />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
-
-const GroupDetailsSkeleton = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>Group Details</CardTitle>
-    </CardHeader>
-    <CardContent className="space-y-4">
-      <div>
-        <Skeleton className="mb-2 h-4 w-24" />
-        <Skeleton className="h-4 w-3/4" />
-      </div>
-      <div>
-        <Skeleton className="mb-2 h-4 w-24" />
-        <Skeleton className="h-4 w-1/2" />
-      </div>
-    </CardContent>
-  </Card>
-)
-
-const MembersSkeleton = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>Members</CardTitle>
-    </CardHeader>
-    <CardContent>
-      <div className="space-y-3">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="rounded-lg border p-3">
-            <Skeleton className="mb-2 h-4 w-1/3" />
-            <Skeleton className="h-3 w-1/4" />
-          </div>
-        ))}
-      </div>
-    </CardContent>
-  </Card>
-)

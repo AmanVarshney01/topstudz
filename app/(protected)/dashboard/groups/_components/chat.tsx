@@ -11,6 +11,7 @@ import { toast } from "sonner"
 import { Send, User } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface ChatProps {
   groupId: Id<"groups">
@@ -47,6 +48,9 @@ export function Chat({ groupId }: ChatProps) {
     }
   }
 
+  if (!currentUser || rawMessages === undefined) {
+    return <ChatSkeleton />
+  }
   return (
     <Card className="flex h-[calc(100svh-170px)] flex-col">
       <ScrollArea
@@ -123,6 +127,37 @@ export function Chat({ groupId }: ChatProps) {
             <Send className="h-4 w-4" />
           </Button>
         </form>
+      </div>
+    </Card>
+  )
+}
+
+function ChatSkeleton() {
+  return (
+    <Card className="flex h-[calc(100svh-170px)] flex-col">
+      <div className="flex-1 p-4">
+        <div className="space-y-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className={`flex gap-3 ${
+                i % 2 === 0 ? "flex-row-reverse" : "flex-row"
+              }`}
+            >
+              <Skeleton className="h-8 w-8 rounded-full" />
+              <div className="flex flex-col gap-1">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-10 w-[200px] rounded-lg" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="border-t p-4">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-10 flex-1 rounded-md" />
+          <Skeleton className="h-10 w-10 rounded-md" />
+        </div>
       </div>
     </Card>
   )
