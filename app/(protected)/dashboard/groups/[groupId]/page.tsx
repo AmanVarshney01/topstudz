@@ -47,16 +47,19 @@ export default function GroupPage({ params }: { params: { groupId: string } }) {
                 }
               : undefined,
           }}
-          members={members?.map((member) => ({
-            _id: member._id,
-            user: member.user
-              ? {
-                  _id: member.user._id,
-                  name: member.user.name,
-                }
-              : null,
-            joinedAt: member.joinedAt,
-          }))}
+          members={
+            members?.map((member) => ({
+              _id: member._id,
+              user: member.user
+                ? {
+                    _id: member.user._id,
+                    name: member.user.name,
+                  }
+                : null,
+              joinedAt: member.joinedAt,
+              role: member.role,
+            })) || []
+          }
           isCreator={isCreator}
         />
       </div>

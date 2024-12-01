@@ -9,6 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { MemberRoleSelect } from "./member-role-select"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -19,13 +20,25 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { api } from "@/convex/_generated/api"
-import { Id } from "@/convex/_generated/dataModel"
-import { useMutation } from "convex/react"
+import { Doc, Id } from "@/convex/_generated/dataModel"
+import { useMutation, useQuery } from "convex/react"
 import { Info, LogOut, Trash2, Users } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
-interface GroupActionsSheetProps {
+type Member = {
+  _id: Id<"groupMembers">
+  user: { _id: Id<"users">; name: string } | null
+  joinedAt: number
+  role: Doc<"groupMembers">["role"]
+}
+
+export function GroupActionsSheet({
+  group,
+  members,
+  isCreator,
+}: {
   group: {
     _id: Id<"groups">
     name: string
@@ -34,24 +47,13 @@ interface GroupActionsSheetProps {
       name?: string
     }
   }
-  members?: Array<{
-    _id: Id<"groupMembers">
-    user: {
-      _id: Id<"users">
-      name?: string
-    } | null
-    joinedAt: number
-  }>
+  members?: Member[]
   isCreator: boolean
-}
-export function GroupActionsSheet({
-  group,
-  members,
-  isCreator,
-}: GroupActionsSheetProps) {
+}) {
   const router = useRouter()
   const leaveGroup = useMutation(api.groups.leave)
   const deleteGroup = useMutation(api.groups.deleteGroup)
+  const viewer = useQuery(api.users.viewer)
 
   const handleLeaveGroup = async () => {
     try {
@@ -91,7 +93,9 @@ export function GroupActionsSheet({
             <h3 className="text-lg font-semibold">Details</h3>
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Description</p>
-              <p>{group.description || "No description provided"}</p>
+              <p className="break-words">
+                {group.description || "No description provided"}
+              </p>
             </div>
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Created by</p>
@@ -107,16 +111,25 @@ export function GroupActionsSheet({
               {members?.map((member) => (
                 <div
                   key={member._id}
-                  className="flex items-center justify-between rounded-lg border p-3"
+                  className="flex items-center justify-between py-2"
                 >
-                  <div>
-                    <p className="font-medium">
-                      {member.user?.name || "Unknown User"}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Joined {new Date(member.joinedAt).toLocaleDateString()}
-                    </p>
+                  <div className="flex items-center gap-2">
+                    <Avatar>
+                      <AvatarFallback>{member.user?.name?.[0]}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium">{member.user?.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        Joined {new Date(member.joinedAt).toLocaleDateString()}
+                      </p>
+                    </div>
                   </div>
+                  <MemberRoleSelect
+                    groupId={group._id}
+                    userId={member.user?._id!}
+                    currentRole={member?.role}
+                    isDisabled={!isCreator || member.user?._id === viewer?._id}
+                  />
                 </div>
               ))}
             </div>

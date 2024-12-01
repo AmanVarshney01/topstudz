@@ -17,6 +17,7 @@ export default defineSchema({
     groupId: v.id("groups"),
     userId: v.id("users"),
     joinedAt: v.number(),
+    role: v.union(v.literal("admin"), v.literal("member")),
   })
     .index("by_group", ["groupId"])
     .index("by_user", ["userId"])

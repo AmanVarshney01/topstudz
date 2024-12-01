@@ -60,8 +60,15 @@ export const getMembers = query({
       memberships.map(async (membership) => {
         const user = await ctx.db.get(membership.userId)
         return {
-          ...membership,
-          user,
+          _id: membership._id,
+          user: user
+            ? {
+                _id: user._id,
+                name: user.name || "",
+              }
+            : null,
+          joinedAt: membership.joinedAt,
+          role: membership.role,
         }
       }),
     )
@@ -91,11 +98,11 @@ export const create = mutation({
       updatedAt: now,
     })
 
-    // Add creator as a member
     await ctx.db.insert("groupMembers", {
       groupId,
       userId,
       joinedAt: now,
+      role: "admin",
     })
 
     return groupId
@@ -174,6 +181,46 @@ export const deleteGroup = mutation({
   },
 })
 
+export const updateMemberRole = mutation({
+  args: {
+    groupId: v.id("groups"),
+    userId: v.id("users"),
+    newRole: v.union(v.literal("admin"), v.literal("member")),
+  },
+  handler: async (ctx, args) => {
+    const currentUserId = await getAuthUserId(ctx)
+    if (!currentUserId) throw new Error("Not authenticated")
+
+    const currentUserMembership = await ctx.db
+      .query("groupMembers")
+      .filter((q) =>
+        q.and(
+          q.eq(q.field("groupId"), args.groupId),
+          q.eq(q.field("userId"), currentUserId),
+        ),
+      )
+      .first()
+
+    if (!currentUserMembership || currentUserMembership.role !== "admin") {
+      throw new Error("Not authorized")
+    }
+
+    const targetMembership = await ctx.db
+      .query("groupMembers")
+      .filter((q) =>
+        q.and(
+          q.eq(q.field("groupId"), args.groupId),
+          q.eq(q.field("userId"), args.userId),
+        ),
+      )
+      .first()
+
+    if (!targetMembership) throw new Error("Member not found")
+
+    await ctx.db.patch(targetMembership._id, { role: args.newRole })
+  },
+})
+
 export const join = mutation({
   args: {
     groupId: v.id("groups"),
@@ -203,6 +250,7 @@ export const join = mutation({
       groupId: args.groupId,
       userId,
       joinedAt: Date.now(),
+      role: "member",
     })
   },
 })
