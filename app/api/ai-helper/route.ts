@@ -1,3 +1,4 @@
+import { AIRequestBody } from "@/lib/types"
 import { formatDuration } from "@/lib/utils"
 import { google } from "@ai-sdk/google"
 import { streamText } from "ai"
