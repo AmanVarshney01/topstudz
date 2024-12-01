@@ -25,11 +25,11 @@ import { useMutation, useQuery } from "convex/react"
 import { Info, LogOut, Trash2, Users } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 type Member = {
   _id: Id<"groupMembers">
-  user: { _id: Id<"users">; name: string } | null
+  user: { _id: Id<"users">; name: string; image: string } | null
   joinedAt: number
   role: Doc<"groupMembers">["role"]
 }
@@ -115,6 +115,7 @@ export function GroupActionsSheet({
                 >
                   <div className="flex items-center gap-2">
                     <Avatar>
+                      <AvatarImage src={member.user?.image} />
                       <AvatarFallback>{member.user?.name?.[0]}</AvatarFallback>
                     </Avatar>
                     <div>

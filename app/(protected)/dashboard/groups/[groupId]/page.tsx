@@ -54,6 +54,7 @@ export default function GroupPage({ params }: { params: { groupId: string } }) {
                 ? {
                     _id: member.user._id,
                     name: member.user.name,
+                    image: member.user.image,
                   }
                 : null,
               joinedAt: member.joinedAt,

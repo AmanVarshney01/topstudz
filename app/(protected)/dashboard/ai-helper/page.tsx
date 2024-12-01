@@ -53,6 +53,10 @@ export default function AIHelperPage() {
       groupInfo: listMyGroups,
       userName: user?.name,
     },
+    initialMessages:
+      typeof window !== "undefined"
+        ? JSON.parse(localStorage.getItem("chatMessages") || "[]")
+        : [],
     onError: (error) => {
       toast.error("An error occurred while getting a response: ", {
         description: error.message,
@@ -69,10 +73,14 @@ export default function AIHelperPage() {
 
   useEffect(() => {
     scrollToBottom()
+    if (messages.length > 0) {
+      localStorage.setItem("chatMessages", JSON.stringify(messages))
+    }
   }, [messages])
 
   const clearChat = () => {
     setMessages([])
+    localStorage.removeItem("chatMessages")
     toast.success("Chat history cleared")
   }
 

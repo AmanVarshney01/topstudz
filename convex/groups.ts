@@ -65,6 +65,7 @@ export const getMembers = query({
             ? {
                 _id: user._id,
                 name: user.name || "",
+                image: user.image || "",
               }
             : null,
           joinedAt: membership.joinedAt,
