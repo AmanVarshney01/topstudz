@@ -1,0 +1,58 @@
+.calendar {
+  @apply h-full;
+}
+
+.rbc-calendar {
+  @apply font-sans;
+}
+
+.rbc-toolbar {
+  @apply mb-4;
+}
+
+.rbc-toolbar button {
+  @apply rounded-md border bg-background px-3 py-1 text-sm font-medium hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+}
+
+.rbc-toolbar button.rbc-active {
+  @apply bg-primary text-primary-foreground;
+}
+
+.rbc-header {
+  @apply border-border bg-muted/50 py-2 font-medium;
+}
+
+.rbc-today {
+  @apply bg-accent/50;
+}
+
+.rbc-off-range-bg {
+  @apply bg-muted/25;
+}
+
+.rbc-event {
+  @apply cursor-pointer;
+}
+
+.rbc-show-more {
+  @apply text-primary hover:underline;
+}
+
+.rbc-month-view,
+.rbc-time-view,
+.rbc-agenda-view {
+  @apply border-border;
+}
+
+.rbc-time-header-content,
+.rbc-header {
+  @apply border-border;
+}
+
+.rbc-time-content {
+  @apply border-border;
+}
+
+.rbc-day-slot .rbc-time-slot {
+  @apply border-border/50;
+}

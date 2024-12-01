@@ -46,6 +46,7 @@
     "next-themes": "^0.4.3",
     "nuqs": "^2.2.3",
     "react": "^18",
+    "react-big-calendar": "^1.16.3",
     "react-dom": "^18",
     "react-hook-form": "^7.53.2",
     "recharts": "^2.13.3",
@@ -58,15 +59,16 @@
   "devDependencies": {
     "@types/node": "^20.17.8",
     "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-big-calendar": "^1.16.0",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
+    "dotenv": "^16.4.5",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.0.3",
+    "npm-run-all": "^4.1.5",
     "postcss": "^8.4.49",
+    "prettier": "3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
     "tailwindcss": "^3.4.15",
-    "typescript": "^5.7.2",
-    "dotenv": "^16.4.5",
-    "npm-run-all": "^4.1.5",
-    "prettier": "3.3.2"
+    "typescript": "^5.7.2"
   }
 }

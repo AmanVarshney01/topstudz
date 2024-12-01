@@ -1,4 +1,4 @@
-type StudySession = {
+export type StudySession = {
   startTime: string
   endTime: string | null
   duration: number
@@ -6,7 +6,7 @@ type StudySession = {
   completed: boolean
 }
 
-type StudyStats = {
+export type StudyStats = {
   totalStudyTime: number
   studyDuration: number
   recentSessions: StudySession[]
@@ -17,9 +17,17 @@ type StudyStats = {
   }
 }
 
-type AIRequestBody = {
+export type AIRequestBody = {
   messages: any[]
   userName: string | undefined
   studyStats: StudyStats | undefined
   groupInfo: any[]
+}
+
+export interface CalendarEvent {
+  title: string
+  start: Date
+  end: Date
+  allDay: boolean
+  resource: StudySession
 }

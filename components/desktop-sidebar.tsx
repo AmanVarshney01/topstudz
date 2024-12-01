@@ -1,7 +1,14 @@
 "use client"
 import { api } from "@/convex/_generated/api"
 import { useQuery } from "convex/react"
-import { BookOpen, Bot, LayoutDashboard, Trophy, Users } from "lucide-react"
+import {
+  BookOpen,
+  Bot,
+  Calendar,
+  LayoutDashboard,
+  Trophy,
+  Users,
+} from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { CommandMenu } from "./command-menu"
@@ -14,6 +21,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSkeleton,
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
@@ -35,6 +43,11 @@ const menuItems = [
     icon: BookOpen,
   },
   {
+    name: "Calendar",
+    href: "/dashboard/calendar",
+    icon: Calendar,
+  },
+  {
     name: "Groups",
     href: "/dashboard/groups",
     icon: Users,
@@ -52,11 +65,65 @@ const menuItems = [
   },
 ]
 
+function NavGroupsSkeleton() {
+  return (
+    <SidebarMenu>
+      {Array.from({ length: 3 }).map((_, index) => (
+        <SidebarMenuItem key={index}>
+          <SidebarMenuSkeleton showIcon />
+        </SidebarMenuItem>
+      ))}
+    </SidebarMenu>
+  )
+}
+
 export default function DesktopSidebar() {
   const viewer = useQuery(api.users.viewer)
   const groups = useQuery(api.groups.listMyGroups)
   const pathname = usePathname()
   const { state } = useSidebar()
+
+  if (!viewer || !groups) {
+    return (
+      <Sidebar
+        variant="inset"
+        collapsible="icon"
+        className="rounded-lg border bg-background"
+      >
+        <SidebarHeader className="w-full items-center bg-background">
+          <Link href="/" className="flex items-center gap-2 pb-2">
+            <Logo variant={state === "collapsed" ? "small" : "default"} />
+          </Link>
+        </SidebarHeader>
+        <SidebarSeparator />
+        <SidebarContent className="bg-background p-2">
+          <SidebarMenu>
+            {menuItems.map((item) => (
+              <SidebarMenuItem key={item.name}>
+                <SidebarMenuButton
+                  asChild
+                  tooltip={item.name}
+                  className="gap-3"
+                  isActive={pathname === item.href}
+                >
+                  <Link href={item.href}>
+                    <item.icon className="h-4 w-4 shrink-0" />
+                    <span>{item.name}</span>
+                  </Link>
+                </SidebarMenuButton>
+                {item.hasSubMenu && <NavGroupsSkeleton />}
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarContent>
+        <SidebarSeparator />
+        <SidebarFooter className="bg-background">
+          <SidebarMenuSkeleton />
+        </SidebarFooter>
+        <SidebarRail />
+      </Sidebar>
+    )
+  }
 
   return (
     <Sidebar
