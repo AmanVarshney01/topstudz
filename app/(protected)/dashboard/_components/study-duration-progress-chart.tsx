@@ -1,21 +1,19 @@
 "use client"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
+  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { formatTime } from "@/lib/utils"
-import { useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 
 const chartConfig = {
   duration: {
     label: "Study Duration",
     color: "hsl(var(--chart-1))",
   },
-}
+} satisfies ChartConfig
 
 export default function StudyDurationChart({
   recentSessions,
@@ -39,7 +37,7 @@ export default function StudyDurationChart({
         <CardTitle>Study Duration Trend</CardTitle>
       </CardHeader>
       <CardContent className="flex items-center justify-center p-0">
-        <ChartContainer config={chartConfig} className="h-[300px]">
+        <ChartContainer config={chartConfig} className="min-h-0 w-full">
           <LineChart data={data}>
             <CartesianGrid vertical={false} />
             <XAxis

@@ -8,6 +8,7 @@ import {
 } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
+  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -37,7 +38,7 @@ const chartConfig = {
     label: "Incomplete",
     color: "hsl(var(--chart-2))",
   },
-}
+} satisfies ChartConfig
 
 export default function StudySessionDistribution({
   recentSessions,
@@ -68,12 +69,12 @@ export default function StudySessionDistribution({
   )
 
   return (
-    <Card>
+    <Card className="">
       <CardHeader className="flex items-center justify-center">
         <CardTitle>Daily Study Sessions</CardTitle>
       </CardHeader>
       <CardContent className="flex items-center justify-center p-0">
-        <ChartContainer config={chartConfig} className="h-[300px]">
+        <ChartContainer config={chartConfig} className="min-h-0 w-full">
           <BarChart data={data}>
             <CartesianGrid vertical={false} />
             <XAxis
