@@ -12,15 +12,19 @@ import { CompletionRateChart } from "./_components/completion-rate-chart"
 import StudyDurationChart from "./_components/study-duration-progress-chart"
 import StudySessionDistribution from "./_components/study-session-distribution-chart"
 
-interface StatsCardProps {
+function StatsCard({
+  title,
+  value,
+  description,
+  icon,
+  trend,
+}: {
   title: string
   value: string
   description: string
   icon: React.ReactNode
   trend?: string
-}
-
-function StatsCard({ title, value, description, icon, trend }: StatsCardProps) {
+}) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -44,7 +48,7 @@ function StatsCard({ title, value, description, icon, trend }: StatsCardProps) {
 }
 
 export default function DashboardPage() {
-  const stats = useQuery(api.study.getStats)
+  const stats = useQuery(api.study.getFullStats)
   const settings = useQuery(api.study.getSettings)
   const userRank = useQuery(api.leaderboards.getUserRanking)
 
@@ -88,11 +92,11 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <StudySessionDistribution />
-        <StudyDurationChart />
-        <StudySessionsChart sessions={stats.recentSessions} />
+        <StudySessionDistribution recentSessions={stats.recentSessions} />
+        <StudyDurationChart recentSessions={stats.recentSessions} />
+        <StudySessionsChart recentSessions={stats.recentSessions} />
         {/* <CompletionRateChart /> */}
-        <StudentProgressChart />
+        <StudentProgressChart recentSessions={stats.recentSessions} />
       </div>
     </div>
   )
@@ -117,7 +121,7 @@ function LoadingSkeleton() {
         ))}
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <Skeleton className="h-6 w-[200px]" />

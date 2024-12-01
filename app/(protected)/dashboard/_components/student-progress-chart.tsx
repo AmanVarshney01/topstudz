@@ -27,14 +27,18 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function StudentProgressChart() {
-  const stats = useQuery(api.study.getStats)
-
-  if (!stats) {
-    return null
-  }
-
-  const monthlyData = stats.recentSessions.reduce((acc: any, session) => {
+export function StudentProgressChart({
+  recentSessions,
+}: {
+  recentSessions: {
+    startTime: string
+    endTime: string | null
+    duration: number
+    type: string
+    completed: boolean
+  }[]
+}) {
+  const monthlyData = recentSessions.reduce((acc: any, session) => {
     const date = new Date(session.startTime)
     const monthYear = date.toLocaleString("default", {
       month: "long",

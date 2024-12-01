@@ -15,16 +15,6 @@ import {
 } from "@/components/ui/chart"
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 
-interface StudySession {
-  duration: number
-  startTime: number
-  completed: boolean
-}
-
-interface Props {
-  sessions: StudySession[]
-}
-
 const chartConfig = {
   duration: {
     label: "Duration",
@@ -32,8 +22,18 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function StudySessionsChart({ sessions }: Props) {
-  const data = sessions
+export function StudySessionsChart({
+  recentSessions,
+}: {
+  recentSessions: {
+    startTime: string
+    endTime: string | null
+    duration: number
+    type: string
+    completed: boolean
+  }[]
+}) {
+  const data = recentSessions
     .filter((session) => session.completed)
     .map((session) => ({
       date: new Date(session.startTime).toLocaleDateString(),

@@ -17,10 +17,18 @@ const chartConfig = {
   },
 }
 
-export default function StudyDurationChart() {
-  const stats = useQuery(api.study.getFullStats)
-
-  const data = stats?.recentSessions.map((session) => ({
+export default function StudyDurationChart({
+  recentSessions,
+}: {
+  recentSessions: {
+    startTime: string
+    endTime: string | null
+    duration: number
+    type: string
+    completed: boolean
+  }[]
+}) {
+  const data = recentSessions.map((session) => ({
     date: new Date(session.startTime).toLocaleDateString(),
     duration: session.duration / 60,
   }))

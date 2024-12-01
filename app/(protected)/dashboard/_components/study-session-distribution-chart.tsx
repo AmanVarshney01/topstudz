@@ -39,24 +39,25 @@ const chartConfig = {
   },
 }
 
-export default function StudySessionDistribution() {
-  const stats = useQuery(api.study.getFullStats)
-
-  if (!stats?.recentSessions) {
-    return null
-  }
-
-  const processedData = stats.recentSessions.reduce<ProcessedData>(
-    (acc, session) => {
-      const date = new Date(session.startTime).toLocaleDateString()
-      if (!acc[date]) {
-        acc[date] = { completed: 0, incomplete: 0 }
-      }
-      session.completed ? acc[date].completed++ : acc[date].incomplete++
-      return acc
-    },
-    {},
-  )
+export default function StudySessionDistribution({
+  recentSessions,
+}: {
+  recentSessions: {
+    startTime: string
+    endTime: string | null
+    duration: number
+    type: string
+    completed: boolean
+  }[]
+}) {
+  const processedData = recentSessions.reduce<ProcessedData>((acc, session) => {
+    const date = new Date(session.startTime).toLocaleDateString()
+    if (!acc[date]) {
+      acc[date] = { completed: 0, incomplete: 0 }
+    }
+    session.completed ? acc[date].completed++ : acc[date].incomplete++
+    return acc
+  }, {})
 
   const data: ChartDataPoint[] = Object.entries(processedData).map(
     ([date, counts]) => ({
