@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { formatHours, formatTimeTimer } from "@/lib/utils"
 import { ChartBar } from "lucide-react"
+import NumberFlow from "@number-flow/react"
 
 export default function StudyStats({
   studyTime,
@@ -22,17 +23,28 @@ export default function StudyStats({
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="rounded-lg border p-4">
             <p className="text-sm text-muted-foreground">Current Session</p>
-            <p className="text-2xl font-bold">{formatTimeTimer(studyTime)}</p>
+            <p className="text-2xl font-bold">
+              <NumberFlow value={studyTime} />
+            </p>
           </div>
           <div className="rounded-lg border p-4">
             <p className="text-sm text-muted-foreground">Progress</p>
             <p className="text-2xl font-bold">
-              {Math.min(Math.round(progress), 100)}%
+              <NumberFlow
+                value={Math.min(Math.round(progress), 100)}
+                suffix="%"
+              />
             </p>
           </div>
           <div className="rounded-lg border p-4">
             <p className="text-sm text-muted-foreground">Total Study Time</p>
-            <p className="text-2xl font-bold">{formatHours(totalStudyTime)}</p>
+            <p className="text-2xl font-bold">
+              <NumberFlow
+                value={totalStudyTime / 3600}
+                format={{ maximumFractionDigits: 1 }}
+                suffix="h"
+              />
+            </p>
           </div>
         </div>
       </CardContent>

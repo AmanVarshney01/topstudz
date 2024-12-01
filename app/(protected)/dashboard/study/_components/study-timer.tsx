@@ -1,3 +1,4 @@
+import NumberFlow from "@number-flow/react"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
@@ -18,6 +19,9 @@ export default function StudyTimer({
   onReset: () => void
 }) {
   const progress = (studyTime / studyDuration) * 100
+  const hours = Math.floor(studyTime / 3600)
+  const minutes = Math.floor((studyTime % 3600) / 60)
+  const seconds = studyTime % 60
 
   return (
     <Card className="border-2">
@@ -29,7 +33,17 @@ export default function StudyTimer({
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="text-center text-7xl font-bold tracking-tighter">
-          {formatTimeTimer(studyTime)}
+          <div className="flex items-center justify-center">
+            {hours > 0 && (
+              <>
+                <NumberFlow value={hours} />
+                <span>:</span>
+              </>
+            )}
+            <NumberFlow value={minutes} format={{ minimumIntegerDigits: 2 }} />
+            <span>:</span>
+            <NumberFlow value={seconds} format={{ minimumIntegerDigits: 2 }} />
+          </div>
         </div>
         <Progress value={Math.min(progress, 100)} className="h-3" />
         <div className="flex justify-center gap-4">
