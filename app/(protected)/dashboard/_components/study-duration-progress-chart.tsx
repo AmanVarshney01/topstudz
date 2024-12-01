@@ -37,7 +37,7 @@ export default function StudyDurationChart({
         <CardTitle>Study Duration Trend</CardTitle>
       </CardHeader>
       <CardContent className="flex items-center justify-center p-0">
-        <ChartContainer config={chartConfig} className="min-h-0 w-full">
+        <ChartContainer config={chartConfig} className="min-h-0 w-full p-2">
           <LineChart data={data}>
             <CartesianGrid vertical={false} />
             <XAxis
