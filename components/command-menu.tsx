@@ -12,6 +12,7 @@ import { api } from "@/convex/_generated/api"
 import { useQuery } from "convex/react"
 import {
   BookOpen,
+  Bot,
   Clock,
   LayoutDashboard,
   Settings,
@@ -25,6 +26,7 @@ import { CreateGroupDialog } from "./create-group-dialog"
 import { ScrollArea } from "./ui/scroll-area"
 import { cn } from "@/lib/utils"
 import { Button } from "./ui/button"
+import { DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog"
 
 export function CommandMenu() {
   const [open, setOpen] = useState(false)
@@ -68,20 +70,17 @@ export function CommandMenu() {
         </kbd>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
+        <DialogHeader className="sr-only">
+          <DialogTitle>Search Commands</DialogTitle>
+          <DialogDescription>
+            Search for commands to navigate quickly.
+          </DialogDescription>
+        </DialogHeader>
         <CommandInput placeholder="Type command to search..." />
         <CommandList>
           <ScrollArea className="h-[300px]">
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading="Navigation">
-              <CommandItem
-                onSelect={() => {
-                  router.push("/dashboard/ai-helper")
-                  setOpen(false)
-                }}
-              >
-                <LayoutDashboard className="mr-2 h-4 w-4" />
-                Go to AI Helper
-              </CommandItem>
               <CommandItem
                 onSelect={() => {
                   router.push("/dashboard")
@@ -117,6 +116,15 @@ export function CommandMenu() {
               >
                 <Trophy className="mr-2 h-4 w-4" />
                 Go to Leaderboards
+              </CommandItem>
+              <CommandItem
+                onSelect={() => {
+                  router.push("/dashboard/ai-helper")
+                  setOpen(false)
+                }}
+              >
+                <Bot className="mr-2 h-4 w-4" />
+                Go to AI Helper
               </CommandItem>
             </CommandGroup>
             <CommandSeparator />

@@ -8,6 +8,9 @@ import { useQuery } from "convex/react"
 import { ArrowUp, BookOpen, Calendar, Clock } from "lucide-react"
 import { StudentProgressChart } from "./_components/student-progress-chart"
 import { StudySessionsChart } from "./_components/study-sessions-chart"
+import { CompletionRateChart } from "./_components/completion-rate-chart"
+import StudyDurationChart from "./_components/study-duration-progress-chart"
+import StudySessionDistribution from "./_components/study-session-distribution-chart"
 
 interface StatsCardProps {
   title: string
@@ -85,7 +88,10 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
+        <StudySessionDistribution />
+        <StudyDurationChart />
         <StudySessionsChart sessions={stats.recentSessions} />
+        {/* <CompletionRateChart /> */}
         <StudentProgressChart />
       </div>
     </div>
