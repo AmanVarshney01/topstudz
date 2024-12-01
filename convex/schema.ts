@@ -6,6 +6,11 @@ import { v } from "convex/values"
 // requires indexes defined on `authTables`.
 export default defineSchema({
   ...authTables,
+  userSettings: defineTable({
+    userId: v.id("users"),
+    isOnboardingDone: v.boolean(),
+    lastUpdated: v.number(),
+  }).index("by_user", ["userId"]),
   groups: defineTable({
     name: v.string(),
     description: v.optional(v.string()),
@@ -43,6 +48,7 @@ export default defineSchema({
   studySettings: defineTable({
     userId: v.id("users"),
     studyDuration: v.number(),
+    dailyGoal: v.optional(v.number()),
     totalStudyTime: v.number(),
     lastUpdated: v.number(),
   })

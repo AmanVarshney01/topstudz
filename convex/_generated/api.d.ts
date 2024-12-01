@@ -18,6 +18,7 @@ import type * as groups from "../groups.js";
 import type * as http from "../http.js";
 import type * as leaderboards from "../leaderboards.js";
 import type * as messages from "../messages.js";
+import type * as onboarding from "../onboarding.js";
 import type * as study from "../study.js";
 import type * as users from "../users.js";
 
@@ -35,6 +36,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   leaderboards: typeof leaderboards;
   messages: typeof messages;
+  onboarding: typeof onboarding;
   study: typeof study;
   users: typeof users;
 }>;

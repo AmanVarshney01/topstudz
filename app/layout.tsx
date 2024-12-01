@@ -1,11 +1,10 @@
 import { ThemeProvider } from "@/components/theme-provider"
+import { cn } from "@/lib/utils"
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server"
+import { Analytics } from "@vercel/analytics/react"
 import type { Metadata } from "next"
 import { Inter as FontSans } from "next/font/google"
 import "./globals.css"
-import { Analytics } from "@vercel/analytics/react"
-import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server"
-
-import { cn } from "@/lib/utils"
 
 const fontSans = FontSans({
   subsets: ["latin"],

@@ -10,6 +10,7 @@ import { StudentProgressChart } from "./_components/student-progress-chart"
 import StudyDurationChart from "./_components/study-duration-progress-chart"
 import StudySessionDistribution from "./_components/study-session-distribution-chart"
 import { StudySessionsChart } from "./_components/study-sessions-chart"
+import OnboardingDialogTrigger from "@/components/onboarding-dialog-trigger"
 
 function StatsCard({
   title,
@@ -73,22 +74,25 @@ export default function DashboardPage() {
   ]
 
   return (
-    <div>
-      <PageTitle title="Dashboard" />
-      <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {statsCards.map((card, index) => (
-          <StatsCard key={index} {...card} />
-        ))}
-      </div>
+    <>
+      <div>
+        <PageTitle title="Dashboard" />
+        <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {statsCards.map((card, index) => (
+            <StatsCard key={index} {...card} />
+          ))}
+        </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <StudySessionDistribution recentSessions={stats.recentSessions} />
-        <StudyDurationChart recentSessions={stats.recentSessions} />
-        {/* <StudySessionsChart recentSessions={stats.recentSessions} /> */}
-        {/* <CompletionRateChart /> */}
-        {/* <StudentProgressChart recentSessions={stats.recentSessions} /> */}
+        <div className="grid gap-4 lg:grid-cols-2">
+          <StudySessionDistribution recentSessions={stats.recentSessions} />
+          <StudyDurationChart recentSessions={stats.recentSessions} />
+          {/* <StudySessionsChart recentSessions={stats.recentSessions} /> */}
+          {/* <CompletionRateChart /> */}
+          {/* <StudentProgressChart recentSessions={stats.recentSessions} /> */}
+        </div>
       </div>
-    </div>
+      <OnboardingDialogTrigger />
+    </>
   )
 }
 
