@@ -10,7 +10,9 @@ import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 import { useMutation, useQuery } from "convex/react"
 import { ArrowRight, Info, Plus, Search, UserPlus } from "lucide-react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useQueryState } from "nuqs"
 import { useState } from "react"
 import { toast } from "sonner"
 
@@ -36,6 +38,10 @@ export default function GroupsPage() {
       toast.error("Failed to join group")
     }
   }
+
+  const [activeTab, setActiveTab] = useQueryState("tab", {
+    defaultValue: "my-groups",
+  })
 
   const GroupCard = ({ group, action }: any) => (
     <div className="flex flex-col justify-between gap-3 rounded-lg border p-2">
@@ -97,7 +103,7 @@ export default function GroupsPage() {
           </Button>
         </CreateGroupDialog>
       </div>
-      <Tabs defaultValue="my-groups" className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full max-w-[400px] grid-cols-2">
           <TabsTrigger value="my-groups">My Groups</TabsTrigger>
           <TabsTrigger value="discover">Discover</TabsTrigger>
@@ -111,11 +117,10 @@ export default function GroupsPage() {
                   <p className="text-muted-foreground">
                     You haven&apos;t joined any groups yet
                   </p>
-                  <Button
-                    variant="secondary"
-                    onClick={() => router.push("#discover")}
-                  >
-                    Discover Groups
+                  <Button variant="secondary" asChild>
+                    <Link href="/dashboard/groups?tab=discover">
+                      Discover Groups
+                    </Link>
                   </Button>
                 </CardContent>
               </Card>
