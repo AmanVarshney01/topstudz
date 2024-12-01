@@ -5,25 +5,22 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { api } from "@/convex/_generated/api"
 import { formatTime } from "@/lib/utils"
 import { useQuery } from "convex/react"
-import { ArrowUp, BookOpen, Calendar, Clock } from "lucide-react"
+import { BookOpen, Calendar, Clock } from "lucide-react"
 import { StudentProgressChart } from "./_components/student-progress-chart"
-import { StudySessionsChart } from "./_components/study-sessions-chart"
-import { CompletionRateChart } from "./_components/completion-rate-chart"
 import StudyDurationChart from "./_components/study-duration-progress-chart"
 import StudySessionDistribution from "./_components/study-session-distribution-chart"
+import { StudySessionsChart } from "./_components/study-sessions-chart"
 
 function StatsCard({
   title,
   value,
   description,
   icon,
-  trend,
 }: {
   title: string
   value: string
   description: string
   icon: React.ReactNode
-  trend?: string
 }) {
   return (
     <Card>
@@ -34,12 +31,6 @@ function StatsCard({
       <CardContent>
         <div className="flex items-baseline space-x-2">
           <span className="text-2xl font-bold">{value}</span>
-          {trend && (
-            <span className="flex items-center text-xs text-green-500">
-              <ArrowUp className="mr-1 h-3 w-3" />
-              {trend}
-            </span>
-          )}
         </div>
         <p className="mt-1 text-xs text-muted-foreground">{description}</p>
       </CardContent>
@@ -72,7 +63,6 @@ export default function DashboardPage() {
       value: completedSessions.toString(),
       description: "Recent study sessions completed",
       icon: <BookOpen className="h-4 w-4 text-muted-foreground" />,
-      trend: "+12% this week",
     },
     {
       title: "Session Duration",
