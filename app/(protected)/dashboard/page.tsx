@@ -84,9 +84,9 @@ export default function DashboardPage() {
       <div className="grid gap-4 lg:grid-cols-2">
         <StudySessionDistribution recentSessions={stats.recentSessions} />
         <StudyDurationChart recentSessions={stats.recentSessions} />
-        <StudySessionsChart recentSessions={stats.recentSessions} />
+        {/* <StudySessionsChart recentSessions={stats.recentSessions} /> */}
         {/* <CompletionRateChart /> */}
-        <StudentProgressChart recentSessions={stats.recentSessions} />
+        {/* <StudentProgressChart recentSessions={stats.recentSessions} /> */}
       </div>
     </div>
   )

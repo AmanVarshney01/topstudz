@@ -67,19 +67,14 @@ export default function GroupPage({ params }: { params: { groupId: string } }) {
 
       <Tabs defaultValue="chat" className="space-y-4">
         <TabsList>
-          <div className="flex max-w-80 flex-row overflow-x-scroll md:max-w-full md:overflow-auto">
-            <TabsTrigger value="chat" className="flex items-center gap-2">
-              <MessageSquare className="h-4 w-4" />
-              Chat
-            </TabsTrigger>
-            <TabsTrigger
-              value="leaderboard"
-              className="flex items-center gap-2"
-            >
-              <Trophy className="h-4 w-4" />
-              Leaderboard
-            </TabsTrigger>
-          </div>
+          <TabsTrigger value="chat" className="flex items-center gap-2">
+            <MessageSquare className="h-4 w-4" />
+            Chat
+          </TabsTrigger>
+          <TabsTrigger value="leaderboard" className="flex items-center gap-2">
+            <Trophy className="h-4 w-4" />
+            Leaderboard
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="chat" className="space-y-4">
           <Chat groupId={groupId} />

@@ -122,6 +122,7 @@ export function Chat({ groupId }: ChatProps) {
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Type a message..."
             className="flex-1"
+            autoFocus
           />
           <Button type="submit" size="icon" disabled={!message.trim()}>
             <Send className="h-4 w-4" />

@@ -194,6 +194,7 @@ export default function AIHelperPage() {
               placeholder="Ask anything about studying..."
               disabled={isLoading}
               className="flex-1"
+              autoFocus
             />
             <div className="flex gap-2">
               {isLoading ? (

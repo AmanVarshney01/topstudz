@@ -69,10 +69,10 @@ export default function StudySessionDistribution({
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex items-center justify-center">
         <CardTitle>Daily Study Sessions</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex items-center justify-center p-0">
         <ChartContainer config={chartConfig} className="h-[300px]">
           <BarChart data={data}>
             <CartesianGrid vertical={false} />

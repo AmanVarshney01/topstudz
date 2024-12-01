@@ -35,10 +35,10 @@ export default function StudyDurationChart({
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex items-center justify-center">
         <CardTitle>Study Duration Trend</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex items-center justify-center p-0">
         <ChartContainer config={chartConfig} className="h-[300px]">
           <LineChart data={data}>
             <CartesianGrid vertical={false} />
