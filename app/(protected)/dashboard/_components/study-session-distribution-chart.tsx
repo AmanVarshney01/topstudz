@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/chart"
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 interface SessionCounts {
   completed: number
@@ -51,6 +53,25 @@ export default function StudySessionDistribution({
     completed: boolean
   }[]
 }) {
+  if (!recentSessions.length) {
+    return (
+      <Card className="h-[300px]">
+        <CardHeader className="flex items-center justify-center">
+          <CardTitle>Daily Study Sessions</CardTitle>
+        </CardHeader>
+        <CardContent className="flex h-full flex-col items-center gap-4 py-10">
+          <p className="text-balance text-center text-muted-foreground">
+            No study sessions recorded yet. Complete your first session to see
+            your daily progress!
+          </p>
+          <Button asChild>
+            <Link href="/dashboard/study">Start Studying</Link>
+          </Button>
+        </CardContent>
+      </Card>
+    )
+  }
+
   const processedData = recentSessions.reduce<ProcessedData>((acc, session) => {
     const date = new Date(session.startTime).toLocaleDateString()
     if (!acc[date]) {

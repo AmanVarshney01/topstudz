@@ -1,4 +1,5 @@
 "use client"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   ChartConfig,
@@ -6,6 +7,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import Link from "next/link"
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 
 const chartConfig = {
@@ -26,6 +28,23 @@ export default function StudyDurationChart({
     completed: boolean
   }[]
 }) {
+  if (!recentSessions.length) {
+    return (
+      <Card className="h-[300px]">
+        <CardHeader className="flex items-center justify-center">
+          <CardTitle>Study Duration Trend</CardTitle>
+        </CardHeader>
+        <CardContent className="flex h-full flex-col items-center gap-4 py-10">
+          <p className="text-balance text-center text-muted-foreground">
+            Start studying to see your duration trends over time!
+          </p>
+          <Button asChild>
+            <Link href="/dashboard/study">Start Studying</Link>
+          </Button>
+        </CardContent>
+      </Card>
+    )
+  }
   const data = recentSessions.map((session) => ({
     date: new Date(session.startTime).toLocaleDateString(),
     duration: session.duration / 60,
