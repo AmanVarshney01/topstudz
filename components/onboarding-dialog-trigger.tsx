@@ -53,7 +53,14 @@ function OnboardingDialog() {
   const router = useRouter()
   const [open, setOpen] = useState(true)
 
-  const suggestedGroups = useQuery(api.onboarding.getSuggestedGroups)
+  const suggestedGroups = useQuery(api.onboarding.getSuggestedGroups, {
+    groupIds: [
+      "k975y74b3zqw62vskhc9vtwj1n75p1zt",
+      "k977sed8weg51fnq1mwqnr2zr575pxg4",
+      "k971tsmdn1yst3vqra7s2cgv3575mc3g",
+      "k97bbhhytbe6m5wg1n3qxt4ts975m9jz",
+    ] as Id<"groups">[],
+  })
   const completeOnboarding = useMutation(api.onboarding.completeOnboarding)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -72,11 +79,10 @@ function OnboardingDialog() {
         studyDuration: values.studyDuration * 60,
         selectedGroupIds: values.selectedGroups,
       })
+      setOpen(false)
       toast.success("Welcome aboard! 🎉", {
         description: "Your study preferences have been saved.",
       })
-      setOpen(false)
-      router.refresh()
     } catch (error) {
       toast.error("Failed to save preferences. Please try again.")
     }

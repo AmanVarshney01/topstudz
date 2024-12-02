@@ -90,9 +90,18 @@ export const completeOnboarding = mutation({
 })
 
 export const getSuggestedGroups = query({
-  args: {},
-  handler: async (ctx) => {
-    const suggestedGroups = await ctx.db.query("groups").order("desc").take(4)
+  args: {
+    groupIds: v.array(v.id("groups")),
+  },
+  handler: async (ctx, args) => {
+    const suggestedGroups = await ctx.db
+      .query("groups")
+      .filter((q) =>
+        args.groupIds.length === 1
+          ? q.eq(q.field("_id"), args.groupIds[0])
+          : q.or(...args.groupIds.map((id) => q.eq(q.field("_id"), id))),
+      )
+      .collect()
 
     return suggestedGroups
   },
