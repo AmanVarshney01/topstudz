@@ -176,7 +176,7 @@ export default function MainSidebar() {
       </SidebarContent>
       <SidebarSeparator />
       <SidebarFooter className="bg-background">
-        <TopsDisplay />
+        {state === "expanded" && <TopsDisplay />}
         <UserMenu
           state={state}
           avatar={viewer?.image!}
