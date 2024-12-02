@@ -81,7 +81,7 @@ export function GroupActionsSheet({
           <Info className="h-4 w-4" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-[400px] sm:w-[540px]">
+      <SheetContent>
         <SheetHeader>
           <SheetTitle>Group Information</SheetTitle>
           <SheetDescription>
