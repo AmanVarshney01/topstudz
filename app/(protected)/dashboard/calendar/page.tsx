@@ -15,6 +15,7 @@ import { CalendarHeader } from "./_components/calendar-header"
 import { CalendarToolbar } from "./_components/calendar-toolbar"
 import { SessionDialog } from "./_components/session-dialog"
 import "./styles.css"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 const locales = {
   "en-US": enUS,
@@ -73,29 +74,32 @@ export default function CalendarPage() {
   return (
     <div className="">
       <PageTitle title="Study Calendar" />
-      <Card className="p-4">
-        <div className="h-[calc(100svh-150px)]">
-          <Calendar
-            localizer={localizer}
-            events={events}
-            startAccessor="start"
-            endAccessor="end"
-            view={view}
-            onView={handleViewChange}
-            date={date}
-            onNavigate={handleNavigate}
-            views={[Views.MONTH, Views.WEEK, Views.DAY, Views.AGENDA]}
-            eventPropGetter={eventStyleGetter}
-            onSelectEvent={(event) => setSelectedSession(event.resource)}
-            components={{
-              toolbar: CalendarToolbar,
-              header: CalendarHeader,
-            }}
-            popup
-            selectable
-            className="calendar"
-          />
-        </div>
+      <Card className="w-[calc(100svw-50px)] p-4 md:w-full">
+        <ScrollArea>
+          <div className="h-[calc(100svh-150px)]">
+            <Calendar
+              localizer={localizer}
+              events={events}
+              startAccessor="start"
+              endAccessor="end"
+              view={view}
+              onView={handleViewChange}
+              date={date}
+              onNavigate={handleNavigate}
+              views={[Views.MONTH, Views.WEEK, Views.DAY, Views.AGENDA]}
+              eventPropGetter={eventStyleGetter}
+              onSelectEvent={(event) => setSelectedSession(event.resource)}
+              components={{
+                toolbar: CalendarToolbar,
+                header: CalendarHeader,
+              }}
+              popup
+              selectable
+              className="calendar"
+            />
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </Card>
 
       <SessionDialog
