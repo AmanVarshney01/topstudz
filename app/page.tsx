@@ -97,8 +97,7 @@ export default function Home() {
         <section className="relative mx-auto space-y-8 py-24 sm:py-32">
           <div className="mx-auto flex max-w-[64rem] flex-col items-center gap-4 text-center">
             <h1 className="text-pretty text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl">
-              Your Path to Academic
-              <span className="text-primary">Excellence</span>
+              Study. Compete. Succeed.
             </h1>
             <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
               Join the community of high-achievers. Track your study sessions,
