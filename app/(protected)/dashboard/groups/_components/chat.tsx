@@ -50,14 +50,18 @@ export function Chat({ groupId }: ChatProps) {
         toast.error("Message contains inappropriate content")
         return
       }
-
       await sendMessage({
         groupId,
         body: message.trim(),
       })
       setMessage("")
     } catch (error) {
-      toast.error("Failed to send message")
+      await sendMessage({
+        groupId,
+        body: message.trim(),
+      })
+      setMessage("")
+      toast.error("Failed to check for profanity")
     }
   }
 
