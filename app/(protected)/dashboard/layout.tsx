@@ -1,6 +1,6 @@
 import ConvexClientProvider from "@/components/convex-client-provider"
-import DesktopSidebar from "@/components/desktop-sidebar"
 import Header from "@/components/header"
+import MainSidebar from "@/components/main-sidebar"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
@@ -16,7 +16,7 @@ export default function DashboardLayout({
       <NuqsAdapter>
         <SidebarProvider className="flex h-svh flex-col md:flex-row">
           <Header />
-          <DesktopSidebar />
+          <MainSidebar />
           <main className="w-full bg-background">
             <ScrollArea className="h-full p-4">{children}</ScrollArea>
           </main>

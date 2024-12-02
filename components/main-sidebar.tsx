@@ -30,6 +30,7 @@ import {
   useSidebar,
 } from "./ui/sidebar"
 import { UserMenu } from "./user-menu"
+import { TopsDisplay } from "./tops-display"
 
 const menuItems = [
   {
@@ -77,7 +78,7 @@ function NavGroupsSkeleton() {
   )
 }
 
-export default function DesktopSidebar() {
+export default function MainSidebar() {
   const viewer = useQuery(api.users.viewer)
   const groups = useQuery(api.groups.listMyGroups)
   const pathname = usePathname()
@@ -175,6 +176,7 @@ export default function DesktopSidebar() {
       </SidebarContent>
       <SidebarSeparator />
       <SidebarFooter className="bg-background">
+        <TopsDisplay />
         <UserMenu
           state={state}
           avatar={viewer?.image!}

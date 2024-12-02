@@ -4,6 +4,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { formatTimeTimer } from "@/lib/utils"
 import { Clock, Pause, Play, RotateCcw } from "lucide-react"
+import { useTopsStore } from "@/store/use-tops-store"
+import { useEffect } from "react"
 
 export default function StudyTimer({
   studyTime,
@@ -18,11 +20,26 @@ export default function StudyTimer({
   onStartStop: () => void
   onReset: () => void
 }) {
+  const { incrementTops, resetSessionTops } = useTopsStore()
   const progress = (studyTime / studyDuration) * 100
   const hours = Math.floor(studyTime / 3600)
   const minutes = Math.floor((studyTime % 3600) / 60)
   const seconds = studyTime % 60
 
+  useEffect(() => {
+    if (!isStudying) return
+
+    const interval = setInterval(() => {
+      incrementTops(1)
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [isStudying, incrementTops])
+
+  const handleReset = () => {
+    resetSessionTops()
+    onReset()
+  }
   return (
     <Card className="border-2">
       <CardHeader>
@@ -62,7 +79,7 @@ export default function StudyTimer({
           </Button>
           <Button
             size="lg"
-            onClick={onReset}
+            onClick={handleReset}
             variant="outline"
             className="w-32"
           >

@@ -43,7 +43,7 @@ export async function POST(req: Request) {
   4. Recent study patterns and consistency
   Give specific, actionable advice for improvement.
   5. Give shorter response.
-  6. Use Users Name.
+  6. Use Users Name. Prefer First Name
   7. Dont reply in markdown.
   `
 

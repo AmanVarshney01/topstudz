@@ -27,18 +27,15 @@ export default function StudyPage() {
     defaultValue: 25 * 60,
     parse: (value) => Number(value),
   })
-
   const [dailyGoal, setDailyGoal] = useQueryState("dailyGoal", {
     defaultValue: 120 * 60,
     parse: (value) => Number(value),
   })
-
   const [activeTab, setActiveTab] = useQueryState("tab", {
     defaultValue: "stats",
     parse: (value) => value as "stats" | "settings" | "history",
   })
 
-  const settings = useQuery(api.study.getSettings)
   const updateSettings = useMutation(api.study.updateSettings)
   const completeSession = useMutation(api.study.completeSession)
   const stats = useQuery(api.study.getStats)
