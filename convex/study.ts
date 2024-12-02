@@ -16,7 +16,6 @@ export const getSettings = query({
     if (!settings) {
       return {
         studyDuration: 25 * 60,
-        breakDuration: 5 * 60,
         totalStudyTime: 0,
         dailyGoal: 120 * 60,
       }

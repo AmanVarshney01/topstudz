@@ -92,7 +92,7 @@ export default function DashboardPage() {
     {
       title: "Daily Goal Progress",
       value: `${Math.round(dailyProgressPercentage)}%`,
-      description: `${todaysStudyTime} / ${stats.dailyGoal} seconds today`,
+      description: `${formatTime(todaysStudyTime)} / ${formatTime(stats.dailyGoal)}`,
       icon: <Target className="h-4 w-4 text-muted-foreground" />,
       progress: dailyProgressPercentage,
     },

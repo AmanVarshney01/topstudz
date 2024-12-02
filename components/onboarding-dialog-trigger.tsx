@@ -22,7 +22,6 @@ import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQuery } from "convex/react"
-import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -32,8 +31,8 @@ import { Skeleton } from "./ui/skeleton"
 import { ScrollArea } from "./ui/scroll-area"
 
 const formSchema = z.object({
-  dailyGoal: z.number().min(0).max(1440),
-  studyDuration: z.number().min(0),
+  dailyGoal: z.number().min(1).max(1440),
+  studyDuration: z.number().min(1),
   selectedGroups: z
     .array(z.string())
     .transform((val) => val.map((id) => id as Id<"groups">)),
@@ -50,7 +49,6 @@ export default function OnboardingDialogTrigger() {
 }
 
 function OnboardingDialog() {
-  const router = useRouter()
   const [open, setOpen] = useState(true)
 
   const suggestedGroups = useQuery(api.onboarding.getSuggestedGroups, {
@@ -75,7 +73,7 @@ function OnboardingDialog() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await completeOnboarding({
-        dailyGoal: values.dailyGoal,
+        dailyGoal: values.dailyGoal * 60,
         studyDuration: values.studyDuration * 60,
         selectedGroupIds: values.selectedGroups,
       })
@@ -110,9 +108,9 @@ function OnboardingDialog() {
                     <FormControl>
                       <div className="space-y-2">
                         <Slider
-                          min={15}
-                          max={720}
-                          step={15}
+                          min={1}
+                          max={1440}
+                          step={1}
                           value={[field.value]}
                           onValueChange={([value]) => field.onChange(value)}
                         />
@@ -138,9 +136,9 @@ function OnboardingDialog() {
                     <FormControl>
                       <div className="space-y-2">
                         <Slider
-                          min={5}
-                          max={120}
-                          step={5}
+                          min={1}
+                          max={1440}
+                          step={1}
                           value={[field.value]}
                           onValueChange={([value]) => field.onChange(value)}
                         />
