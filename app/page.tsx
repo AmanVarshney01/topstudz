@@ -1,26 +1,26 @@
-import Logo from "@/components/logo"
 import GoToActionButton from "@/components/go-to-action-button"
+import Logo from "@/components/logo"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import MainPage from "@/public/main.png"
+import Meteors from "@/components/ui/meteors"
+import MainPage from "@/public/main.webp"
 import {
+  BarChart,
   BookOpen,
+  ChevronRight,
+  Clock,
+  Github,
+  LineChart,
   Star,
+  Target,
   Timer,
   Trophy,
   Users,
-  BarChart,
-  Target,
   Zap,
-  ChevronRight,
-  Clock,
-  LineChart,
-  Github,
 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import Meteors from "@/components/ui/meteors"
 
 const features = [
   {
@@ -185,7 +185,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="border-t bg-muted/50">
+        <section className="border-t">
           <div className="py-20">
             <Card className="relative mx-auto max-w-4xl overflow-hidden bg-foreground">
               <div className="absolute inset-0">
@@ -219,9 +219,13 @@ export default function Home() {
           <p className="text-sm text-muted-foreground">
             © 2024 TopStudz. All rights reserved.
           </p>
-          <p className="text-sm text-muted-foreground">
-            Made with ❤️ for students
-          </p>
+          <Link
+            href={"https://www.amanvarshney.work/"}
+            className="text-sm text-muted-foreground underline"
+            target="_blank"
+          >
+            Aman Varshney
+          </Link>
         </div>
       </footer>
     </div>

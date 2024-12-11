@@ -3,13 +3,9 @@ import { cn } from "@/lib/utils"
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server"
 import { Analytics } from "@vercel/analytics/react"
 import type { Metadata } from "next"
-import { Inter as FontSans } from "next/font/google"
 import "./globals.css"
-
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-})
+import { GeistSans } from "geist/font/sans"
+import { GeistMono } from "geist/font/mono"
 
 export const metadata: Metadata = {
   title: "TopStudz",
@@ -28,7 +24,8 @@ export default function RootLayout({
         <body
           className={cn(
             "bg-background font-sans antialiased",
-            fontSans.variable,
+            GeistSans.variable,
+            GeistMono.variable,
           )}
         >
           <ThemeProvider
