@@ -5,7 +5,6 @@ import { Analytics } from "@vercel/analytics/react"
 import type { Metadata } from "next"
 import "./globals.css"
 import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
 
 export const metadata: Metadata = {
   title: "TopStudz",
@@ -25,7 +24,6 @@ export default function RootLayout({
           className={cn(
             "bg-background font-sans antialiased",
             GeistSans.variable,
-            GeistMono.variable,
           )}
         >
           <ThemeProvider
