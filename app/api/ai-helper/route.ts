@@ -4,19 +4,17 @@ import { formatDuration } from "@/lib/utils"
 import { google } from "@ai-sdk/google"
 import { streamText } from "ai"
 
-export const maxDuration = 30
-
 export async function POST(req: Request) {
   const { messages, userName, studyStats, groupInfo }: AIRequestBody =
     await req.json()
 
-  const systemPrompt = `You are a helpful study assistant that helps users with their study goals and productivity.
+  const system = `You are a helpful study assistant that helps users with their study goals and productivity.
   Here is important context about the user:
   - User Name: ${userName}
   - Total Study Time: ${formatDuration(studyStats?.totalStudyTime || 0)}
   - Preferred Study Duration: ${formatDuration(studyStats?.studyDuration || 1500)} per session
   - Study Statistics:
-    * Total Sessions (Last 7 days): ${studyStats?.stats.totalSessions}
+    * Total Sessions: ${studyStats?.stats.totalSessions}
     * Completed Sessions: ${studyStats?.stats.completedSessions}
     * Completion Rate: ${studyStats?.stats.completionRate}%
 
@@ -27,7 +25,6 @@ export async function POST(req: Request) {
         (session) => `
   - Date: ${new Date(session.startTime).toLocaleDateString()}
     Duration: ${formatDuration(session.duration)}
-    Type: ${session.type}
     Completed: ${session.completed ? "Yes" : "No"}
   `,
       )
@@ -45,26 +42,15 @@ export async function POST(req: Request) {
   2. Their preferred study duration
   3. Their total study time
   4. Recent study patterns and consistency
-  Give specific, actionable advice for improvement.
   5. Give shorter response.
   6. Use Users Name. Prefer First Name
-
-  Remember: NEVER format tables using markdown or plain text - always use the displayTable tool.
   `
 
   const result = streamText({
-    model: google("gemini-1.5-flash", {
-      safetySettings: [
-        {
-          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-          threshold: "BLOCK_MEDIUM_AND_ABOVE",
-        },
-      ],
-    }),
+    model: google("gemini-1.5-flash"),
     messages,
-    system: systemPrompt,
-    tools: tools,
-    maxSteps: 5,
+    system,
+    tools,
   })
 
   return result.toDataStreamResponse()
