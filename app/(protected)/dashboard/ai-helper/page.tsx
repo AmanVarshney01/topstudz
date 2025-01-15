@@ -1,5 +1,6 @@
 "use client"
 
+import { AITable } from "@/components/ai-data-table"
 import PageTitle from "@/components/page-title"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -158,8 +159,47 @@ export default function AIHelperPage() {
                       <Bot className="size-6" />
                     )}
                   </div>
-                  <div className={cn("rounded-lg bg-muted px-4 py-3")}>
-                    {message.content}
+                  <div
+                    className={cn(
+                      "flex flex-col gap-4",
+                      message.role === "user" ? "items-end" : "items-start",
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "max-w-prose rounded-lg bg-muted px-4 py-3",
+                      )}
+                    >
+                      {message.content}
+                    </div>
+
+                    {message.role === "assistant" &&
+                      message.toolInvocations?.map((toolInvocation) => {
+                        const { toolName, toolCallId, state } = toolInvocation
+
+                        if (state === "result") {
+                          if (toolName === "displayTable") {
+                            const { result } = toolInvocation
+                            return (
+                              <div key={toolCallId} className="w-full">
+                                <AITable {...result} />
+                              </div>
+                            )
+                          }
+                        } else {
+                          return (
+                            <div
+                              key={toolCallId}
+                              className="rounded-lg bg-muted px-4 py-3"
+                            >
+                              <div className="flex flex-row items-center gap-2 text-muted-foreground">
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                Generating visualization...
+                              </div>
+                            </div>
+                          )
+                        }
+                      })}
                   </div>
                 </div>
               ))}
@@ -192,7 +232,7 @@ export default function AIHelperPage() {
               value={input}
               onChange={handleInputChange}
               placeholder="Ask anything about studying..."
-              disabled={isLoading}
+              disabled={isLoading || error != null}
               className="flex-1"
               autoFocus
             />

@@ -1,3 +1,4 @@
+import { tools } from "@/app/ai/tools"
 import { AIRequestBody } from "@/lib/types"
 import { formatDuration } from "@/lib/utils"
 import { google } from "@ai-sdk/google"
@@ -36,6 +37,9 @@ export async function POST(req: Request) {
   Groups Joined: ${JSON.stringify(groupInfo || [])}
   Current Date and Time: ${new Date().toLocaleString()}
 
+  IMPORTANT: When displaying any tabular data, ALWAYS use the displayTable tool instead of markdown or plain text formatting.
+  For example, when showing study sessions, use the displayTable tool with appropriate headers and rows.
+
   Provide encouraging, personalized advice based on their study patterns and goals. Consider:
   1. Their study session completion rate
   2. Their preferred study duration
@@ -44,7 +48,8 @@ export async function POST(req: Request) {
   Give specific, actionable advice for improvement.
   5. Give shorter response.
   6. Use Users Name. Prefer First Name
-  7. Dont reply in markdown.
+
+  Remember: NEVER format tables using markdown or plain text - always use the displayTable tool.
   `
 
   const result = streamText({
@@ -58,6 +63,8 @@ export async function POST(req: Request) {
     }),
     messages,
     system: systemPrompt,
+    tools: tools,
+    maxSteps: 5,
   })
 
   return result.toDataStreamResponse()
