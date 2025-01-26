@@ -8,43 +8,61 @@ export async function POST(req: Request) {
   const { messages, userName, studyStats, groupInfo }: AIRequestBody =
     await req.json()
 
-  const system = `You are a helpful study assistant that helps users with their study goals and productivity.
-  Here is important context about the user:
-  - User Name: ${userName}
-  - Total Study Time: ${formatDuration(studyStats?.totalStudyTime || 0)}
-  - Preferred Study Duration: ${formatDuration(studyStats?.studyDuration || 1500)} per session
-  - Study Statistics:
-    * Total Sessions: ${studyStats?.stats.totalSessions}
-    * Completed Sessions: ${studyStats?.stats.completedSessions}
-    * Completion Rate: ${studyStats?.stats.completionRate}%
-
-  Recent Study Sessions:
-  ${
-    studyStats?.recentSessions
-      .map(
-        (session) => `
-  - Date: ${new Date(session.startTime).toLocaleDateString()}
-    Duration: ${formatDuration(session.duration)}
-    Completed: ${session.completed ? "Yes" : "No"}
-  `,
-      )
-      .join("\n") || "No recent sessions"
-  }
-
-  Groups Joined: ${JSON.stringify(groupInfo || [])}
-  Current Date and Time: ${new Date().toLocaleString()}
-
-  IMPORTANT: When displaying any tabular data, ALWAYS use the displayTable tool instead of markdown or plain text formatting.
-  For example, when showing study sessions, use the displayTable tool with appropriate headers and rows.
-
-  Provide encouraging, personalized advice based on their study patterns and goals. Consider:
-  1. Their study session completion rate
-  2. Their preferred study duration
-  3. Their total study time
-  4. Recent study patterns and consistency
-  5. Give shorter response.
-  6. Use Users Name. Prefer First Name
+  const userContext = `
+    User Profile:
+    - Name: ${userName}
+    - Total Study Time: ${formatDuration(studyStats?.totalStudyTime || 0)}
+    - Preferred Session Length: ${formatDuration(studyStats?.studyDuration || 1500)}
   `
+
+  const studyMetrics = `
+    Study Performance:
+    - Total Sessions: ${studyStats?.stats.totalSessions}
+    - Completed Sessions: ${studyStats?.stats.completedSessions}
+    - Success Rate: ${studyStats?.stats.completionRate}%
+  `
+
+  const recentActivity = `
+    Recent Study History:
+    ${
+      studyStats?.recentSessions
+        .map(
+          (session) => `
+    - ${new Date(session.startTime).toLocaleDateString()}
+      Duration: ${formatDuration(session.duration)}
+      Completed: ${session.completed ? "✓" : "✗"}
+    `,
+        )
+        .join("") || "No recent study activity recorded"
+    }
+      `
+
+  const additionalContext = `
+    Additional Information:
+    - Groups: ${JSON.stringify(groupInfo || [])}
+    - Current Time: ${new Date().toLocaleString()}
+      `
+
+  const guidelines = `
+    Key Instructions:
+    1. ALWAYS use displayTable tool for tabular data presentation
+    2. Provide concise, personalized feedback
+    3. Focus on:
+      - Completion rate trends
+      - Session duration patterns
+      - Overall study consistency
+    4. Keep responses brief and actionable
+    5. Address user by their first name
+      `
+
+  const system = `You are a supportive study advisor providing personalized guidance.
+
+    ${userContext}
+    ${studyMetrics}
+    ${recentActivity}
+    ${additionalContext}
+    ${guidelines}
+`
 
   const result = streamText({
     model: google("gemini-1.5-flash"),
